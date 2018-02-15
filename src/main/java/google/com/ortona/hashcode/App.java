@@ -23,7 +23,7 @@ public class App {
 	private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 
 	public static void main(final String[] args) {
-		LOGGER.info("Hello world");
+		LOGGER.info("Hello fucking world, we are the fucking awesome team");
 		final List<String> list = Lists.newLinkedList();
 		LOGGER.info("This is an empty list '{}'", list);
 	}
