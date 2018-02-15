@@ -20,11 +20,12 @@ import com.google.common.collect.Lists;
  **/
 public class App {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 
-  public static void main(final String[] args) {
-    LOGGER.info("Hello world");
-    final List<String> list = Lists.newLinkedList();
-    LOGGER.info("This is an empty list '{}'", list);
-  }
+	public static void main(final String[] args) {
+		LOGGER.info("Hello world");
+		final List<String> list = Lists.newLinkedList();
+		LOGGER.info("This is an empty list '{}'", list);
+	}
+	
 }
