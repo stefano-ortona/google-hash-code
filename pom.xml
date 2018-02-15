@@ -1,0 +1,68 @@
+<!-- MIT License Copyright (c) -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- Project information -->
+
+	<groupId>google.com.ortona</groupId>
+	<artifactId>hashcode</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>hashcode</name>
+	<!-- Licensing -->
+
+	<licenses>
+
+		<license>
+			<name>MIT License</name>
+		</license>
+
+	</licenses>
+	<!-- Developers and contributors -->
+
+	<developers>
+		<!-- Use specific users if you plan to use the scm:git integration -->
+		<developer>
+			<name>Developer</name>
+			<roles>
+				<role>developer</role>
+				<!-- <role>researcher</role> -->
+			</roles>
+		</developer>
+	</developers>
+
+	<!-- uncomment this section if you want to add a contributor to the project 
+		<contributors> <contributor> <name>contributor</name> <email>contributor@domain.com</email> 
+		<url>http://contributor.net</url> <organization>DIADEM Lab - Department of 
+		Computer Science, University of Oxford</organization> <organizationUrl>http://diadem.cs.ox.ac.uk</organizationUrl> 
+		<roles> <role>developer</role> </roles> </contributor> </contributors> -->
+
+	<!-- Dependencies -->
+
+	<dependencies>
+
+	</dependencies>
+
+	<!-- Distribution management, e.g., repositories for artefacts and site 
+		upload -->
+
+	<!-- Forcing UTF-8 and default encoding -->
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<!-- Build configuration -->
+
+	<build>
+
+		<!-- Plugins used to modify build-lifecycle behavior -->
+		<plugins>
+
+		</plugins>
+	</build>
+</project>
