@@ -20,13 +20,13 @@ public class RubyCall {
   //create a RubyScript engine
   ScriptEngine engine = manager.getEngineByName("ruby");
   
-  System.out.println("Started execution");
+  System.out.println("Started java execution");
   engine.eval(Files.newBufferedReader(Paths.get(System.getProperty("user.dir") + "/src/main/java/google/com/pagliaro/hashcode/script.rb"), StandardCharsets.UTF_8));
   System.out.println("Evaluated ruby file");
   
   System.out.println("Started ruby invocation");
   Invocable inv = (Invocable)engine;
-  long a = (long) inv.invokeFunction("add", "3", "2");
+  long a = (long) inv.invokeFunction("ping", "test");
   System.out.println("Ruby file output:\n"+a);
  
  }

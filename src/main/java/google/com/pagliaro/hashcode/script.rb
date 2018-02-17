@@ -1,5 +1,5 @@
-def add (var1, var2)
-   a = Time.now
-   puts a
-   return var1.to_i + var2.to_i
+def ping (var=nil)
+   puts "Yes I am awake, fucking moron"
+   puts "... and this is your parameter: #{var}"
+   return 0
 end
