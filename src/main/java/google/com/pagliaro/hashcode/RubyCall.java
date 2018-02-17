@@ -21,7 +21,7 @@ public class RubyCall {
   ScriptEngine engine = manager.getEngineByName("ruby");
   
   System.out.println("Started java execution");
-  engine.eval(Files.newBufferedReader(Paths.get(System.getProperty("user.dir") + "/src/main/java/google/com/pagliaro/hashcode/script.rb"), StandardCharsets.UTF_8));
+  engine.eval(Files.newBufferedReader(Paths.get(System.getProperty("user.dir") + "/src/main/java/google/com/pagliaro/hashcode/pizza/script.rb"), StandardCharsets.UTF_8));
   System.out.println("Evaluated ruby file");
   
   System.out.println("Started ruby invocation");
