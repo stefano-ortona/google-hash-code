@@ -1,10 +1,11 @@
 def ping (var=nil)
-   puts "Yes I am awake, fucking moron"
+   puts "Plic Ploc, dude"
    puts "... and this is your parameter: #{var}"
    return 0
 end
 
 def validate_output input_folder='files/example.in', output_folder='files/example.out'
+  puts "Started validation"
   input_lines = File.readlines(input_folder)
   rows, cols, min_per_ingredient, max_cells = input_lines[0].split(' ').map(&:to_i)
   pizza = {}
@@ -15,12 +16,18 @@ def validate_output input_folder='files/example.in', output_folder='files/exampl
     }
   }
   max = rows * cols
+  puts "Read input file: #{rows} rows, #{cols} cols"
+  puts "min per ingredient: #{min_per_ingredient}"
+  puts "max cells per slice: #{max_cells}"
+  puts "max possibile score: #{max}"
   
   output_lines = File.readlines(output_folder)
   slices_number = output_lines[0].to_i
   slices = output_lines[1..-1]
   cells = 0
-  slices.each{ |slice|
+  puts "Started slices check"
+  slices.each_with_index{ |slice, index|
+    puts "Check of slice: #{index + 1}"
     r1, c1, r2, c2 = slice.split(' ').map(&:to_i) 
     # check number of slices
     squares_number = (r2 - r1 + 1) * (c2 - c1 + 1)
@@ -31,17 +38,15 @@ def validate_output input_folder='files/example.in', output_folder='files/exampl
     enough_tomatos = false
     enough_mushrooms = false
     (r1..r2).each{ |r|
-      p r
       (c1..c2).each{ |c|
-        p c
-         ingredients << pizza[[r,c]]
-         pizza[[r,c]] == 'T' ? number_of_mushrooms += 1 : number_of_tomatoes += 1
-         enough_tomatos = true if number_of_tomatoes >= min_per_ingredient 
-         enough_mushrooms = true if number_of_mushrooms >= min_per_ingredient 
+        ingredients << pizza[[r,c]]
+        pizza[[r,c]] == 'T' ? number_of_mushrooms += 1 : number_of_tomatoes += 1
+        enough_tomatos = true if number_of_tomatoes >= min_per_ingredient 
+        enough_mushrooms = true if number_of_mushrooms >= min_per_ingredient 
       } 
     }
     raise StandardError.new, "not_enough tomatos and mushs for #{slice} with #{ingredients}" unless enough_tomatos && enough_mushrooms 
     cells += squares_number 
   }
-  p "output of #{cells} instead of max: #{max}"
+  puts "Score obtained: #{cells} (instead of a maximum of #{max})"
 end
