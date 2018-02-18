@@ -10,28 +10,28 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import google.com.ortona.hashcode.pizza.model.Inrgedient;
+import google.com.ortona.hashcode.pizza.model.Ingredient;
 import google.com.ortona.hashcode.pizza.model.PizzaStatus;
 import google.com.ortona.hashcode.pizza.model.Point;
 import google.com.ortona.hashcode.pizza.model.Slice;
 
 public class MinimumSlicePizza {
-  private final ScoreComputation score;
+  private final IngredientScoreComputation score;
 
-  public MinimumSlicePizza(ScoreComputation score) {
+  public MinimumSlicePizza(IngredientScoreComputation score) {
     this.score = score;
   }
 
-  public PizzaStatus computeSlices(Inrgedient[][] pizza, final int L) {
+  public PizzaStatus computeSlices(Ingredient[][] pizza, final int L) {
     final PizzaStatus status = new PizzaStatus(pizza);
     // compute initialisePoints
     final List<Point> startPoint = computeInitialisePoint(pizza);
     // randomize points
-    final Map<Inrgedient, Integer> curStatus = Maps.newHashMap();
+    final Map<Ingredient, Integer> curStatus = Maps.newHashMap();
     Collections.shuffle(startPoint);
     startPoint.forEach(p -> {
       // create a new fake map
-      final Map<Inrgedient, Integer> curStatusMap = Maps.newHashMap();
+      final Map<Ingredient, Integer> curStatusMap = Maps.newHashMap();
       curStatusMap.putAll(curStatus);
       // check the point is not currently occupied
       if (!status.isCellOccupied(p.x, p.y)) {
@@ -62,10 +62,10 @@ public class MinimumSlicePizza {
     return status;
   }
 
-  private Slice expandSlice(Slice slice, PizzaStatus status, final Map<Inrgedient, Integer> curStatus) {
+  private Slice expandSlice(Slice slice, PizzaStatus status, final Map<Ingredient, Integer> curStatus) {
     // try to expand in all possible 6 direction
 
-    Map<Inrgedient, Integer> bestMap = null;
+    Map<Ingredient, Integer> bestMap = null;
     double bestScore = -1;
     int newUpLX = 0;
     int newUpLY = 0;
@@ -73,8 +73,8 @@ public class MinimumSlicePizza {
     int newLoRY = 0;
     boolean hasExpand = false;
     // expand left
-    final Inrgedient[][] pizza = status.pizza;
-    Map<Inrgedient, Integer> map1ToAdd = null;
+    final Ingredient[][] pizza = status.pizza;
+    Map<Ingredient, Integer> map1ToAdd = null;
     final boolean left = status.canExpandVertically(slice.upperLeftX, slice.lowerRightX, slice.upperLeftY - 1);
     if (left) {
       map1ToAdd = Maps.newHashMap();
@@ -95,7 +95,7 @@ public class MinimumSlicePizza {
       }
     }
     // expand up
-    Map<Inrgedient, Integer> map2ToAdd = null;
+    Map<Ingredient, Integer> map2ToAdd = null;
     final boolean up = status.canExpandHorizontally(slice.upperLeftY, slice.lowerRightY, slice.upperLeftX - 1);
     if (up) {
       map2ToAdd = Maps.newHashMap();
@@ -117,7 +117,7 @@ public class MinimumSlicePizza {
     }
     // expand left and up
     if (left && up && status.isCellOccupied(slice.upperLeftX - 1, slice.upperLeftY - 1)) {
-      final Map<Inrgedient, Integer> toAdd = Maps.newHashMap();
+      final Map<Ingredient, Integer> toAdd = Maps.newHashMap();
       toAdd.putAll(map2ToAdd);
       toAdd.putAll(map2ToAdd);
       final int curValue = toAdd.getOrDefault(pizza[slice.upperLeftX - 1][slice.upperLeftY - 1], 0) + 1;
@@ -177,7 +177,7 @@ public class MinimumSlicePizza {
     }
     // expand right and down
     if (right && down && status.isCellOccupied(slice.lowerRightX + 1, slice.lowerRightY + 1)) {
-      final Map<Inrgedient, Integer> toAdd = Maps.newHashMap();
+      final Map<Ingredient, Integer> toAdd = Maps.newHashMap();
       toAdd.putAll(map2ToAdd);
       toAdd.putAll(map2ToAdd);
       final int curValue = toAdd.getOrDefault(pizza[slice.lowerRightX + 1][slice.lowerRightY + 1], 0) + 1;
@@ -209,10 +209,10 @@ public class MinimumSlicePizza {
 
   }
 
-  private List<Point> computeInitialisePoint(Inrgedient[][] pizza) {
+  private List<Point> computeInitialisePoint(Ingredient[][] pizza) {
     final List<Point> allPoints = Lists.newLinkedList();
     // get minimum ingredients
-    final Map<Inrgedient, Integer> ing2presence = Maps.newHashMap();
+    final Map<Ingredient, Integer> ing2presence = Maps.newHashMap();
     for (int i = 0; i < pizza.length; i++) {
       for (int j = 0; j < pizza[0].length; j++) {
         final int curValue = ing2presence.getOrDefault(pizza[i][j], 0) + 1;
@@ -220,7 +220,7 @@ public class MinimumSlicePizza {
       }
     }
     final AtomicInteger min = new AtomicInteger(Integer.MAX_VALUE);
-    final Inrgedient mimimum[] = new Inrgedient[1];
+    final Ingredient mimimum[] = new Ingredient[1];
     ing2presence.forEach((k, v) -> {
       if (v < min.get()) {
         min.set(v);
@@ -240,10 +240,10 @@ public class MinimumSlicePizza {
     return allPoints;
   }
 
-  private boolean isValid(Slice slice, Inrgedient[][] pizza, int L) {
+  private boolean isValid(Slice slice, Ingredient[][] pizza, int L) {
     // check it contains minimum number of ingredients
-    final Map<Inrgedient, Integer> ingr2count = Maps.newHashMap();
-    final Set<Inrgedient> toSatisfy = Sets.newHashSet(Inrgedient.values());
+    final Map<Ingredient, Integer> ingr2count = Maps.newHashMap();
+    final Set<Ingredient> toSatisfy = Sets.newHashSet(Ingredient.values());
 
     for (int i = slice.upperLeftX; i <= slice.lowerRightX; i++) {
       for (int j = slice.upperLeftY; j <= slice.lowerRightY; j++) {

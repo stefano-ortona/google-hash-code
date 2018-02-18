@@ -12,6 +12,29 @@ package google.com.ortona.hashcode.pizza.model;
 public class Slice {
 
   public int upperLeftX;
+  public int upperLeftY;
+  public int lowerRightX;
+  public int lowerRightY;
+
+  public Slice(int upperLeftX, int upperLeftY, int lowerRightX, int lowerRightY) {
+    this.upperLeftX = upperLeftX;
+    this.upperLeftY = upperLeftY;
+    this.lowerRightX = lowerRightX;
+    this.lowerRightY = lowerRightY;
+  }
+  
+  public Slice copy() {
+	  return new Slice(this.upperLeftX
+			  , this.upperLeftY
+			  , this.lowerRightX
+			  , this.lowerRightY);
+  }
+  
+  public int dimen() {
+	  int dimenX = Math.abs(this.upperLeftX- this.lowerRightX);
+	  int dimenY = Math.abs(this.upperLeftY- this.lowerRightY);
+	  return dimenX * dimenY;
+  }
 
   @Override
   public int hashCode() {
@@ -49,17 +72,6 @@ public class Slice {
       return false;
     }
     return true;
-  }
-
-  public int upperLeftY;
-  public int lowerRightX;
-  public int lowerRightY;
-
-  public Slice(int upperLeftX, int upperLeftY, int lowerRightX, int lowerRightY) {
-    this.upperLeftX = upperLeftX;
-    this.upperLeftY = upperLeftY;
-    this.lowerRightX = lowerRightX;
-    this.lowerRightY = lowerRightY;
   }
 
   @Override
