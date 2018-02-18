@@ -71,6 +71,13 @@
 			<version>2.10.0</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.jruby/jruby -->
+		<dependency>
+			<groupId>org.jruby</groupId>
+			<artifactId>jruby</artifactId>
+			<version>9.1.15.0</version>
+		</dependency>
+
 		<!-- Test only -->
 		<dependency>
 			<groupId>junit</groupId>
