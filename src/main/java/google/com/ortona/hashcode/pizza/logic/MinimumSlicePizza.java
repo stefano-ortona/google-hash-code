@@ -3,8 +3,12 @@ package google.com.ortona.hashcode.pizza.logic;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -18,12 +22,16 @@ import google.com.ortona.hashcode.pizza.model.Slice;
 public class MinimumSlicePizza {
   private final IngredientScoreComputation score;
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(MinimumSlicePizza.class);
+
   public MinimumSlicePizza(IngredientScoreComputation score) {
     this.score = score;
   }
 
-  public PizzaStatus computeSlices(Ingredient[][] pizza, final int L) {
+  public PizzaStatus computeSlices(Ingredient[][] pizza, final int L, final int maxSliceSize) {
     final PizzaStatus status = new PizzaStatus(pizza);
+    // initialise score
+    this.score.initialise(pizza);
     // compute initialisePoints
     final List<Point> startPoint = computeInitialisePoint(pizza);
     // randomize points
@@ -33,38 +41,56 @@ public class MinimumSlicePizza {
       // create a new fake map
       final Map<Ingredient, Integer> curStatusMap = Maps.newHashMap();
       curStatusMap.putAll(curStatus);
+      LOGGER.info("Trying to expand point '{}'.", p);
       // check the point is not currently occupied
       if (!status.isCellOccupied(p.x, p.y)) {
         // put the current ingredient in the map
-        curStatusMap.put(pizza[p.x][p.y], 1);
+        curStatusMap.put(pizza[p.x][p.y], curStatusMap.getOrDefault(pizza[p.x][p.y], 0) + 1);
         // expand until you can
         boolean canStillExpand = true;
-        Slice slice = new Slice(p.x, p.y, p.x, p.y);
+        Slice slice = new Slice(p.x, p.y, pizza[p.x][p.y]);
         while (canStillExpand) {
-          slice = expandSlice(slice, status, curStatusMap);
+          slice = expandSlice(slice, status, curStatusMap, maxSliceSize, L);
           if (slice == null) {
+            LOGGER.info("Slice cannot be expanded anymore, trashing.");
             // cannot expand anymore, drop initial slice
             canStillExpand = false;
-            status.removeSlice(new Slice(p.x, p.y, p.x, p.y));
-          }
-          // check slice is valid
-          if (isValid(slice, pizza, L)) {
-            // add current slice
-            status.addSlice(slice);
-            canStillExpand = false;
-            // adjorn status
-            curStatus.clear();
-            curStatus.putAll(curStatusMap);
+          } else {
+            LOGGER.info("Slice can be expanded to '{}'.", slice);
+            // check slice is valid
+            if (isValid(slice, pizza, L)) {
+              LOGGER.info("Slice is now valid, adding it to the solution.");
+              // add current slice
+              status.addSlice(slice);
+              canStillExpand = false;
+              // adjorn status
+              curStatus.clear();
+              curStatus.putAll(curStatusMap);
+            }
           }
         }
+      } else {
+        LOGGER.info("Point is already occupied by other slices, cannot expand.");
       }
     });
     return status;
   }
 
-  private Slice expandSlice(Slice slice, PizzaStatus status, final Map<Ingredient, Integer> curStatus) {
+  private void addMap(Map<Ingredient, Integer> original, Map<Ingredient, Integer> toAdd) {
+    toAdd.forEach((k, v) -> {
+      Integer value = original.get(k);
+      value = value == null ? v : value + v;
+      original.put(k, value);
+    });
+  }
+
+  private Slice expandSlice(Slice slice, PizzaStatus status, final Map<Ingredient, Integer> curStatus, int maxSliceSize,
+      int minSliceIngredient) {
     // try to expand in all possible 6 direction
 
+    final int columnSize = (slice.lowerRightX - slice.upperLeftX) + 1;
+    final int rowSize = (slice.lowerRightY - slice.lowerRightY) + 1;
+    final int curSize = columnSize * rowSize;
     Map<Ingredient, Integer> bestMap = null;
     double bestScore = -1;
     int newUpLX = 0;
@@ -72,18 +98,18 @@ public class MinimumSlicePizza {
     int newLoRX = 0;
     int newLoRY = 0;
     boolean hasExpand = false;
-    // expand left
     final Ingredient[][] pizza = status.pizza;
-    Map<Ingredient, Integer> map1ToAdd = null;
-    final boolean left = status.canExpandVertically(slice.upperLeftX, slice.lowerRightX, slice.upperLeftY - 1);
+    Map<Ingredient, Integer> mapLeft = null;
+    final boolean left = ((curSize + columnSize) <= maxSliceSize)
+        && status.canExpandVertically(slice.upperLeftX, slice.lowerRightX, slice.upperLeftY - 1);
     if (left) {
-      map1ToAdd = Maps.newHashMap();
+      mapLeft = Maps.newHashMap();
       for (int i = slice.upperLeftX; i <= slice.lowerRightX; i++) {
-        final int curValue = map1ToAdd.getOrDefault(pizza[i][slice.upperLeftY - 1], 0) + 1;
-        map1ToAdd.put(pizza[i][slice.upperLeftY - 1], curValue);
+        final int curValue = mapLeft.getOrDefault(pizza[i][slice.upperLeftY - 1], 0) + 1;
+        mapLeft.put(pizza[i][slice.upperLeftY - 1], curValue);
       }
-      final double curScore = this.score.computeScore(curStatus, map1ToAdd, slice);
-      if (curScore > bestScore) {
+      final double curScore = this.score.computeScore(curStatus, mapLeft, slice, minSliceIngredient);
+      if (isBetterScore(bestScore, curScore)) {
         bestScore = curScore;
         // expand
         newUpLX = slice.upperLeftX;
@@ -91,20 +117,21 @@ public class MinimumSlicePizza {
         newLoRX = slice.lowerRightX;
         newLoRY = slice.lowerRightY;
         hasExpand = true;
-        bestMap = map1ToAdd;
+        bestMap = mapLeft;
       }
     }
     // expand up
-    Map<Ingredient, Integer> map2ToAdd = null;
-    final boolean up = status.canExpandHorizontally(slice.upperLeftY, slice.lowerRightY, slice.upperLeftX - 1);
+    Map<Ingredient, Integer> mapUp = null;
+    final boolean up = ((curSize + rowSize) <= maxSliceSize)
+        && status.canExpandHorizontally(slice.upperLeftY, slice.lowerRightY, slice.upperLeftX - 1);
     if (up) {
-      map2ToAdd = Maps.newHashMap();
+      mapUp = Maps.newHashMap();
       for (int j = slice.upperLeftY; j <= slice.lowerRightY; j++) {
-        final int curValue = map2ToAdd.getOrDefault(pizza[slice.upperLeftX - 1][j], 0) + 1;
-        map2ToAdd.put(pizza[slice.upperLeftX - 1][j], curValue);
+        final int curValue = mapUp.getOrDefault(pizza[slice.upperLeftX - 1][j], 0) + 1;
+        mapUp.put(pizza[slice.upperLeftX - 1][j], curValue);
       }
-      final double curScore = this.score.computeScore(curStatus, map2ToAdd, slice);
-      if (curScore > bestScore) {
+      final double curScore = this.score.computeScore(curStatus, mapUp, slice, minSliceIngredient);
+      if (isBetterScore(bestScore, curScore)) {
         bestScore = curScore;
         // expand
         newUpLX = slice.upperLeftX - 1;
@@ -112,18 +139,19 @@ public class MinimumSlicePizza {
         newLoRX = slice.lowerRightX;
         newLoRY = slice.lowerRightY;
         hasExpand = true;
-        bestMap = map2ToAdd;
+        bestMap = mapUp;
       }
     }
     // expand left and up
-    if (left && up && status.isCellOccupied(slice.upperLeftX - 1, slice.upperLeftY - 1)) {
+    if (((curSize + rowSize + columnSize + 1) <= maxSliceSize) && left && up
+        && !status.isCellOccupied(slice.upperLeftX - 1, slice.upperLeftY - 1)) {
       final Map<Ingredient, Integer> toAdd = Maps.newHashMap();
-      toAdd.putAll(map2ToAdd);
-      toAdd.putAll(map2ToAdd);
+      toAdd.putAll(mapLeft);
+      addMap(toAdd, mapUp);
       final int curValue = toAdd.getOrDefault(pizza[slice.upperLeftX - 1][slice.upperLeftY - 1], 0) + 1;
       toAdd.put(pizza[slice.upperLeftX - 1][slice.upperLeftY - 1], curValue);
-      final double curScore = score.computeScore(curStatus, toAdd, slice);
-      if (curScore > bestScore) {
+      final double curScore = score.computeScore(curStatus, toAdd, slice, minSliceIngredient);
+      if (isBetterScore(bestScore, curScore)) {
         bestScore = curScore;
         // expand
         newUpLX = slice.upperLeftX - 1;
@@ -136,15 +164,16 @@ public class MinimumSlicePizza {
     }
 
     // expand right
-    final boolean right = status.canExpandVertically(slice.upperLeftX, slice.lowerRightX, slice.lowerRightY + 1);
+    final Map<Ingredient, Integer> mapRight = Maps.newHashMap();
+    final boolean right = ((curSize + columnSize) <= maxSliceSize)
+        && status.canExpandVertically(slice.upperLeftX, slice.lowerRightX, slice.lowerRightY + 1);
     if (right) {
-      map1ToAdd = Maps.newHashMap();
       for (int i = slice.upperLeftX; i <= slice.lowerRightX; i++) {
-        final int curValue = map1ToAdd.getOrDefault(pizza[i][slice.lowerRightY + 1], 0) + 1;
-        map1ToAdd.put(pizza[i][slice.lowerRightY + 1], curValue);
+        final int curValue = mapRight.getOrDefault(pizza[i][slice.lowerRightY + 1], 0) + 1;
+        mapRight.put(pizza[i][slice.lowerRightY + 1], curValue);
       }
-      final double curScore = this.score.computeScore(curStatus, map1ToAdd, slice);
-      if (curScore > bestScore) {
+      final double curScore = this.score.computeScore(curStatus, mapRight, slice, minSliceIngredient);
+      if (isBetterScore(bestScore, curScore)) {
         bestScore = curScore;
         // expand
         newUpLX = slice.upperLeftX;
@@ -152,19 +181,20 @@ public class MinimumSlicePizza {
         newLoRX = slice.lowerRightX;
         newLoRY = slice.lowerRightY + 1;
         hasExpand = true;
-        bestMap = map1ToAdd;
+        bestMap = mapRight;
       }
     }
     // expand down
-    final boolean down = status.canExpandHorizontally(slice.upperLeftY, slice.lowerRightY, slice.upperLeftX + 1);
+    final Map<Ingredient, Integer> mapDown = Maps.newHashMap();
+    final boolean down = ((curSize + rowSize) <= maxSliceSize)
+        && status.canExpandHorizontally(slice.upperLeftY, slice.lowerRightY, slice.lowerRightX + 1);
     if (down) {
-      map2ToAdd = Maps.newHashMap();
       for (int j = slice.upperLeftY; j <= slice.lowerRightY; j++) {
-        final int curValue = map2ToAdd.getOrDefault(pizza[slice.lowerRightX + 1][j], 0) + 1;
-        map2ToAdd.put(pizza[slice.lowerRightX + 1][j], curValue);
+        final int curValue = mapDown.getOrDefault(pizza[slice.lowerRightX + 1][j], 0) + 1;
+        mapDown.put(pizza[slice.lowerRightX + 1][j], curValue);
       }
-      final double curScore = this.score.computeScore(curStatus, map2ToAdd, slice);
-      if (curScore > bestScore) {
+      final double curScore = this.score.computeScore(curStatus, mapDown, slice, minSliceIngredient);
+      if (isBetterScore(bestScore, curScore)) {
         bestScore = curScore;
         // expand
         newUpLX = slice.upperLeftX;
@@ -172,18 +202,19 @@ public class MinimumSlicePizza {
         newLoRX = slice.lowerRightX + 1;
         newLoRY = slice.lowerRightY;
         hasExpand = true;
-        bestMap = map2ToAdd;
+        bestMap = mapDown;
       }
     }
     // expand right and down
-    if (right && down && status.isCellOccupied(slice.lowerRightX + 1, slice.lowerRightY + 1)) {
+    if (((curSize + rowSize + columnSize + 1) <= maxSliceSize) && right && down
+        && !status.isCellOccupied(slice.lowerRightX + 1, slice.lowerRightY + 1)) {
       final Map<Ingredient, Integer> toAdd = Maps.newHashMap();
-      toAdd.putAll(map2ToAdd);
-      toAdd.putAll(map2ToAdd);
+      toAdd.putAll(mapRight);
+      addMap(toAdd, mapDown);
       final int curValue = toAdd.getOrDefault(pizza[slice.lowerRightX + 1][slice.lowerRightY + 1], 0) + 1;
       toAdd.put(pizza[slice.lowerRightX + 1][slice.lowerRightY + 1], curValue);
-      final double curScore = score.computeScore(curStatus, toAdd, slice);
-      if (curScore > bestScore) {
+      final double curScore = score.computeScore(curStatus, toAdd, slice, minSliceIngredient);
+      if (isBetterScore(bestScore, curScore)) {
         bestScore = curScore;
         // expand
         newUpLX = slice.upperLeftX;
@@ -195,13 +226,56 @@ public class MinimumSlicePizza {
       }
     }
 
+    // expand right and up
+    if (((curSize + rowSize + columnSize + 1) <= maxSliceSize) && right && up
+        && !status.isCellOccupied(slice.upperLeftX - 1, slice.lowerRightY + 1)) {
+      final Map<Ingredient, Integer> toAdd = Maps.newHashMap();
+      toAdd.putAll(mapRight);
+      addMap(toAdd, mapUp);
+      final int curValue = toAdd.getOrDefault(pizza[slice.upperLeftX - 1][slice.lowerRightY + 1], 0) + 1;
+      toAdd.put(pizza[slice.upperLeftX - 1][slice.lowerRightY + 1], curValue);
+      final double curScore = score.computeScore(curStatus, toAdd, slice, minSliceIngredient);
+      if (isBetterScore(bestScore, curScore)) {
+        bestScore = curScore;
+        // expand
+        newUpLX = slice.upperLeftX - 1;
+        newUpLY = slice.upperLeftY;
+        newLoRX = slice.lowerRightX;
+        newLoRY = slice.lowerRightY + 1;
+        hasExpand = true;
+        bestMap = toAdd;
+      }
+    }
+
+    // expand left and down
+    if (((curSize + rowSize + columnSize + 1) <= maxSliceSize) && left && down
+        && !status.isCellOccupied(slice.lowerRightX + 1, slice.upperLeftY - 1)) {
+      final Map<Ingredient, Integer> toAdd = Maps.newHashMap();
+      toAdd.putAll(mapLeft);
+      addMap(toAdd, mapDown);
+      final int curValue = toAdd.getOrDefault(pizza[slice.lowerRightX + 1][slice.upperLeftY - 1], 0) + 1;
+      toAdd.put(pizza[slice.lowerRightX + 1][slice.upperLeftY - 1], curValue);
+      final double curScore = score.computeScore(curStatus, toAdd, slice, minSliceIngredient);
+      if (isBetterScore(bestScore, curScore)) {
+        bestScore = curScore;
+        // expand
+        newUpLX = slice.upperLeftX;
+        newUpLY = slice.upperLeftY - 1;
+        newLoRX = slice.lowerRightX - 1;
+        newLoRY = slice.lowerRightY;
+        hasExpand = true;
+        bestMap = toAdd;
+      }
+    }
+
     if (hasExpand) {
       slice.upperLeftX = newUpLX;
       slice.upperLeftY = newUpLY;
       slice.lowerRightX = newLoRX;
       slice.lowerRightY = newLoRY;
       // update cur status with best map
-      curStatus.putAll(bestMap);
+      addMap(curStatus, bestMap);
+      addMap(slice.ingr2quantity, bestMap);
       return slice;
     }
     // cannot be expanded
@@ -258,7 +332,19 @@ public class MinimumSlicePizza {
       }
     }
     return false;
+  }
 
+  private boolean isBetterScore(final double bestScore, final double currentScore) {
+    if (currentScore > bestScore) {
+      return true;
+    }
+    if (currentScore == bestScore) {
+      // random choice
+      final Random m = new Random();
+      final int nextRand = m.nextInt(2);
+      return nextRand == 0;
+    }
+    return false;
   }
 
 }

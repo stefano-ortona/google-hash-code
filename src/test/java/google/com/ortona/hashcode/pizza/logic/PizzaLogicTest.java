@@ -3,6 +3,7 @@ package google.com.ortona.hashcode.pizza.logic;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import google.com.ortona.hashcode.UtilsFile;
 import google.com.ortona.hashcode.pizza.model.Ingredient;
 import google.com.ortona.hashcode.pizza.model.PizzaStatus;
 
@@ -34,15 +35,45 @@ public class PizzaLogicTest {
 
   @Test
   public void testToyExample() {
-    this.actualTest(pizza, 1);
+    this.actualTest(pizza, 1, 6);
   }
 
-  private void actualTest(Ingredient[][] pizza, int l) {
+  private void actualTest(Ingredient[][] pizza, int l, int maxSize) {
     final MinimumSlicePizza min = new MinimumSlicePizza(score);
-    final PizzaStatus status = min.computeSlices(pizza, l);
-    
+    final PizzaStatus status = min.computeSlices(pizza, l, maxSize);
+    status.allSlices.forEach(slice -> {
+      System.out.println(slice);
+    });
     final MaximunSliceDimension maxDimen = new MaximunSliceDimension(status, 6);
     maxDimen.maximizeSlicesDimension();
+  }
+
+  private void readFromFileTest(final String filePath) {
+    final UtilsFile file = new UtilsFile(filePath);
+    file.createHeader();
+    file.createData();
+    final char[][] pizzaInput = file.getData();
+    // convert to correct input
+    final Ingredient[][] pizza = new Ingredient[pizzaInput.length][pizzaInput[0].length];
+    for (int i = 0; i < pizza.length; i++) {
+      for (int j = 0; j < pizza[0].length; j++) {
+        if (pizzaInput[i][j] == 'T') {
+          pizza[i][j] = Ingredient.t;
+        }
+        if (pizzaInput[i][j] == 'M') {
+          pizza[i][j] = Ingredient.m;
+        }
+      }
+    }
+    final int max = file.getHeader()[3];
+    final int l = file.getHeader()[2];
+    actualTest(pizza, l, max);
+  }
+
+  @Test
+  public void testSmall() {
+    final String filePath = "small.in";
+    readFromFileTest(filePath);
   }
 
 }

@@ -1,5 +1,9 @@
 package google.com.ortona.hashcode.pizza.model;
 
+import java.util.Map;
+
+import com.google.common.collect.Maps;
+
 /**
  * This class represents a slice of pizza
  *
@@ -22,19 +26,18 @@ public class Slice {
     this.lowerRightX = lowerRightX;
     this.lowerRightY = lowerRightY;
   }
-  
+
   public Slice copy() {
-	  return new Slice(this.upperLeftX
-			  , this.upperLeftY
-			  , this.lowerRightX
-			  , this.lowerRightY);
+    return new Slice(this.upperLeftX, this.upperLeftY, this.lowerRightX, this.lowerRightY);
   }
-  
+
   public int dimen() {
-	  int dimenX = Math.abs(this.upperLeftX- this.lowerRightX);
-	  int dimenY = Math.abs(this.upperLeftY- this.lowerRightY);
-	  return dimenX * dimenY;
+    final int dimenX = Math.abs(this.upperLeftX - this.lowerRightX);
+    final int dimenY = Math.abs(this.upperLeftY - this.lowerRightY);
+    return dimenX * dimenY;
   }
+
+  public Map<Ingredient, Integer> ingr2quantity = Maps.newHashMap();
 
   @Override
   public int hashCode() {
@@ -72,6 +75,14 @@ public class Slice {
       return false;
     }
     return true;
+  }
+
+  public Slice(int x, int y, Ingredient ing) {
+    this.upperLeftX = x;
+    this.upperLeftY = y;
+    this.lowerRightX = x;
+    this.lowerRightY = y;
+    ingr2quantity.put(ing, 1);
   }
 
   @Override

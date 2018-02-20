@@ -7,6 +7,9 @@ import google.com.ortona.hashcode.pizza.model.Slice;
 
 public interface IngredientScoreComputation {
 
-  double computeScore(Map<Ingredient, Integer> ingredientLeft, Map<Ingredient, Integer> toAdd, Slice slice);
+  double computeScore(Map<Ingredient, Integer> ingredientLeft, Map<Ingredient, Integer> toAdd, Slice slice,
+      int mimIngrSlize);
+
+  void initialise(Ingredient[][] pizza);
 
 }
