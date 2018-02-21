@@ -44,8 +44,12 @@ public class PizzaLogicTest {
     status.allSlices.forEach(slice -> {
       System.out.println(slice);
     });
-    final MaximunSliceDimension maxDimen = new MaximunSliceDimension(status, 6);
+    final MaximunSliceDimension maxDimen = new MaximunSliceDimension(status, maxSize);
     maxDimen.maximizeSlicesDimension();
+    // print final output
+    status.allSlices.forEach(slice -> {
+      System.out.println(slice.upperLeftX + " " + slice.upperLeftY + " " + slice.lowerRightX + " " + slice.lowerRightY);
+    });
   }
 
   private void readFromFileTest(final String filePath) {
