@@ -22,17 +22,20 @@ public class MinimalDatacenterAllocation {
 		for (int currentPool= 0; currentPool< numPool; currentPool++) {
 			Slot slot =  null;
 			for (int j=0; j< 2; j++) { // 2 server
-				Server server = popServer(servers);
-				if (slot == null) {
-					slot = center.getNextAvailableSlot(server);
-				} else {
-					slot = center.getNextAvailableSlot(server, slot.getRow());
+				while (!servers.isEmpty()) { // loop to discard servers too big to existing rows
+					Server server = popServer(servers);
+					if (slot == null) {
+						slot = center.getNextAvailableSlot(server);
+					} else {
+						slot = center.getNextAvailableSlot(server, slot.getRow());
+					}
+					if (slot == null) { // if there isn't a proper slot for current server go on (current server is discarded)
+						LOGGER.info("ERROR: NO SLOT RETRIEVED, Server id:"+server.getId());
+					} else {
+						center.addServer(server, slot, currentPool);
+						break; // exit loop: there is a proper slot for this server
+					}
 				}
-				if (slot == null) {
-					LOGGER.info("ERROR: NO SLOT RETRIEVED");
-					continue; // ERR
-				}
-				center.addServer(server, slot, currentPool);
 			}
 		}
 	}
