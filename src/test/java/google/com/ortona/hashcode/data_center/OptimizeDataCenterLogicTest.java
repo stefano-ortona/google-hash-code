@@ -99,6 +99,8 @@ public class OptimizeDataCenterLogicTest {
 		Assert.assertEquals(datacenter.getPool(1).contains(server2), true);
 		Assert.assertEquals(datacenter.getPool(1).contains(server3), true);
 		Assert.assertEquals(datacenter.getPool(0).contains(server4), false);
+		Assert.assertEquals(datacenter.getPool(0).contains(server5), false);
+		Assert.assertEquals(datacenter.getPool(1).contains(server4), false);
 		Assert.assertEquals(datacenter.getPool(1).contains(server5), false);
 		
 		MaximumDatacenterAllocation obj = new MaximumDatacenterAllocation(); 
@@ -117,9 +119,9 @@ public class OptimizeDataCenterLogicTest {
 		System.out.print("second server : ");
 		System.out.println(datacenter.getPool(1).get(1));
 		System.out.print("third server : ");
-		System.out.println(datacenter.getPool(0).get(2));
+		System.out.println(datacenter.getPool(1).get(2));
 		System.out.print("fourth server : ");
-		System.out.println(datacenter.getPool(0).get(3));
+		System.out.println(datacenter.getPool(1).get(3));
 		System.out.println("----------------");
 		
 	}
@@ -168,7 +170,7 @@ public class OptimizeDataCenterLogicTest {
 		System.out.print("second server : ");
 		System.out.println(datacenter.getPool(1).get(1));
 		System.out.print("third server : ");
-		System.out.println(datacenter.getPool(0).get(2));
+		System.out.println(datacenter.getPool(1).get(2));
 		System.out.println("----------------");
 		
 	}
