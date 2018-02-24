@@ -25,7 +25,9 @@ public class ScoreComputation {
 		
 		addCapacityToMap(row2ScoreMap, row, serverToAdd.getCapacity());
 
-		return -1;
+		Collection<Integer> scores = row2ScoreMap.values();
+		
+		return calculateMaxScores(scores);
 	}
 	
 	

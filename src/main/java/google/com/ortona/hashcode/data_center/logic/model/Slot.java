@@ -21,4 +21,8 @@ public class Slot {
 
   int column;
 
+  public Slot(int row, int column) {
+    this.row = row;
+    this.column = column;
+  }
 }
