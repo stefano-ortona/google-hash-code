@@ -1,31 +1,65 @@
 package google.com.ortona.hashcode.data_center;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.google.common.collect.Maps;
+
+import google.com.ortona.hashcode.data_center.logic.MaximumDatacenterAllocation;
 import google.com.ortona.hashcode.data_center.logic.MinimalDatacenterAllocation;
 import google.com.ortona.hashcode.data_center.logic.model.Datacenter;
 import google.com.ortona.hashcode.data_center.logic.model.Server;
+import google.com.ortona.hashcode.data_center.logic.model.Slot;
+
+import org.junit.Assert;
 
 public class OptimizeDataCenterLogicTest {
 
 	int numPool;
 	Datacenter datacenter;
 	List<Server> servers;
+	static Server server0 = new Server(3, 10, 0);
+	static Server server1 = new Server(3 ,10, 1);
+	static Server server2 = new Server(5, 2, 2);
+	static Server server3 = new Server(5, 1, 3);
+	static Server server4 = new Server(1, 1, 4);
 	
 	@BeforeClass
 	public static void bringUp() {
 		
-
+		List<Server> servers = new ArrayList<Server>();
+		servers.add(server0);
+		servers.add(server1);
+		servers.add(server2);
+		servers.add(server3);
+		servers.add(server4);
+		int numPool = 2;
+		Slot slot = new Slot(0,0);
+		List<Slot> slots = new ArrayList<Slot>();
+		slots.add(slot);
+		Datacenter datacenter = new Datacenter(2, 5, slots);	
+		Map<Integer, List<Server>> expectedPool2servers = Maps.newHashMap();
+		List<Server> pool0 = new ArrayList<Server>();
+		pool0.add(server0);
+		pool0.add(server1);
+		List<Server> pool1 = new ArrayList<Server>();
+		pool1.add(server2);
+		pool1.add(server3);
 	}
 
 	@Test
-	public void testToyExample() {
-		MinimalDatacenterAllocation.allocateServer(servers, numPool, datacenter);
+	public void testAllocateServer1() {
 		
-		// todo
+		Server server4 = servers.get(4);
+		MinimalDatacenterAllocation.allocateServer(servers, numPool, datacenter); 
+		
+		
+		
 	}
 	
 }
