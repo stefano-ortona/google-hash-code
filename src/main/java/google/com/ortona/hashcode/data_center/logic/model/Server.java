@@ -33,7 +33,8 @@ public class Server {
   private int size;
   private int pool;
 
-  public Server(int id, int capacity, int size) {
+  public Server(int id, int size, int capacity) {
+    this.id = id;
     this.capacity = capacity;
     this.size = size;
   }
