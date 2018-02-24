@@ -13,8 +13,6 @@ import java.util.List;
 
 import google.com.ortona.hashcode.data_center.logic.model.*;
 
-import javax.xml.crypto.Data;
-
 public class UtilsFileServer {
 
     /* If file structure is preserved (i.e. first line header, rest of the file data)

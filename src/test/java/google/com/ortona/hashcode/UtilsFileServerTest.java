@@ -73,15 +73,15 @@ public class UtilsFileServerTest {
         Assert.assertEquals(fileSize, fr.getServersAmount() + fr.getUnavailableSlotAmount() + 1);
     }
 
-    //@Test
-    public void testUnavailableSlots() {
+    @Test
+    public void testPrintUnavailableSlots() {
         for (Slot s : unavailableSlots) {
             System.out.println(s.toString());
         }
     }
 
-    //@Test
-    public void testServers() {
+    @Test
+    public void testPrintServers() {
         for (Server s : servers) {
             System.out.println(s.toString());
         }
