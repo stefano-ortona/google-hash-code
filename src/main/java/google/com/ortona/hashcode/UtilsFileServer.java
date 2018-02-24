@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import google.com.ortona.hashcode.data_center.logic.model.*;
 
 import javax.xml.crypto.Data;
@@ -37,8 +38,28 @@ public class UtilsFileServer {
         return header;
     }
 
-    public Datacenter getDatacenter(){
-        return new Datacenter(this.header[0], this.header[1], this.getUnavailableSlots());
+    public int getRowAmount() {
+        return this.header[0];
+    }
+
+    public int getColumnAmount() {
+        return this.header[1];
+    }
+
+    public int getUnavailableSlotAmount() {
+        return this.header[2];
+    }
+
+    public int getPoolsAmount() {
+        return this.header[3];
+    }
+
+    public int getServersAmount() {
+        return this.header[4];
+    }
+
+    public Datacenter getDatacenter() {
+        return new Datacenter(this.getRowAmount(), this.getColumnAmount(), this.getUnavailableSlots());
     }
 
     public List<Slot> getUnavailableSlots() {
@@ -88,11 +109,6 @@ public class UtilsFileServer {
 
         this.setServers(servers);
     }
-
-
-
-
-
 
 
     // ====== Do not change below here
@@ -194,7 +210,7 @@ public class UtilsFileServer {
     public List<Server> convertArrayOfStringToListOfServers(String[] dataRaw) {
 
 
-        List<Server> result = new ArrayList<>() ;
+        List<Server> result = new ArrayList<>();
 
         for (int i = 0; i < dataRaw.length; i++) {
             result.add(convertStringToServer(dataRaw[i], i));
@@ -210,7 +226,7 @@ public class UtilsFileServer {
 
     public List<Slot> convertArrayOfStringToListOfSlot(String[] dataRaw) {
 
-        List<Slot> result = new ArrayList<>() ;
+        List<Slot> result = new ArrayList<>();
 
         for (int i = 0; i < dataRaw.length; i++) {
             result.add(convertStringToSlot(dataRaw[i]));
