@@ -57,19 +57,19 @@ public class OptimizeDataCenterLogicTest {
 		System.out.println(datacenter.getPool(1).get(1));
 		
 		Assert.assertEquals(servers.get(0), server4);
-		Assert.assertEquals(datacenter.getPool(0).get(0), server0);
-		Assert.assertEquals(datacenter.getPool(0).get(1), server1);
-		Assert.assertEquals(datacenter.getPool(1).get(0), server2);
-		Assert.assertEquals(datacenter.getPool(1).get(1), server3);
+		Assert.assertEquals(datacenter.getPool(0).contains(server0), true);
+		Assert.assertEquals(datacenter.getPool(0).contains(server1), true);
+		Assert.assertEquals(datacenter.getPool(1).contains(server2), true);
+		Assert.assertEquals(datacenter.getPool(1).contains(server3), true);
 		
 		MaximumDatacenterAllocation obj = new MaximumDatacenterAllocation(); 
 		obj.allocate(servers, datacenter, 2);
 		
-		Assert.assertEquals(servers.get(0), server4);
-		Assert.assertEquals(datacenter.getPool(0).get(0), server0);
-		Assert.assertEquals(datacenter.getPool(0).get(1), server1);
-		Assert.assertEquals(datacenter.getPool(1).get(0), server2);
-		Assert.assertEquals(datacenter.getPool(1).get(1), server3);
+		Assert.assertEquals(datacenter.getPool(0).contains(server0), true);
+		Assert.assertEquals(datacenter.getPool(0).contains(server1), true);
+		Assert.assertEquals(datacenter.getPool(1).contains(server2), true);
+		Assert.assertEquals(datacenter.getPool(1).contains(server3), true);
+		
 		
 		
 	}
