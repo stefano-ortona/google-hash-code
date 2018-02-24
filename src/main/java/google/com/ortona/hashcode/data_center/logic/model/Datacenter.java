@@ -9,6 +9,14 @@ public class Datacenter {
 
   int[][] serverSlots;
   Map<Integer, Server> pool2servers;
+  
+  public int[][] getServerSlots() {
+	return serverSlots;
+  }
+
+  public Map<Integer, Server> getPool2servers() {
+	return pool2servers;
+  }
 
   // -1 available, -2 unavailable, 0-n server number
   public Datacenter() {
