@@ -2,38 +2,47 @@ package google.com.ortona.hashcode.data_center.logic.model;
 
 public class Server {
 
-  public int getPool() {
-    return pool;
-  }
+	private int size;
+	private int capacity;
 
-  public void setPool(int pool) {
-    this.pool = pool;
-  }
+	private int pool;
+	private Slot initialSlot;
 
-  public int getCapacity() {
-    return capacity;
-  }
+	public Server(int capacity, int size) {
+		this.capacity = capacity;
+		this.size = size;
+	}
 
-  public int getSize() {
-    return size;
-  }
+	public int getPool() {
+		return pool;
+	}
 
-  private int capacity;
+	public void setPool(int pool) {
+		this.pool = pool;
+	}
 
-  public void setCapacity(int capacity) {
-    this.capacity = capacity;
-  }
+	public int getCapacity() {
+		return capacity;
+	}
 
-  public void setSize(int size) {
-    this.size = size;
-  }
+	public int getSize() {
+		return size;
+	}
 
-  private int size;
-  private int pool;
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
 
-  public Server(int capacity, int size) {
-    this.capacity = capacity;
-    this.size = size;
-  }
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	public Slot getInitialSlot() {
+		return initialSlot;
+	}
+
+	public void setInitialSlot(Slot initialSlot) {
+		this.initialSlot = initialSlot;
+	}
 
 }

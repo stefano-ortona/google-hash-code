@@ -1,6 +1,7 @@
 package google.com.ortona.hashcode.data_center.logic.model;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
@@ -8,7 +9,7 @@ import com.google.common.collect.Maps;
 public class Datacenter {
 
   int[][] serverSlots;
-  Map<Integer, Server> pool2servers;
+  Map<Integer, List<Server>> pool2servers;
 
   // -1 available, -2 unavailable, 0-n server number
   public Datacenter() {
@@ -50,6 +51,10 @@ public class Datacenter {
 
   public int getRowNumber() {
     return this.serverSlots.length;
+  }
+  
+  public List<Server> getPool(int poolId) {
+	  return pool2servers.get(poolId);
   }
 
 }
