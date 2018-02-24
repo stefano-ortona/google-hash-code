@@ -68,8 +68,8 @@ public class Datacenter {
     this.pool2servers.put(pool, servers);
     server.setPool(pool);
     server.setInitialSlot(slot);
-    for (int i = slot.column; i < server.getSize(); i++) {
-      this.serverSlots[slot.getRow()][i] = server.id;
+    for (int i = 0; i < server.getSize(); i++) {
+      this.serverSlots[slot.getRow()][slot.getColumn() + i] = server.id;
     }
 
   }
@@ -97,7 +97,7 @@ public class Datacenter {
     final int rowLenght = this.serverSlots[row].length;
     int slotStarts = 0;
     while (slotStarts < rowLenght) {
-      while (this.serverSlots[row][slotStarts] != -1) {
+      while ((slotStarts < rowLenght) && (this.serverSlots[row][slotStarts] != -1)) {
         slotStarts++;
       }
       // now can start the slot
