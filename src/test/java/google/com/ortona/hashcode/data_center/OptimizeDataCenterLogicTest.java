@@ -25,8 +25,8 @@ public class OptimizeDataCenterLogicTest {
 	static List<Server> servers;
 	static Server server0 = new Server(0, 3, 10);
 	static Server server1 = new Server(1, 3 ,10);
-	static Server server2 = new Server(2, 5, 2);
-	static Server server3 = new Server(3, 5, 1);
+	static Server server2 = new Server(2, 2, 5);
+	static Server server3 = new Server(3, 1, 5);
 	static Server server4 = new Server(4, 1, 1);
 	
 	@BeforeClass
@@ -58,6 +58,19 @@ public class OptimizeDataCenterLogicTest {
 		MaximumDatacenterAllocation obj = new MaximumDatacenterAllocation(); 
 		obj.allocate(servers, datacenter, 2);
 
+	}
+	
+	@Test 
+	public void testMaximumDatacenterAllocationAlone() {
+		servers = new ArrayList<Server>();
+		Slot slot1 = new Slot(0,0);
+		Slot slot2 = new Slot(0,1);
+		List<Slot> slots = new ArrayList<Slot>();
+		slots.add(slot1);
+		slots.add(slot2);
+		Datacenter datacenter = new Datacenter(4, 6, slots);
+		Slot slot3 = new Slot(0,2);
+		datacenter.addServer(server0, slot3, 3);
 	}
 	
 }
