@@ -42,4 +42,8 @@ public class Datacenter {
 
   }
 
+  public int getRowNumber() {
+    return this.serverSlots.length;
+  }
+
 }
