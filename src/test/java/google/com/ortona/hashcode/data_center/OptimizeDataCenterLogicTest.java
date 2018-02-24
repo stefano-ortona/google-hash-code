@@ -22,7 +22,7 @@ public class OptimizeDataCenterLogicTest {
 
 	static int numPool;
 	static Datacenter datacenter;
-	List<Server> servers;
+	static List<Server> servers;
 	static Server server0 = new Server(3, 10, 0);
 	static Server server1 = new Server(3 ,10, 1);
 	static Server server2 = new Server(5, 2, 2);
