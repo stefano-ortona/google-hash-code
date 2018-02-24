@@ -23,11 +23,11 @@ public class OptimizeDataCenterLogicTest {
 	static int numPool;
 	static Datacenter datacenter;
 	static List<Server> servers;
-	static Server server0 = new Server(3, 10, 0);
-	static Server server1 = new Server(3 ,10, 1);
-	static Server server2 = new Server(5, 2, 2);
-	static Server server3 = new Server(5, 1, 3);
-	static Server server4 = new Server(1, 1, 4);
+	static Server server0 = new Server(0, 3, 10);
+	static Server server1 = new Server(1, 3 ,10);
+	static Server server2 = new Server(2, 5, 2);
+	static Server server3 = new Server(3, 5, 1);
+	static Server server4 = new Server(4, 1, 1);
 	
 	@BeforeClass
 	public static void bringUp() {	
@@ -47,15 +47,15 @@ public class OptimizeDataCenterLogicTest {
 	@Test
 	public void testAllocateServer1() {
 		
-		Server server4 = servers.get(4);
 		MinimalDatacenterAllocation.allocateServer(servers, numPool, datacenter); 
 		
-		// expect datacenter has server0 and server 1 allocated
 		Assert.assertEquals(servers.get(0), server4);
 		Assert.assertEquals(datacenter.getPool(0).get(0), server0);
 		Assert.assertEquals(datacenter.getPool(0).get(1), server1);
 		Assert.assertEquals(datacenter.getPool(1).get(0), server2);
 		Assert.assertEquals(datacenter.getPool(1).get(1), server3);
+		
+		
 		
 	}
 	
