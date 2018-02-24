@@ -36,6 +36,7 @@ public class MainTest {
         MinimalDatacenterAllocation.allocateServer(servers, poolsAmount, datacenter);
 
         MaximumDatacenterAllocation obj = new MaximumDatacenterAllocation();
+        obj.allocate(servers, datacenter, poolsAmount);
         Assert.assertEquals(true, true);
 
     }
@@ -57,6 +58,7 @@ public class MainTest {
         MinimalDatacenterAllocation.allocateServer(servers, poolsAmount, datacenter);
 
         MaximumDatacenterAllocation obj = new MaximumDatacenterAllocation();
+        obj.allocate(servers, datacenter, poolsAmount);
         Assert.assertEquals(true, true);
 
     }
@@ -78,6 +80,7 @@ public class MainTest {
         MinimalDatacenterAllocation.allocateServer(servers, poolsAmount, datacenter);
 
         MaximumDatacenterAllocation obj = new MaximumDatacenterAllocation();
+        obj.allocate(servers, datacenter, poolsAmount);
         Assert.assertEquals(true, true);
 
     }
@@ -99,6 +102,7 @@ public class MainTest {
         MinimalDatacenterAllocation.allocateServer(servers, poolsAmount, datacenter);
 
         MaximumDatacenterAllocation obj = new MaximumDatacenterAllocation();
+        obj.allocate(servers, datacenter, poolsAmount);
         Assert.assertEquals(true, true);
 
     }
