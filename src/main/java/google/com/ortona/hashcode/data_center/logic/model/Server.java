@@ -7,6 +7,10 @@ public class Server {
 	int id;
 	private int pool;
 	private Slot initialSlot;
+	
+	public int getId() {
+		return id;
+	}
 
 	public int getPool() {
 		return pool;

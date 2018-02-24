@@ -1,11 +1,14 @@
 package google.com.ortona.hashcode.data_center;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.google.common.collect.Maps;
 
 import google.com.ortona.hashcode.data_center.logic.MaximumDatacenterAllocation;
 import google.com.ortona.hashcode.data_center.logic.MinimalDatacenterAllocation;
@@ -13,7 +16,9 @@ import google.com.ortona.hashcode.data_center.logic.model.Datacenter;
 import google.com.ortona.hashcode.data_center.logic.model.Server;
 import google.com.ortona.hashcode.data_center.logic.model.Slot;
 
-public class OptimizeDataCenterLogicTest {
+import org.junit.Assert;
+
+public class CarloLOptimizeDataCenterLogicTest2 {
 
 	static int numPool;
 	static Datacenter datacenter;
