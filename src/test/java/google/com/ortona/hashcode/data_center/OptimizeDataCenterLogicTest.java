@@ -30,8 +30,7 @@ public class OptimizeDataCenterLogicTest {
 	static Server server4 = new Server(1, 1, 4);
 	
 	@BeforeClass
-	public static void bringUp() {
-		
+	public static void bringUp() {	
 		List<Server> servers = new ArrayList<Server>();
 		servers.add(server0);
 		servers.add(server1);
@@ -58,7 +57,12 @@ public class OptimizeDataCenterLogicTest {
 		Server server4 = servers.get(4);
 		MinimalDatacenterAllocation.allocateServer(servers, numPool, datacenter); 
 		
-		
+		// expect datacenter has server0 and server 1 allocated
+		Assert.assertEquals(servers.get(0), server4);
+		Assert.assertEquals(datacenter.getPool(0).get(0), server0);
+		Assert.assertEquals(datacenter.getPool(0).get(1), server1);
+		Assert.assertEquals(datacenter.getPool(1).get(0), server2);
+		Assert.assertEquals(datacenter.getPool(1).get(1), server3);
 		
 	}
 	
