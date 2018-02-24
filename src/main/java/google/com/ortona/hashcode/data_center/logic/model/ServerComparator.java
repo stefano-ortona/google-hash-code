@@ -16,12 +16,13 @@ public class ServerComparator implements Comparator<Server> {
     if (o1.getSize() != o2.getSize()) {
       return o1.getSize() - o2.getSize();
     }
+    return o1.id - o2.id;
 
   }
 
   public static void main(String[] args) {
-    final Server s1 = new Server(10, 2);
-    final Server s2 = new Server(8, 3);
+    final Server s1 = new Server(0, 10, 2);
+    final Server s2 = new Server(1, 10, 1);
     final List<Server> lists = Lists.newArrayList();
     lists.add(s1);
     lists.add(s2);
