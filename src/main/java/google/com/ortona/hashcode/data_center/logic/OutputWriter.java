@@ -9,8 +9,8 @@ import google.com.ortona.hashcode.data_center.logic.model.Server;
 
 public class OutputWriter {
 
-	public static void writeToFile(List<Server> servers) throws FileNotFoundException, UnsupportedEncodingException {
-		PrintWriter writer = new PrintWriter("output.txt", "UTF-8");
+	public static void writeToFile(String outputFileName, List<Server> servers) throws FileNotFoundException, UnsupportedEncodingException {
+		PrintWriter writer = new PrintWriter(outputFileName, "UTF-8");
 
 		for (Server server : servers) {
 			if (server.getInitialSlot() == null) {
