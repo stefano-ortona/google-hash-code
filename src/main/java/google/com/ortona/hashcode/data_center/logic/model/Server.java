@@ -2,6 +2,8 @@ package google.com.ortona.hashcode.data_center.logic.model;
 
 public class Server {
 
+  int id;
+
   public int getPool() {
     return pool;
   }
@@ -31,9 +33,14 @@ public class Server {
   private int size;
   private int pool;
 
-  public Server(int capacity, int size) {
+  public Server(int id, int capacity, int size) {
     this.capacity = capacity;
     this.size = size;
+  }
+
+  @Override
+  public String toString() {
+    return id + "_[" + this.capacity + "," + this.size + "]";
   }
 
 }
