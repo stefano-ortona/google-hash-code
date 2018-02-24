@@ -6,39 +6,46 @@
 package google.com.ortona.hashcode;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.ArrayList;
 import java.util.List;
+
 import google.com.ortona.hashcode.data_center.logic.model.*;
+
 
 /**
  * Unit test
  */
 public class UtilsFileServerTest {
 
-    private final String filePathExample = "dc.in";
-    private UtilsFileServer fr = new UtilsFileServer(filePathExample);
-    private Datacenter datacenter = fr.getDatacenter();
-    private int[] actualHeader = new int[]{16, 100, 80, 45, 625};
-    private int[] header = fr.getHeader();
-    private List<Slot> unavailableSlots = fr.getUnavailableSlots();
-    private List<Server> servers = fr.getServers();
+    static private final String filePathExample = "server-test.in";
+    static private UtilsFileServer fr = new UtilsFileServer(filePathExample);
+    static private Datacenter datacenter = fr.getDatacenter();
+    static private int[] actualHeader = new int[]{2, 5, 1, 2, 5};
+    static private int[] header = fr.getHeader();
+    static private List<Slot> unavailableSlots = fr.getUnavailableSlots();
+    static private List<Slot> actualUnavailableSlots = new ArrayList<>();
+    static private List<Server> servers = fr.getServers();
+    static private List<Server> actualServers = new ArrayList<>();
 
 
-//    private char[][] dataExample = fr.getData();
-//    private int[] actualHeaderExample = new int[]{3, 5, 1, 6};
-//    private String[] actualDataExample = new String[]{"TTTTT", "TMMMT", "TTTTT"};
-//
-//    private final String filePathSmall = "small.in";
-//    private UtilsFile fr2 = new UtilsFile(filePathSmall);
-//    private int[] headerSmall = fr2.getHeader();
-//    private char[][] dataSmall = fr2.getData();
-//    private int[] actualHeaderSmall = new int[]{6, 7, 1, 5};
-//    private String[] actualDataSmall = new String[]{"TMMMTTT", "MMMMTMM", "TTMTTMT", "TMMTMMM", "TTTTTTM", "TTTTTTM"};
+    @BeforeClass
+    public static void bringUp() {
+
+        actualUnavailableSlots.add(new Slot(0, 0));
+
+        actualServers.add(new Server(0, 3, 10));
+        actualServers.add(new Server(1, 3, 10));
+        actualServers.add(new Server(2, 2, 5));
+        actualServers.add(new Server(3, 1, 5));
+        actualServers.add(new Server(4, 1, 1));
+    }
 
     @Test
     public void testHeaderServer() {
         testHeader(header, actualHeader);
-
     }
 
     private void testHeader(int[] actualHeader, int[] header) {
@@ -49,90 +56,35 @@ public class UtilsFileServerTest {
 
     @Test
     public void testUnavailableSlotsSizeServer() {
-        int unavailableSlotSize = header[2];
-        Assert.assertEquals(unavailableSlots.size(), unavailableSlotSize);
+        int amount = fr.getUnavailableSlotAmount();
+        Assert.assertEquals(unavailableSlots.size(), amount);
     }
-
 
     @Test
     public void testServersSizeServer() {
-        int serversSize = header[4];
-        Assert.assertEquals(servers.size(), serversSize);
+        int amount = fr.getServersAmount();
+        Assert.assertEquals(servers.size(), amount);
     }
 
     @Test
     public void testFileIsAllRead() {
-        int serversSize = fr.getFile().length;
-        Assert.assertEquals(serversSize, unavailableSlots.size() + servers.size() + 1 );
+        int fileSize = fr.getFile().length;
+        Assert.assertEquals(fileSize, unavailableSlots.size() + servers.size() + 1);
+        Assert.assertEquals(fileSize, fr.getServersAmount() + fr.getUnavailableSlotAmount() + 1);
     }
-    
 
+    //@Test
+    public void testUnavailableSlots() {
+        for (Slot s : unavailableSlots) {
+            System.out.println(s.toString());
+        }
+    }
 
-//    @Test
-//    public void testHeaderExample() {
-//        testHeader(actualHeaderExample, headerExample);
-//
-//    }
-//
-//    @Test
-//    public void testDataLineByLineExample() {
-//        testDataLineByLine(actualDataExample, dataExample);
-//    }
-//
-//    @Test
-//    public void testDataCharByCharExample() {
-//        testDataCharByChar(actualDataExample, dataExample);
-//    }
-//
-//    // Small.in file
-//
-//    @Test
-//    public void testHeaderSmall() {
-//        testHeader(actualHeaderSmall, headerSmall);
-//    }
-//
-//    @Test
-//    public void testDataLineByLineSmall() {
-//        testDataLineByLine(actualDataSmall, dataSmall);
-//    }
-//
-//    @Test
-//    public void testDataCharByCharSmall() {
-//        testDataCharByChar(actualDataSmall, dataSmall);
-//    }
-//
-//    // utils
-//
-//    private void testDataLineByLine(String[] actualData, char[][] data) {
-//
-//        // line by line
-//        for (int i = 0; i < actualData.length; i++) {
-//            String d = fr.convertArrayOfChartToString(data[i]);
-//            Assert.assertEquals(d, actualData[i]);
-//        }
-//
-//    }
-//
-//    private void testHeader(int[] actualHeader, int[] header) {
-//        for (int i = 0; i < actualHeader.length; i++) {
-//            Assert.assertEquals(header[i], actualHeader[i]);
-//        }
-//
-//    }
-//
-//    private void testDataCharByChar(String[] actualData, char[][] data) {
-//
-//        for (int i = 0; i < actualData.length; i++) {
-//            testCharByChartLine(actualData[i], data[i]);
-//        }
-//
-//    }
-//
-//    private void testCharByChartLine(String line, char[] data) {
-//
-//        for (int i = 0; i < line.length(); i++) {
-//            Assert.assertEquals(line.charAt(i), data[i]);
-//        }
-//
-//    }
+    //@Test
+    public void testServers() {
+        for (Server s : servers) {
+            System.out.println(s.toString());
+        }
+    }
+
 }

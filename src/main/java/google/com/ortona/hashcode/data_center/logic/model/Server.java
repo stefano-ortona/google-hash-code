@@ -54,7 +54,7 @@ public class Server {
 
 	@Override
 	public String toString() {
-		return id + "_[" + this.capacity + "," + this.size + "]";
+		return id + "_[" + this.size + "," + this.capacity + "]";
 	}
 
 }
