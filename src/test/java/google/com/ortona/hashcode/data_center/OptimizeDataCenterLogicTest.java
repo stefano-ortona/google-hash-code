@@ -31,7 +31,7 @@ public class OptimizeDataCenterLogicTest {
 	
 	@BeforeClass
 	public static void bringUp() {	
-		List<Server> servers = new ArrayList<Server>();
+		servers = new ArrayList<Server>();
 		servers.add(server0);
 		servers.add(server1);
 		servers.add(server2);
