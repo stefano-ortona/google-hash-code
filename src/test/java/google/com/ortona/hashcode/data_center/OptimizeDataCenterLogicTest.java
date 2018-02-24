@@ -55,8 +55,9 @@ public class OptimizeDataCenterLogicTest {
 		Assert.assertEquals(datacenter.getPool(1).get(0), server2);
 		Assert.assertEquals(datacenter.getPool(1).get(1), server3);
 		
-		
-		
+		MaximumDatacenterAllocation obj = new MaximumDatacenterAllocation(); 
+		obj.allocate(servers, datacenter, 2);
+
 	}
 	
 }
