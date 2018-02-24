@@ -63,6 +63,14 @@ public class Datacenter {
   }
 
   public void addServer(Server server, Slot slot, int pool) {
+    final List<Server> servers = this.pool2servers.getOrDefault(pool, Lists.newArrayList());
+    servers.add(server);
+    this.pool2servers.put(pool, servers);
+    server.setPool(pool);
+    server.setInitialSlot(slot);
+    for (int i = slot.column; i < server.getSize(); i++) {
+      this.serverSlots[slot.getRow()][i] = server.id;
+    }
 
   }
 
