@@ -4,7 +4,7 @@ public class Server {
 
 	private int size;
 	private int capacity;
-  int id;
+	int id;
 	private int pool;
 	private Slot initialSlot;
 
@@ -41,16 +41,16 @@ public class Server {
 		this.initialSlot = initialSlot;
 	}
 
-  public Server(int id, int size, int capacity) {
-    this.id = id;
-    this.capacity = capacity;
-    this.size = size;
-  }
+	public Server(int id, int size, int capacity) {
+		this.id = id;
+		this.capacity = capacity;
+		this.size = size;
+	}
 
 
-  @Override
-  public String toString() {
-    return id + "_[" + this.capacity + "," + this.size + "]";
-  }
+	@Override
+	public String toString() {
+		return id + "_[" + this.capacity + "," + this.size + "]";
+	}
 
 }
