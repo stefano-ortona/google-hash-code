@@ -20,8 +20,8 @@ import org.junit.Assert;
 
 public class OptimizeDataCenterLogicTest {
 
-	int numPool;
-	Datacenter datacenter;
+	static int numPool;
+	static Datacenter datacenter;
 	List<Server> servers;
 	static Server server0 = new Server(3, 10, 0);
 	static Server server1 = new Server(3 ,10, 1);
@@ -37,18 +37,11 @@ public class OptimizeDataCenterLogicTest {
 		servers.add(server2);
 		servers.add(server3);
 		servers.add(server4);
-		int numPool = 2;
+		numPool = 2;
 		Slot slot = new Slot(0,0);
 		List<Slot> slots = new ArrayList<Slot>();
 		slots.add(slot);
-		Datacenter datacenter = new Datacenter(2, 5, slots);	
-		Map<Integer, List<Server>> expectedPool2servers = Maps.newHashMap();
-		List<Server> pool0 = new ArrayList<Server>();
-		pool0.add(server0);
-		pool0.add(server1);
-		List<Server> pool1 = new ArrayList<Server>();
-		pool1.add(server2);
-		pool1.add(server3);
+		datacenter = new Datacenter(2, 5, slots);	
 	}
 
 	@Test
