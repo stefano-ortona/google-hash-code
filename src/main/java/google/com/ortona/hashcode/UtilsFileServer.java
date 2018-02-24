@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 import google.com.ortona.hashcode.data_center.logic.model.*;
 
+import javax.xml.crypto.Data;
+
 public class UtilsFileServer {
 
     /* If file structure is preserved (i.e. first line header, rest of the file data)
@@ -33,6 +35,10 @@ public class UtilsFileServer {
 
     public int[] getHeader() {
         return header;
+    }
+
+    public Datacenter getDatacenter(){
+        return new Datacenter(this.header[0], this.header[1], this.getUnavailableSlots());
     }
 
     public List<Slot> getUnavailableSlots() {
@@ -65,7 +71,7 @@ public class UtilsFileServer {
     public void createUnavailableSlots() {
         String[] file = this.getFile();
         int unavailableSlotSize = this.getHeader()[2]; // index 2 in header
-        String[] dataRaw = cloneArrayOfString(file, unavailableSlotSize, file.length);
+        String[] dataRaw = cloneArrayOfString(file, 1, unavailableSlotSize + 1);
 
         List<Slot> slots = convertArrayOfStringToListOfSlot(dataRaw);
 

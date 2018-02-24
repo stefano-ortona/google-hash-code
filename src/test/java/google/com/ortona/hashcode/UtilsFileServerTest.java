@@ -17,9 +17,13 @@ public class UtilsFileServerTest {
 
     private final String filePathExample = "dc.in";
     private UtilsFileServer fr = new UtilsFileServer(filePathExample);
+    private Datacenter datacenter = fr.getDatacenter();
+    private int[] actualHeader = new int[]{16, 100, 80, 45, 625};
     private int[] header = fr.getHeader();
     private List<Slot> unavailableSlots = fr.getUnavailableSlots();
     private List<Server> servers = fr.getServers();
+
+
 //    private char[][] dataExample = fr.getData();
 //    private int[] actualHeaderExample = new int[]{3, 5, 1, 6};
 //    private String[] actualDataExample = new String[]{"TTTTT", "TMMMT", "TTTTT"};
@@ -33,22 +37,35 @@ public class UtilsFileServerTest {
 
     @Test
     public void testHeaderServer() {
+        testHeader(header, actualHeader);
 
-        for (int i = 0; i <header.length; i++){
-            System.out.println(header[i]);
+    }
+
+    private void testHeader(int[] actualHeader, int[] header) {
+        for (int i = 0; i < actualHeader.length; i++) {
+            Assert.assertEquals(header[i], actualHeader[i]);
         }
-
     }
 
     @Test
-    public void testUnavailableSlotsServer() {
-
-//        for (int i = 0; i <unavailableSlots.length; i++){
-//            System.out.println(unavailableSlots[i]);
-//        }
-
+    public void testUnavailableSlotsSizeServer() {
+        int unavailableSlotSize = header[2];
+        Assert.assertEquals(unavailableSlots.size(), unavailableSlotSize);
     }
 
+
+    @Test
+    public void testServersSizeServer() {
+        int serversSize = header[4];
+        Assert.assertEquals(servers.size(), serversSize);
+    }
+
+    @Test
+    public void testFileIsAllRead() {
+        int serversSize = fr.getFile().length;
+        Assert.assertEquals(serversSize, unavailableSlots.size() + servers.size() + 1 );
+    }
+    
 
 
 //    @Test

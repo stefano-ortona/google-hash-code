@@ -25,4 +25,9 @@ public class Slot {
     this.row = row;
     this.column = column;
   }
+
+  @Override
+  public String toString() {
+    return "Slot[" + this.row + "," + this.column + "]";
+  }
 }

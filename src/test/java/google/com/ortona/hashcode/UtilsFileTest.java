@@ -78,7 +78,6 @@ public class UtilsFileTest {
         for (int i = 0; i < actualHeader.length; i++) {
             Assert.assertEquals(header[i], actualHeader[i]);
         }
-
     }
 
     private void testDataCharByChar(String[] actualData, char[][] data) {
