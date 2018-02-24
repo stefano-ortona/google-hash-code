@@ -28,7 +28,7 @@ public class Datacenter {
 
   }
 
-  public void addServer(Server server, Slot slot) {
+  public void addServer(Server server, Slot slot, int pool) {
 
   }
 
@@ -36,9 +36,15 @@ public class Datacenter {
 
   }
 
-  public boolean canPlaceServer(Server server, int row) {
+  /**
+   * Return null if it cannot be places in that row
+   * @param server
+   * @param row
+   * @return
+   */
+  public Slot canPlaceServer(Server server, int row) {
 
-    return false;
+    return null;
 
   }
 
