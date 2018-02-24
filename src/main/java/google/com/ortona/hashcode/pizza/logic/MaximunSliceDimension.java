@@ -1,6 +1,5 @@
 package google.com.ortona.hashcode.pizza.logic;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
