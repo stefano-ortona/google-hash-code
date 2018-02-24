@@ -107,7 +107,7 @@ public class Datacenter {
       boolean canPlace = true;
       // check can place the server
       for (int i = 0; i < server.getSize(); i++) {
-        if (this.serverSlots[row][slotStarts + i] != -1) {
+        if (((slotStarts + i) >= rowLenght) || (this.serverSlots[row][slotStarts + i] != -1)) {
           canPlace = false;
           slotStarts = slotStarts + i + 1;
         }
