@@ -11,6 +11,7 @@ import google.com.ortona.hashcode.data_center.logic.MaximumDatacenterAllocation;
 import google.com.ortona.hashcode.data_center.logic.MinimalDatacenterAllocation;
 import google.com.ortona.hashcode.data_center.logic.model.Datacenter;
 import google.com.ortona.hashcode.data_center.logic.model.Server;
+import google.com.ortona.hashcode.data_center.logic.model.ServerComparator;
 import google.com.ortona.hashcode.data_center.logic.model.Slot;
 
 public class OptimizeDataCenterLogicTest {
@@ -39,7 +40,7 @@ public class OptimizeDataCenterLogicTest {
 		slots.add(slot);
 		Datacenter datacenter = new Datacenter(2, 5, slots);	
 		
-		MinimalDatacenterAllocation.allocateServer(servers, numPool, datacenter); 
+		MinimalDatacenterAllocation.allocateServer(servers, numPool, datacenter,new ServerComparator()); 
 		System.out.println("AFTER CARLO's METHOD ");
 		System.out.println("pool 0 : ");
 		System.out.print("first server :");
@@ -92,7 +93,7 @@ public class OptimizeDataCenterLogicTest {
 		slots.add(slot);
 		Datacenter datacenter = new Datacenter(3, 5, slots);	
 		
-		MinimalDatacenterAllocation.allocateServer(servers, numPool, datacenter); 
+		MinimalDatacenterAllocation.allocateServer(servers, numPool, datacenter,new ServerComparator()); 
 			
 		Assert.assertEquals(datacenter.getPool(0).contains(server0), true);
 		Assert.assertEquals(datacenter.getPool(0).contains(server1), true);
@@ -146,7 +147,7 @@ public class OptimizeDataCenterLogicTest {
 		slots.add(slot);
 		Datacenter datacenter = new Datacenter(2, 6, slots);	
 		
-		MinimalDatacenterAllocation.allocateServer(servers, numPool, datacenter); 
+		MinimalDatacenterAllocation.allocateServer(servers, numPool, datacenter,new ServerComparator()); 
 			
 		Assert.assertEquals(datacenter.getPool(0).contains(server0), true);
 		Assert.assertEquals(datacenter.getPool(0).contains(server1), true);
@@ -199,7 +200,7 @@ public class OptimizeDataCenterLogicTest {
 		slots.add(slot2);
 		Datacenter datacenter = new Datacenter(3, 6, slots);	
 		
-		MinimalDatacenterAllocation.allocateServer(servers, numPool, datacenter); 
+		MinimalDatacenterAllocation.allocateServer(servers, numPool, datacenter,new ServerComparator()); 
 			
 		Assert.assertEquals(datacenter.getPool(0).contains(server0), true);
 		Assert.assertEquals(datacenter.getPool(0).contains(server1), true);

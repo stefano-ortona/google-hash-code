@@ -1,6 +1,7 @@
 package google.com.ortona.hashcode.data_center.logic;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import google.com.ortona.hashcode.App;
@@ -16,8 +17,8 @@ public class MinimalDatacenterAllocation {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 
-	public static void allocateServer(List<Server> servers, int numPool, Datacenter center) {
-		Collections.sort(servers, new ServerComparator());
+	public static void allocateServer(List<Server> servers, int numPool, Datacenter center, Comparator<Server> comparator) {
+		Collections.sort(servers, comparator);
 
 		for (int currentPool= 0; currentPool< numPool; currentPool++) {
 			Slot slot =  null;
