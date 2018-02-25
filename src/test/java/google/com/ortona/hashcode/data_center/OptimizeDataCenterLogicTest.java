@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -16,38 +17,61 @@ import google.com.ortona.hashcode.data_center.logic.model.Slot;
 
 public class OptimizeDataCenterLogicTest {
 
+	private static MaximumDatacenterAllocation obj;
+	private static Server server0;
+	private static Server server1;
+	private static Server server2;
+	private static Server server3;
+	private static Server server4;
+	private static Server server5;
+	private static List<Server> servers;
+	private static Slot slot1;
+	private static Slot slot2;
+	private static Slot slot3;
+	private static List<Slot> unavailableSlots;
+	
 	@BeforeClass
-	public static void bringUp() {		
+	public static void bringUp() {	
+		obj = new MaximumDatacenterAllocation(); 
+		server0 = new Server(0, 3, 10);
+		server1 = new Server(1, 3 ,10);
+		server2 = new Server(2, 2, 5);
+		server3 = new Server(3, 1, 5);
+		server4 = new Server(4, 1, 1);
+		server5 = new Server(5, 1, 1);
+		slot1 = new Slot(0,0);
+		slot2 = new Slot(0,1);
+		slot3 = new Slot(1,0);
+	}
+	
+	@Before
+	public void eachTest() {
+		servers = new ArrayList<Server>();
+		unavailableSlots = new ArrayList<Slot>();
 	}
 
 	@Test
 	public void testAllocateServer1() {
 		System.out.println("TEST 1 ");
-		Server server0 = new Server(0, 3, 10);
-		Server server1 = new Server(1, 3 ,10);
-		Server server2 = new Server(2, 2, 5);
-		Server server3 = new Server(3, 1, 5);
-		Server server4 = new Server(4, 1, 1);
-		List<Server> servers = new ArrayList<Server>();
 		servers.add(server0);
 		servers.add(server1);
 		servers.add(server2);
 		servers.add(server3);
 		servers.add(server4);
+		unavailableSlots.add(slot1);
 		int numPool = 2;
-		Slot slot = new Slot(0,0);
-		List<Slot> slots = new ArrayList<Slot>();
-		slots.add(slot);
-		Datacenter datacenter = new Datacenter(2, 5, slots);	
+		int numRows = 2;
+		int numCols = 5;
+		Datacenter datacenter = new Datacenter(numRows, numCols, unavailableSlots);	
 		
 		MinimalDatacenterAllocation.allocateServer(servers, numPool, datacenter,new ServerComparator()); 
+		
 		System.out.println("AFTER CARLO's METHOD ");
 		System.out.println("pool 0 : ");
 		System.out.print("first server :");
 		System.out.println(datacenter.getPool(0).get(0));
 		System.out.print("second server : ");
 		System.out.println(datacenter.getPool(0).get(1));
-		
 		System.out.println("pool 1 : ");
 		System.out.print("first server :");
 		System.out.println(datacenter.getPool(1).get(0));
@@ -60,40 +84,31 @@ public class OptimizeDataCenterLogicTest {
 		Assert.assertEquals(datacenter.getPool(1).contains(server2), true);
 		Assert.assertEquals(datacenter.getPool(1).contains(server3), true);
 		
-		MaximumDatacenterAllocation obj = new MaximumDatacenterAllocation(); 
-		obj.allocate(servers, datacenter, 2);
+		obj.allocate(servers, datacenter, numPool);
 		
 		Assert.assertEquals(datacenter.getPool(0).contains(server0), true);
 		Assert.assertEquals(datacenter.getPool(0).contains(server1), true);
 		Assert.assertEquals(datacenter.getPool(1).contains(server2), true);
 		Assert.assertEquals(datacenter.getPool(1).contains(server3), true);
 		System.out.println("----------------");
-		
 	}
 	
 	@Test
 	public void testAllocateServer2() {
 		System.out.println("TEST 2 ");
-		Server server0 = new Server(0, 3, 10);
-		Server server1 = new Server(1, 3 ,10);
-		Server server2 = new Server(2, 2, 5);
-		Server server3 = new Server(3, 1, 5);
-		Server server4 = new Server(4, 1, 1);
-		Server server5 = new Server(5, 1, 1);
-		List<Server> servers = new ArrayList<Server>();
 		servers.add(server0);
 		servers.add(server1);
 		servers.add(server2);
 		servers.add(server3);
 		servers.add(server4);
 		servers.add(server5);
+		unavailableSlots.add(slot1);
 		int numPool = 2;
-		Slot slot = new Slot(0,0);
-		List<Slot> slots = new ArrayList<Slot>();
-		slots.add(slot);
-		Datacenter datacenter = new Datacenter(3, 5, slots);	
+		int numRows = 3;
+		int numCols = 5;
+		Datacenter datacenter = new Datacenter(numRows, numCols, unavailableSlots);	
 		
-		MinimalDatacenterAllocation.allocateServer(servers, numPool, datacenter,new ServerComparator()); 
+		MinimalDatacenterAllocation.allocateServer(servers, numPool, datacenter, new ServerComparator()); 
 			
 		Assert.assertEquals(datacenter.getPool(0).contains(server0), true);
 		Assert.assertEquals(datacenter.getPool(0).contains(server1), true);
@@ -106,6 +121,7 @@ public class OptimizeDataCenterLogicTest {
 		
 		MaximumDatacenterAllocation obj = new MaximumDatacenterAllocation(); 
 		obj.allocate(servers, datacenter, 2);
+		
 		System.out.println("AFTER STEFANO's METHOD ");
 		
 		System.out.println("pool 0 : ");
@@ -130,22 +146,16 @@ public class OptimizeDataCenterLogicTest {
 	@Test
 	public void testAllocateServer3() {
 		System.out.println("TEST 3 ");
-		Server server0 = new Server(0, 3, 10);
-		Server server1 = new Server(1, 3 ,10);
-		Server server2 = new Server(2, 2, 5);
-		Server server3 = new Server(3, 1, 5);
-		Server server4 = new Server(4, 1, 1);
-		List<Server> servers = new ArrayList<Server>();
 		servers.add(server0);
 		servers.add(server1);
 		servers.add(server2);
 		servers.add(server3);
 		servers.add(server4);
+		unavailableSlots.add(slot1);
 		int numPool = 2;
-		Slot slot = new Slot(0,0);
-		List<Slot> slots = new ArrayList<Slot>();
-		slots.add(slot);
-		Datacenter datacenter = new Datacenter(2, 6, slots);	
+		int numRows = 2;
+		int numCols = 6;
+		Datacenter datacenter = new Datacenter(numRows, numCols, unavailableSlots);	
 		
 		MinimalDatacenterAllocation.allocateServer(servers, numPool, datacenter,new ServerComparator()); 
 			
@@ -177,13 +187,6 @@ public class OptimizeDataCenterLogicTest {
 	@Test
 	public void testAllocateServer4() {
 		System.out.println("TEST 4 ");
-		Server server0 = new Server(0, 3, 10);
-		Server server1 = new Server(1, 3 ,10);
-		Server server2 = new Server(2, 2, 5);
-		Server server3 = new Server(3, 1, 5);
-		Server server4 = new Server(4, 1, 1);
-		Server server5 = new Server(5, 1, 1);
-		List<Server> servers = new ArrayList<Server>();
 		servers.add(server0);
 		servers.add(server1);
 		servers.add(server2);
@@ -191,14 +194,12 @@ public class OptimizeDataCenterLogicTest {
 		servers.add(server4);
 		servers.add(server5);
 		int numPool = 2;
-		Slot slot = new Slot(0,0);
-		Slot slot1 = new Slot(0,1);
-		Slot slot2 = new Slot(1,0);
-		List<Slot> slots = new ArrayList<Slot>();
-		slots.add(slot);
-		slots.add(slot1);
-		slots.add(slot2);
-		Datacenter datacenter = new Datacenter(3, 6, slots);	
+		int numRows = 3;
+		int numCols = 6;
+		unavailableSlots.add(slot1);
+		unavailableSlots.add(slot2);
+		unavailableSlots.add(slot3);
+		Datacenter datacenter = new Datacenter(numRows, numCols, unavailableSlots);	
 		
 		MinimalDatacenterAllocation.allocateServer(servers, numPool, datacenter,new ServerComparator()); 
 			
