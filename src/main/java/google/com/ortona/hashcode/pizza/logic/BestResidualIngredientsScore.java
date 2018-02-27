@@ -3,8 +3,10 @@ package google.com.ortona.hashcode.pizza.logic;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.AtomicDouble;
 
 import google.com.ortona.hashcode.pizza.model.Ingredient;
+import google.com.ortona.hashcode.pizza.model.PizzaStatus;
 import google.com.ortona.hashcode.pizza.model.Slice;
 
 public class BestResidualIngredientsScore implements IngredientScoreComputation {
@@ -48,6 +50,15 @@ public class BestResidualIngredientsScore implements IngredientScoreComputation 
       ingrLeft.put(oneINgr, value);
     }
     return ingrLeft;
+  }
+
+  public static void printTotalScore(final PizzaStatus pizStatus) {
+    final AtomicDouble totScore = new AtomicDouble(0);
+    final int totPizza = pizStatus.pizza.length * pizStatus.pizza[0].length;
+    pizStatus.allSlices.forEach(slice -> {
+      totScore.getAndAdd(slice.dimen());
+    });
+    System.out.println(totScore.get() + "(" + (totScore.get() / totPizza) + ", TOT PIZZA=" + totPizza + ")");
   }
 
 }

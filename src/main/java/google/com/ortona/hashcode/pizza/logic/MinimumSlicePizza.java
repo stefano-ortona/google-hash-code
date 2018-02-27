@@ -37,7 +37,9 @@ public class MinimumSlicePizza {
     // randomize points
     final Map<Ingredient, Integer> curStatus = Maps.newHashMap();
     Collections.shuffle(startPoint);
+    final AtomicInteger count = new AtomicInteger(1);
     startPoint.forEach(p -> {
+      LOGGER.info("Expanding point '{}' out of '{}'", count.getAndIncrement(), startPoint.size());
       // create a new fake map
       final Map<Ingredient, Integer> curStatusMap = Maps.newHashMap();
       curStatusMap.putAll(curStatus);
@@ -52,11 +54,11 @@ public class MinimumSlicePizza {
         while (canStillExpand) {
           slice = expandSlice(slice, status, curStatusMap, maxSliceSize, L);
           if (slice == null) {
-            LOGGER.info("Slice cannot be expanded anymore, trashing.");
+            // LOGGER.info("Slice cannot be expanded anymore, trashing.");
             // cannot expand anymore, drop initial slice
             canStillExpand = false;
           } else {
-            LOGGER.info("Slice can be expanded to '{}'.", slice);
+            // LOGGER.info("Slice can be expanded to '{}'.", slice);
             // check slice is valid
             if (isValid(slice, pizza, L)) {
               LOGGER.info("Slice is now valid, adding it to the solution.");

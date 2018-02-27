@@ -107,4 +107,41 @@ public class PizzaStatus {
     return allSlices;
   }
 
+  public void expandSlice(final int direction, final Slice slice) {
+    switch (direction) {
+    case 0: {
+      slice.upperLeftY--;
+      // occupy all cells
+      for (int i = slice.upperLeftX; i <= slice.lowerRightX; i++) {
+        pizzaStatus[i][slice.upperLeftY] = true;
+      }
+      break;
+    }
+
+    case 1:
+      slice.lowerRightY++;
+      // occupy all cells
+      for (int i = slice.upperLeftX; i <= slice.lowerRightX; i++) {
+        pizzaStatus[i][slice.lowerRightY] = true;
+      }
+      break;
+
+    case 2:
+      slice.upperLeftX--;
+      // occupy all cells
+      for (int i = slice.upperLeftY; i <= slice.lowerRightY; i++) {
+        pizzaStatus[slice.upperLeftX][i] = true;
+      }
+      break;
+
+    case 3:
+      slice.lowerRightX++;
+      // occupy all cells
+      for (int i = slice.upperLeftY; i <= slice.lowerRightY; i++) {
+        pizzaStatus[slice.lowerRightX][i] = true;
+      }
+      break;
+    }
+  }
+
 }

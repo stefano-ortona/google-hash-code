@@ -32,8 +32,8 @@ public class Slice {
   }
 
   public int dimen() {
-    final int dimenX = Math.abs(this.upperLeftX - this.lowerRightX);
-    final int dimenY = Math.abs(this.upperLeftY - this.lowerRightY);
+    final int dimenX = Math.abs(this.upperLeftX - this.lowerRightX) + 1;
+    final int dimenY = Math.abs(this.upperLeftY - this.lowerRightY) + 1;
     return dimenX * dimenY;
   }
 

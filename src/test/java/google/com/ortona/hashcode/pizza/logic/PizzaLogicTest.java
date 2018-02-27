@@ -1,11 +1,19 @@
 package google.com.ortona.hashcode.pizza.logic;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import google.com.ortona.hashcode.UtilsFile;
 import google.com.ortona.hashcode.pizza.model.Ingredient;
 import google.com.ortona.hashcode.pizza.model.PizzaStatus;
+import google.com.ortona.hashcode.pizza.model.Slice;
 
 public class PizzaLogicTest {
   static Ingredient[][] pizza;
@@ -35,10 +43,18 @@ public class PizzaLogicTest {
 
   @Test
   public void testToyExample() {
-    this.actualTest(pizza, 1, 6);
+    final List<Slice> slices = this.actualTest(pizza, 1, 6);
+
+    // 3 slices in output
+    final Slice s1 = new Slice(0, 0, 2, 1);
+    final Slice s2 = new Slice(0, 2, 2, 2);
+    final Slice s3 = new Slice(0, 3, 2, 4);
+    Assert.assertTrue(slices.contains(s1));
+    Assert.assertTrue(slices.contains(s2));
+    Assert.assertTrue(slices.contains(s3));
   }
 
-  private void actualTest(Ingredient[][] pizza, int l, int maxSize) {
+  private List<Slice> actualTest(Ingredient[][] pizza, int l, int maxSize) {
     final MinimumSlicePizza min = new MinimumSlicePizza(score);
     final PizzaStatus status = min.computeSlices(pizza, l, maxSize);
     status.allSlices.forEach(slice -> {
@@ -47,12 +63,17 @@ public class PizzaLogicTest {
     final MaximunSliceDimension maxDimen = new MaximunSliceDimension(status, maxSize);
     maxDimen.maximizeSlicesDimension();
     // print final output
+    // System.out.println(status.allSlices.size());
     status.allSlices.forEach(slice -> {
-      System.out.println(slice.upperLeftX + " " + slice.upperLeftY + " " + slice.lowerRightX + " " + slice.lowerRightY);
+      // System.out.println(slice.upperLeftX + " " + slice.upperLeftY + " " + slice.lowerRightX + " " +
+      // slice.lowerRightY);
     });
+    // write output file
+    BestResidualIngredientsScore.printTotalScore(status);
+    return status.allSlices;
   }
 
-  private void readFromFileTest(final String filePath) {
+  private void readFromFileTest(final String filePath) throws IOException {
     final UtilsFile file = new UtilsFile(filePath);
     file.createHeader();
     file.createData();
@@ -71,12 +92,37 @@ public class PizzaLogicTest {
     }
     final int max = file.getHeader()[3];
     final int l = file.getHeader()[2];
-    actualTest(pizza, l, max);
+    final List<Slice> outputSlices = actualTest(pizza, l, max);
+    // write outputfile
+    final BufferedWriter writer = new BufferedWriter(new FileWriter(new File(filePath + ".out")));
+    writer.write(outputSlices.size() + "\n");
+    outputSlices.forEach(slice -> {
+      try {
+        writer.write(
+            slice.upperLeftX + " " + slice.upperLeftY + " " + slice.lowerRightX + " " + slice.lowerRightY + "\n");
+      } catch (final IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    });
+    writer.close();
   }
 
   @Test
-  public void testSmall() {
+  public void testSmall() throws Exception {
     final String filePath = "small.in";
+    readFromFileTest(filePath);
+  }
+
+  @Test
+  public void testMedium() throws Exception {
+    final String filePath = "medium.in";
+    readFromFileTest(filePath);
+  }
+
+  @Test
+  public void testBig() throws Exception {
+    final String filePath = "big.in";
     readFromFileTest(filePath);
   }
 
