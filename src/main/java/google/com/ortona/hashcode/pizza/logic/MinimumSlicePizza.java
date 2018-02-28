@@ -1,6 +1,5 @@
 package google.com.ortona.hashcode.pizza.logic;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -36,7 +35,7 @@ public class MinimumSlicePizza {
     final List<Point> startPoint = computeInitialisePoint(pizza);
     // randomize points
     final Map<Ingredient, Integer> curStatus = Maps.newHashMap();
-    Collections.shuffle(startPoint);
+    // Collections.shuffle(startPoint);
     final AtomicInteger count = new AtomicInteger(1);
     startPoint.forEach(p -> {
       LOGGER.info("Expanding point '{}' out of '{}'", count.getAndIncrement(), startPoint.size());
