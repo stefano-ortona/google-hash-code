@@ -19,8 +19,9 @@ public class PizzaStatus {
 
   int numRows;
   int numColumns;
+  int maxSliceSize;
 
-  public PizzaStatus(Ingredient[][] pizza) {
+  public PizzaStatus(Ingredient[][] pizza, int maxSliceSize) {
     this.pizza = pizza;
     // at the beginning no slices
     allSlices = Lists.newLinkedList();
@@ -28,6 +29,7 @@ public class PizzaStatus {
     pizzaStatus = new boolean[pizza.length][pizza[0].length];
     this.numRows = pizza.length;
     this.numColumns = pizza[0].length;
+    this.maxSliceSize = maxSliceSize;
   }
 
   /*
@@ -92,6 +94,9 @@ public class PizzaStatus {
         pizzaStatus[i][j] = true;
       }
     }
+    if (slice.dimen() > maxSliceSize) {
+      throw new RuntimeException("Slice is too big, cannot be expanded!");
+    }
   }
 
   public void removeSlice(Slice slice) {
@@ -141,6 +146,10 @@ public class PizzaStatus {
         pizzaStatus[slice.lowerRightX][i] = true;
       }
       break;
+    }
+
+    if (slice.dimen() > maxSliceSize) {
+      throw new RuntimeException("Slice is too big, cannot be expanded!");
     }
   }
 

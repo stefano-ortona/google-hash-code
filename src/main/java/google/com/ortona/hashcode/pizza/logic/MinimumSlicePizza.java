@@ -29,7 +29,7 @@ public class MinimumSlicePizza {
   }
 
   public PizzaStatus computeSlices(Ingredient[][] pizza, final int L, final int maxSliceSize) {
-    final PizzaStatus status = new PizzaStatus(pizza);
+    final PizzaStatus status = new PizzaStatus(pizza, maxSliceSize);
     // initialise score
     this.score.initialise(pizza);
     // compute initialisePoints
@@ -91,7 +91,7 @@ public class MinimumSlicePizza {
     // try to expand in all possible 6 direction
 
     final int columnSize = (slice.lowerRightX - slice.upperLeftX) + 1;
-    final int rowSize = (slice.lowerRightY - slice.lowerRightY) + 1;
+    final int rowSize = (slice.lowerRightY - slice.upperLeftY) + 1;
     final int curSize = columnSize * rowSize;
     Map<Ingredient, Integer> bestMap = null;
     double bestScore = -1;
@@ -271,6 +271,9 @@ public class MinimumSlicePizza {
     }
 
     if (hasExpand) {
+      if ((((newLoRX - newUpLX) + 1) * ((newLoRY - newUpLY) + 1)) > maxSliceSize) {
+        throw new RuntimeException("Slice is too big!");
+      }
       slice.upperLeftX = newUpLX;
       slice.upperLeftY = newUpLY;
       slice.lowerRightX = newLoRX;
