@@ -6,6 +6,7 @@ public class Action {
   private int productId;
   private int id; // can be warehouse or order
   private int quantity;
+  private Order o;
 
   public Drone getDrone() {
     return drone;
@@ -45,6 +46,14 @@ public class Action {
 
   public void setQuantity(int quantity) {
     this.quantity = quantity;
+  }
+
+  public void setOrder(Order o) {
+    this.o = o;
+  }
+
+  public Order getOrder() {
+    return this.o;
   }
 
 }

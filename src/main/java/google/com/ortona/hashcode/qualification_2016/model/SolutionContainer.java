@@ -13,9 +13,13 @@ public class SolutionContainer {
   public void addSolution(Action action) {
     this.actions.add(action);
   }
-  
-  public List<Action> getActions(){
-  	return actions;
+
+  public List<Action> getActions() {
+    return actions;
+  }
+
+  public void setActions(List<Action> actions) {
+    this.actions = actions;
   }
 
 }
