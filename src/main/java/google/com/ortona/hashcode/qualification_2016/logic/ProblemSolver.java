@@ -17,6 +17,11 @@ public class ProblemSolver {
     final Order o = new Order();
     o.deliverProduct(p, quantity);
 
+    // iterate over all instant
+    // iterate over all drones
+    // for each drone d that is available
+    // give me the best warehouse with product
+
     // TODO
     return null;
   }
