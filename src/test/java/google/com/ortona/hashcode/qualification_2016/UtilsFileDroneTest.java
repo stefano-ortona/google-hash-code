@@ -14,19 +14,25 @@ public class UtilsFileDroneTest {
 
     private final String filePathExample = "example.in";
     private UtilsFileDrone fr = new UtilsFileDrone(filePathExample);
+    // Header
+    private int[] headerExample = fr.getHeader();
+    private int[] actualHeaderExample = new int[]{100, 100, 3, 50, 500};
+
+    // Example.in file
 
     @Test
-    private void test() {
-        Assert.assertEquals(true,  true);
+    public void testHeaderExample() {
+        testHeader(actualHeaderExample, headerExample);
+
     }
 
 
 
 
 //
-//    private int[] headerExample = fr.getHeader();
+
 //    private char[][] dataExample = fr.getData();
-//    private int[] actualHeaderExample = new int[]{3, 5, 1, 6};
+//
 //    private String[] actualDataExample = new String[]{"TTTTT", "TMMMT", "TTTTT"};
 //
 //    private final String filePathSmall = "small.in";
@@ -36,13 +42,7 @@ public class UtilsFileDroneTest {
 //    private int[] actualHeaderSmall = new int[]{6, 7, 1, 5};
 //    private String[] actualDataSmall = new String[]{"TMMMTTT", "MMMMTMM", "TTMTTMT", "TMMTMMM", "TTTTTTM", "TTTTTTM"};
 //
-//    // Example.in file
-//
-//    @Test
-//    public void testHeaderExample() {
-//        testHeader(actualHeaderExample, headerExample);
-//
-//    }
+
 //
 //    @Test
 //    public void testDataLineByLineExample() {
@@ -84,6 +84,9 @@ public class UtilsFileDroneTest {
     }
 
     private void testHeader(int[] actualHeader, int[] header) {
+
+        System.out.println(actualHeader);
+
         for (int i = 0; i < actualHeader.length; i++) {
             Assert.assertEquals(header[i], actualHeader[i]);
         }

@@ -154,7 +154,7 @@ public class UtilsFileDrone {
     // ====== Do not change below here
 
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
-    private static final String RESOURCE_PATH = "src/main/resources/google/com/ortona/hashcode/";
+    private static final String RESOURCE_PATH = "src/main/resources/google/com/ortona/hashcode/qualification_2016/";
     private String[] file;
 
     public void setFile(String[] file) {
