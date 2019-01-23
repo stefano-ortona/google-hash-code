@@ -10,6 +10,16 @@ public class ProblemContainer {
   int numRows;
   int numColumns;
 
+  int maxInstant;
+
+  public int getMaxInstant() {
+    return maxInstant;
+  }
+
+  public void setMaxInstant(int maxInstant) {
+    this.maxInstant = maxInstant;
+  }
+
   public List<Order> getOrders() {
     return orders;
   }
