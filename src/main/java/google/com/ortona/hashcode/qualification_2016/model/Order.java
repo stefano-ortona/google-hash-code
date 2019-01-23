@@ -1,6 +1,7 @@
 package google.com.ortona.hashcode.qualification_2016.model;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class Order {
     int id;
@@ -56,4 +57,16 @@ public class Order {
         return products2quantity.isEmpty();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return id == order.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
