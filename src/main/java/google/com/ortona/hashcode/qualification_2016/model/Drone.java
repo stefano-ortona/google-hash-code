@@ -42,4 +42,27 @@ public class Drone {
     return this.curAvailableCapacity;
   }
 
+  public int getCurAvailableCapacity() {
+    return curAvailableCapacity;
+  }
+
+  public void setCurAvailableCapacity(int curAvailableCapacity) {
+    this.curAvailableCapacity = curAvailableCapacity;
+  }
+
+  public int getRow() {
+    return row;
+  }
+
+  public void setRow(int row) {
+    this.row = row;
+  }
+
+  public int getColumn() {
+    return column;
+  }
+
+  public void setColumn(int column) {
+    this.column = column;
+  }
 }

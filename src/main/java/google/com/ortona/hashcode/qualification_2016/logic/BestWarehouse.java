@@ -20,7 +20,7 @@ public class BestWarehouse {
                     int pathDistance = calculatePathDistance(drone, warehouse, order);
                     if (pathDistance < bestPathDistance) {
                         bestPathDistance = pathDistance;
-                        // TODO: 2019-01-23
+                        // update result
                         result.setOrder(order);
                         result.setProduct(productIntegerEntry.getKey());
                         result.setWarehouse(warehouse);
@@ -37,8 +37,24 @@ public class BestWarehouse {
      * Internal methods
      */
 
+    /**
+     * Algoritmo da migliorare
+     *
+     * @param drone
+     * @param warehouse
+     * @param order
+     * @return
+     */
     private int calculatePathDistance(Drone drone, Warehouse warehouse, Order order) {
-        return 0;
+        // drone 2 warehouse
+        int distance = DistanceUtils.computeDistance(
+                drone.getRow(), drone.getColumn()
+                , warehouse.getRow(), drone.getColumn());
+        // warehouse 2 order
+        distance += DistanceUtils.computeDistance(
+                warehouse.getRow(), drone.getColumn()
+                , order.getRow(), order.getColumn());
+        return distance;
     }
 
 }
