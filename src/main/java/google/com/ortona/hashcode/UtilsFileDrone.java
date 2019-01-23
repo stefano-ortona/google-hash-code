@@ -236,9 +236,12 @@ public class UtilsFileDrone {
 //            createOrders();
 //            //LOGGER.info("Orders creation: done");
 //
-
 //            //LOGGER.info("Drones creation: start");
 //            createDrones();
+//            //LOGGER.info("Drones creation: done");
+
+//            //LOGGER.info("Drones creation: start");
+//            createProblemContainer();
 //            //LOGGER.info("Drones creation: done");
 
 
