@@ -1,8 +1,10 @@
 package google.com.ortona.hashcode.qualification_2016.logic;
 
+import java.util.Map;
+
 import google.com.ortona.hashcode.qualification_2016.model.Drone;
-import google.com.ortona.hashcode.qualification_2016.model.Order;
 import google.com.ortona.hashcode.qualification_2016.model.ProblemContainer;
+import google.com.ortona.hashcode.qualification_2016.model.Product;
 import google.com.ortona.hashcode.qualification_2016.model.SolutionContainer;
 import google.com.ortona.hashcode.qualification_2016.model.Warehouse;
 
@@ -10,20 +12,27 @@ public class ProblemSolver {
 
   public SolutionContainer process(ProblemContainer problem) {
 
-    final Warehouse w = new Warehouse();
-    w.releaseProduct(p, quantity);
-    final Drone d = new DroneO();
-    d.loadProduct(p, quantity);
-    final Order o = new Order();
-    o.deliverProduct(p, quantity);
+    final BestWarehouse warehousePicker = new BestWarehouse();
 
-    // iterate over all instant
-    // iterate over all drones
-    // for each drone d that is available
-    // give me the best warehouse with product
+    final int totTime = problem.getMaxInstant();
 
-    // TODO
+    for (int i = 0; i < totTime; i++) {
+      for (final Drone d : problem.getDrones()) {
+        if (d.getNextTimeAvailable() <= i) {
+          final Map<Warehouse, Product> w2p = warehousePicker.getBestWarehouse(d, problem);
+          final Warehouse target = w2p.keySet().iterator().next();
+          final Product targetProduct = w2p.values().iterator().next();
+          processDrone(d, target, targetProduct);
+        }
+
+      }
+
+    }
     return null;
+  }
+
+  private void processDrone(Drone d, Warehouse w, Product toPick) {
+
   }
 
 }
