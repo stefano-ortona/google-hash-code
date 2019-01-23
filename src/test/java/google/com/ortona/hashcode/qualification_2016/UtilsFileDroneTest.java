@@ -6,8 +6,12 @@
 package google.com.ortona.hashcode.qualification_2016;
 
 import google.com.ortona.hashcode.UtilsFileDrone;
+import google.com.ortona.hashcode.qualification_2016.model.Product;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class UtilsFileDroneTest {
@@ -17,14 +21,41 @@ public class UtilsFileDroneTest {
     // Header
     private int[] headerExample = fr.getHeader();
     private int[] actualHeaderExample = new int[]{100, 100, 3, 50, 500};
+    // Products
+    private int productsAmountExample = fr.getProductAmount();
+    private int actualProductsAmountExample = 3;
+    private List<Product> productsExample = fr.getProducts();
+    private List<Product> actualProductsExample = new ArrayList<>();
+    // Werehouses
+    private int warehousesAmount = fr.getWerehousesAmount();
+    private int actualWarehousesAmount = 2;
 
     // Example.in file
-
     @Test
     public void testHeaderExample() {
         testHeader(actualHeaderExample, headerExample);
-
     }
+
+    @Test
+    public void testProductAmountExample() {
+        Assert.assertEquals(productsAmountExample, actualProductsAmountExample);
+    }
+
+    @Test
+    public void testProductsExample() {
+
+        actualProductsExample.add(new Product(0, 100));
+        actualProductsExample.add(new Product(1, 5));
+        actualProductsExample.add(new Product(2, 450));
+
+        testProducts(actualProductsExample, productsExample);
+    }
+
+    @Test
+    public void testWerehouseAmount() {
+        Assert.assertEquals(warehousesAmount, actualWarehousesAmount);
+    }
+
 
 
 
@@ -85,10 +116,15 @@ public class UtilsFileDroneTest {
 
     private void testHeader(int[] actualHeader, int[] header) {
 
-        System.out.println(actualHeader);
-
         for (int i = 0; i < actualHeader.length; i++) {
             Assert.assertEquals(header[i], actualHeader[i]);
+        }
+    }
+
+    private void testProducts(List<Product> products, List<Product> actualProducts) {
+
+        for (int i = 0; i < products.size(); i++) {
+            Assert.assertEquals(products.get(i), actualProducts.get(i));
         }
     }
 

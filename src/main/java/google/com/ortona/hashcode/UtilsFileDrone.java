@@ -98,6 +98,18 @@ public class UtilsFileDrone {
         return this.header[4];
     }
 
+    public int getProductAmount() { return Integer.parseInt(this.file[1]); }
+
+    public int[] getProductWeights() {
+        String line = this.file[2];
+        String[] split = splitString(line, " ");
+        int[] converted = convertArrayOfStringToArrayOfInt(split);
+
+        return converted;
+    }
+
+    public int getWerehousesAmount() { return Integer.parseInt(this.file[3]); }
+
     //3. define logic of createHeader() and createData()
 
     public void createHeader() {
@@ -110,24 +122,64 @@ public class UtilsFileDrone {
     }
 
     public void createProducts() {
-        String firstLine = getFirstLineOfFile();
-        String[] split = splitString(firstLine, " ");
-        int[] converted = convertArrayOfStringToArrayOfInt(split);
 
-        // always finish with this.setHeader()
-        this.setHeader(converted);
-    }
+        Integer amount = this.getProductAmount();
+        products = new ArrayList<>();
+        int[] weights = getProductWeights();
 
-    public void createOrders() {
-        String firstLine = getFirstLineOfFile();
-        String[] split = splitString(firstLine, " ");
-        int[] converted = convertArrayOfStringToArrayOfInt(split);
+        for (int i = 0; i < amount; i++) {
+            products.add(new Product(i, weights[i]));
+        }
 
-        // always finish with this.setHeader()
-        this.setHeader(converted);
+        // always finish with this.setProducts()
+        this.setProducts(products);
     }
 
     public void createWarehouses() {
+        Integer amount = this.getWerehousesAmount();
+        warehouses = new ArrayList<>();
+        Integer fileIndex = 3;
+
+        for (int i = 0; i < amount; i++) {
+            Warehouse w = new Warehouse();
+            Integer coordinatesIndex = fileIndex + 1;
+            Integer productsIndex = fileIndex + 2;
+
+            // Set coordinates
+            String[] coordinatesSplit = splitString(this.file[coordinatesIndex], " ");
+            int[] coordinates = convertArrayOfStringToArrayOfInt(coordinatesSplit);
+            w.setId(i);
+            w.setRow(coordinates[0]);
+            w.setColumn(coordinates[1]);
+
+            // Set products
+            String[] productSplit = splitString(this.file[productsIndex], " ");
+            int[] products = convertArrayOfStringToArrayOfInt(productSplit);
+
+            for (int j = 0; j < products.length; j++){
+                if (products[i] > 0) {
+
+                    
+
+
+
+                }
+            }
+
+
+
+
+
+
+            warehouses.add(w);
+        }
+
+        // always finish with this.setProducts()
+        this.setWarehouses(warehouses);
+    }
+
+
+    public void createOrders() {
         String firstLine = getFirstLineOfFile();
         String[] split = splitString(firstLine, " ");
         int[] converted = convertArrayOfStringToArrayOfInt(split);
@@ -175,14 +227,13 @@ public class UtilsFileDrone {
             LOGGER.info("File absolute path:" + absolutePath);
             readFile(absolutePath);
 
-//
-//            //LOGGER.info("Header creation: start");
-//            createHeader();
-//            //LOGGER.info("Header creation: done");
-//
-//            //LOGGER.info("Products creation: start");
-//            createProducts();
-//            //LOGGER.info("Products creation: done");
+            //LOGGER.info("Header creation: start");
+            createHeader();
+            //LOGGER.info("Header creation: done");
+
+            //LOGGER.info("Products creation: start");
+            createProducts();
+            //LOGGER.info("Products creation: done");
 //
 //            //LOGGER.info("Orders creation: start");
 //            createOrders();
