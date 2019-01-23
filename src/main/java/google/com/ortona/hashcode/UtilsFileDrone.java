@@ -78,6 +78,26 @@ public class UtilsFileDrone {
         this.problemContainer = problemContainer;
     }
 
+    public int getRowsAmount(){
+        return this.header[0];
+    }
+
+    public int getColumnsAmount(){
+        return this.header[1];
+    }
+
+    public int getDronesAmount(){
+        return this.header[2];
+    }
+
+    public int getTurnsAmount(){
+        return this.header[3];
+    }
+
+    public int getMaxPayload(){
+        return this.header[4];
+    }
+
     //3. define logic of createHeader() and createData()
 
     public void createHeader() {
