@@ -162,7 +162,8 @@ public class UtilsFileDrone {
                     // add to map Product, quantity (that is j)
                 }
             }
-           // warehouses.setProduct2quantity(product2quantity);
+            
+            w.setProduct2quantity(product2quantity);
 
             warehouses.add(w);
         }
