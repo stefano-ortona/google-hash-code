@@ -1,7 +1,6 @@
 package google.com.ortona.hashcode.qualification_2016.logic;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import google.com.ortona.hashcode.qualification_2016.model.*;
 
@@ -30,6 +29,17 @@ public class BestWarehouse {
         }
 
         return result;
+    }
+
+
+    public List<Order> sortOrderListByDrone(List<Order> orderList, Drone drone) {
+        ArrayList<Order> resultOrderList = new ArrayList<>(orderList);
+        resultOrderList.sort((o1, o2) -> {
+            int distanceO1 = DistanceUtils.computeDistance(drone.getRow(), drone.getColumn(), o1.getRow(), o1.getColumn());
+            int distanceO2 = DistanceUtils.computeDistance(drone.getRow(), drone.getColumn(), o2.getRow(), o2.getColumn());
+            return distanceO1 - distanceO2;
+        });
+        return resultOrderList;
     }
 
 
