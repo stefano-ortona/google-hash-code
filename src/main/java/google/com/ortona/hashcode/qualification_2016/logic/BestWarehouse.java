@@ -16,13 +16,15 @@ public class BestWarehouse {
 
             for (Map.Entry<Product, Integer> productIntegerEntry : order.getProducts2quantity().entrySet()) {
                 for (Warehouse warehouse : problem.getWarehouses()) {
-                    int pathDistance = calculatePathDistance(drone, warehouse, order);
-                    if (pathDistance < bestPathDistance) {
-                        bestPathDistance = pathDistance;
-                        // update result
-                        result.setOrder(order);
-                        result.setProduct(productIntegerEntry.getKey());
-                        result.setWarehouse(warehouse);
+                    if (warehouse.getProduct2quantity().get(productIntegerEntry.getKey()) != null) {
+                        int pathDistance = calculatePathDistance(drone, warehouse, order);
+                        if (pathDistance < bestPathDistance) {
+                            bestPathDistance = pathDistance;
+                            // update result
+                            result.setOrder(order);
+                            result.setProduct(productIntegerEntry.getKey());
+                            result.setWarehouse(warehouse);
+                        }
                     }
                 }
             }
