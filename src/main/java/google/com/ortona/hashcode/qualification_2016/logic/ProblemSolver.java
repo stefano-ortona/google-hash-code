@@ -26,6 +26,8 @@ public class ProblemSolver {
 
   Logger LOG = LoggerFactory.getLogger(getClass());
 
+  final int maxTravellingDistance = Integer.MAX_VALUE;
+
   public SolutionContainer process(ProblemContainer problem) {
 
     int curScore = 0;
@@ -56,6 +58,12 @@ public class ProblemSolver {
           final List<Order> proximityOrders = warehousePicker.sortOrderListByDrone(problem.getOrders(), d);
           final List<Order> completedOrdered = new ArrayList<>();
           for (final Order oneOrder : proximityOrders) {
+            // check order is not too far away from warehouse
+            if (DistanceUtils.computeDistance(res.getWarehouse().getRow(), res.getWarehouse().getColumn(),
+                oneOrder.getRow(), oneOrder.getColumn()) > maxTravellingDistance) {
+              // stop here as all other orders are too far away, let other drones deal with it
+              break;
+            }
             for (final Product p : oneOrder.getProducts2quantity().keySet()) {
               final boolean isOrderCompleted = processDrone(d, res.getWarehouse(), oneOrder, p, loadProducts,
                   deliveringActions);
@@ -107,7 +115,7 @@ public class ProblemSolver {
             }
 
           }
-          d.setCurAvailableCapacity(curTotTime);
+          d.setNextTimeAvailable(curTotTime);
         }
       }
       LOG.info("Iteration completed with {} drones assigned, {} orders left to complete", droneAvailable,
