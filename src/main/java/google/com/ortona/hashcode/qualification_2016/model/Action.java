@@ -56,4 +56,9 @@ public class Action {
     return this.o;
   }
 
+  @Override
+  public String toString() {
+    return drone.getId() + " " + type + " " + id + " " + productId + " " + quantity;
+  }
+
 }

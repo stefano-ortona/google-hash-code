@@ -69,7 +69,7 @@ public class ProblemSolverTest {
     drone1.setNextTimeAvailable(0);
 
     final Drone drone2 = new Drone();
-    drone2.setId(1);
+    drone2.setId(2);
     drone2.setCapacity(500);
     drone2.setNextTimeAvailable(0);
 

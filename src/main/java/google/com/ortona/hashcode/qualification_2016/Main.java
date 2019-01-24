@@ -8,7 +8,7 @@ import google.com.ortona.hashcode.qualification_2016.model.SolutionContainer;
 public class Main {
 
   public static void main(String[] args) {
-    final String inputFile = "";
+    final String inputFile = Main.class.getResource("example.in").getPath();
     final ProblemReader reader = new ProblemReader();
     final ProblemSolver solver = new ProblemSolver();
     final SolutionContainer solution = solver.process(reader.readProblem(inputFile));

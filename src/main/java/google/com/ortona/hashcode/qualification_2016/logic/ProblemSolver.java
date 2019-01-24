@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import google.com.ortona.hashcode.qualification_2016.model.Action;
 import google.com.ortona.hashcode.qualification_2016.model.BestWarehouseResult;
 import google.com.ortona.hashcode.qualification_2016.model.Drone;
@@ -15,14 +18,17 @@ import google.com.ortona.hashcode.qualification_2016.model.SolutionContainer;
 import google.com.ortona.hashcode.qualification_2016.model.Warehouse;
 
 /**
- * TODO: check TIME IS NOT RUNNING OUT FOR ACTIONS
  *
  * @author stefano
  *
  */
 public class ProblemSolver {
 
+  Logger LOG = LoggerFactory.getLogger(getClass());
+
   public SolutionContainer process(ProblemContainer problem) {
+
+    int curScore = 0;
 
     final BestWarehouse warehousePicker = new BestWarehouse();
 
@@ -30,10 +36,16 @@ public class ProblemSolver {
 
     final List<Action> allActions = new ArrayList<>();
 
-    for (int i = 0; i < totTime; i++) {
+    for (int i = 0; (i < totTime) && !problem.getOrders().isEmpty(); i++) {
+      LOG.info("Iteration at time: {}", i);
+      int droneAvailable = 0;
       for (final Drone d : problem.getDrones()) {
         if (d.getNextTimeAvailable() <= i) {
+          droneAvailable++;
+          // reset cur available capacity as the drone is free
+          d.setCurAvailableCapacity(d.getCapacity());
           final BestWarehouseResult res = warehousePicker.getBestWarehouse(d, problem);
+          // check reaching best warehouse is not too far away
           final Map<Integer, Integer> loadProducts = new HashMap<>();
           final List<Action> deliveringActions = new ArrayList<>();
           final boolean orderCompleted = processDrone(d, res.getWarehouse(), res.getOrder(), res.getProduct(),
@@ -54,18 +66,15 @@ public class ProblemSolver {
           }
           problem.getOrders().removeAll(completedOrdered);
           // create actions for loading
-          int curTotTime = DistanceUtils.computeDistance(d.getRow(), d.getColumn(), res.getWarehouse().getRow(),
-              res.getWarehouse().getColumn());
+          int curTotTime = d.getNextTimeAvailable() + DistanceUtils.computeDistance(d.getRow(), d.getColumn(),
+              res.getWarehouse().getRow(), res.getWarehouse().getColumn());
           curTotTime += loadProducts.size();
+          if (curTotTime >= totTime) {
+            // don't do anything with the current drone
+            continue;
+          }
           int curRow = res.getWarehouse().getRow();
           int curColumn = res.getWarehouse().getColumn();
-          for (final Action a : deliveringActions) {
-            curTotTime += DistanceUtils.computeDistance(curRow, a.getOrder().getRow(), curColumn,
-                a.getOrder().getColumn());
-            curRow = a.getOrder().getRow();
-            curColumn = a.getOrder().getColumn();
-            curTotTime++;
-          }
           for (final Integer product : loadProducts.keySet()) {
             final Action a = new Action();
             a.setDrone(d);
@@ -73,15 +82,40 @@ public class ProblemSolver {
             a.setProductId(product);
             a.setQuantity(loadProducts.get(product));
             a.setType("L");
-            deliveringActions.add(0, a);
+            allActions.add(a);
           }
-          allActions.addAll(deliveringActions);
-          d.setCurAvailableCapacity(d.getNextTimeAvailable() + curTotTime);
+          for (final Action a : deliveringActions) {
+            final int nextOrderDistance = DistanceUtils.computeDistance(curRow, curColumn, a.getOrder().getRow(),
+                a.getOrder().getColumn());
+            if ((curTotTime + nextOrderDistance + 1) >= totTime) {
+              // cannot satisfy anymore order, stop it here
+              break;
+            }
+            allActions.add(a);
+            curTotTime += DistanceUtils.computeDistance(curRow, curColumn, a.getOrder().getRow(),
+                a.getOrder().getColumn());
+            curRow = a.getOrder().getRow();
+            curColumn = a.getOrder().getColumn();
+            curTotTime++;
+            // move the drone to the order
+            d.setRow(a.getOrder().getRow());
+            d.setColumn(a.getOrder().getColumn());
+            if (a.getOrder().isOrderSatisfied()) {
+              final int score = (int) Math.ceil((((totTime - curTotTime) + 1) / (totTime * 1.)) * 100);
+              LOG.info("I satisfied order '{}' with score '{}'", a.getOrder(), score);
+              curScore += score;
+            }
+
+          }
+          d.setCurAvailableCapacity(curTotTime);
         }
       }
+      LOG.info("Iteration completed with {} drones assigned, {} orders left to complete", droneAvailable,
+          problem.getOrders().size());
     }
     final SolutionContainer c = new SolutionContainer();
     c.setActions(allActions);
+    LOG.info("Computation ended with total score: '{}'", curScore);
     return c;
   }
 
