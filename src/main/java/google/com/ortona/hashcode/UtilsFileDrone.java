@@ -8,9 +8,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class UtilsFileDrone {
 
@@ -154,30 +152,25 @@ public class UtilsFileDrone {
 
             // Set products
             String[] productSplit = splitString(this.file[productsIndex], " ");
-            int[] products = convertArrayOfStringToArrayOfInt(productSplit);
+            int[] ps = convertArrayOfStringToArrayOfInt(productSplit);
+            Map<Product, Integer> product2quantity = new HashMap<>();
 
-            for (int j = 0; j < products.length; j++){
-                if (products[i] > 0) {
-
-                    
-
-
-
+            for (int j = 0; j < ps.length; j++){
+                if (ps[j] > 0) {
+                    //Product prod = products.stream().filter(p -> p.getId() == j);
+                    // find product
+                    // add to map Product, quantity (that is j)
                 }
             }
-
-
-
-
-
+            
+            w.setProduct2quantity(product2quantity);
 
             warehouses.add(w);
         }
 
-        // always finish with this.setProducts()
+        // always finish with this.setWarehouses()
         this.setWarehouses(warehouses);
     }
-
 
     public void createOrders() {
         String firstLine = getFirstLineOfFile();
@@ -234,17 +227,22 @@ public class UtilsFileDrone {
             //LOGGER.info("Products creation: start");
             createProducts();
             //LOGGER.info("Products creation: done");
+
+            //LOGGER.info("Warehouses creation: start");
+            createWarehouses();
+            //LOGGER.info("Warehouses creation: done");
+
 //
 //            //LOGGER.info("Orders creation: start");
 //            createOrders();
 //            //LOGGER.info("Orders creation: done");
 //
-//            //LOGGER.info("Warehouses creation: start");
-//            createWarehouses();
-//            //LOGGER.info("Warehouses creation: done");
-//
 //            //LOGGER.info("Drones creation: start");
 //            createDrones();
+//            //LOGGER.info("Drones creation: done");
+
+//            //LOGGER.info("Drones creation: start");
+//            createProblemContainer();
 //            //LOGGER.info("Drones creation: done");
 
 

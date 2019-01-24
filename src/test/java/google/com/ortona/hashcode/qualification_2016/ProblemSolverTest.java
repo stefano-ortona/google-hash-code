@@ -1,5 +1,7 @@
 package google.com.ortona.hashcode.qualification_2016;
 
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +9,7 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
+import google.com.ortona.hashcode.qualification_2016.io.ProblemWriter;
 import google.com.ortona.hashcode.qualification_2016.logic.ProblemSolver;
 import google.com.ortona.hashcode.qualification_2016.model.Action;
 import google.com.ortona.hashcode.qualification_2016.model.Drone;
@@ -69,7 +72,7 @@ public class ProblemSolverTest {
     drone1.setNextTimeAvailable(0);
 
     final Drone drone2 = new Drone();
-    drone2.setId(1);
+    drone2.setId(2);
     drone2.setCapacity(500);
     drone2.setNextTimeAvailable(0);
 
@@ -110,17 +113,26 @@ public class ProblemSolverTest {
     problem.setOrders(orders);
     problem.setWarehouses(warehouses);
     final SolutionContainer solution = SOLVER.process(problem);
+    try {
+			ProblemWriter.writeProblem("testOutput.txt", solution);
+		} catch (FileNotFoundException e) {
+			System.out.println("FileNotFoundException");
+		} catch (UnsupportedEncodingException e) {
+			System.out.println("UnsupportedEncodingException");
+		}
+    
     Assert.assertNotNull(solution);
     int counter = 0;
 
+    System.out.println("TEST PRINT %%% ");
     for (final Action action : solution.getActions()) {
-      System.out.println("TEST PRINT %%% ");
       System.out.print("Command " + counter + " to Drone: " + action.getDrone().getId() + " || ");
       final String object = (action.getType().equals("L")) ? "Load at Warehouse" : "Deliver for Order";
       System.out.print(object + ": " + action.getId() + " || ");
       System.out.print("products of type: " + action.getProductId() + " || ");
       System.out.print(", " + action.getQuantity() + " of them/it || ");
       counter++;
+      System.out.println("----------");
     }
   }
 
