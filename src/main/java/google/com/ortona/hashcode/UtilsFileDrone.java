@@ -249,7 +249,7 @@ public class UtilsFileDrone {
 
             for (int j = 0; j < productsAmount; j++) {
 
-                Product p = id2product.get(split[j]);
+                Product p = id2product.get(Integer.parseInt(split[j]));
 
                 int quantity = 1;
 
@@ -261,6 +261,7 @@ public class UtilsFileDrone {
 
             }
 
+            o.setProducts2quantity(products2quantity);
             orders.add(o);
         }
 
