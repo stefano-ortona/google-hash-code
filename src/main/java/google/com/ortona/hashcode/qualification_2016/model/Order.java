@@ -57,22 +57,22 @@ public class Order {
     return products2quantity.isEmpty();
   }
 
-
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Order order = (Order) o;
-    return id == order.id &&
-            row == order.row &&
-            column == order.column;
+    if (this == o) {
+      return true;
+    }
+    if ((o == null) || (getClass() != o.getClass())) {
+      return false;
+    }
+    final Order order = (Order) o;
+    return (id == order.id) && (row == order.row) && (column == order.column);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(id, row, column);
   }
-
 
   @Override
   public String toString() {

@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Lists;
 
 import google.com.ortona.hashcode.qualification_2016.model.Action;
 import google.com.ortona.hashcode.qualification_2016.model.BestWarehouseResult;
@@ -39,8 +42,13 @@ public class ProblemSolver {
     final List<Action> allActions = new ArrayList<>();
 
     for (int i = 0; (i < totTime) && !problem.getOrders().isEmpty(); i++) {
-      LOG.info("Iteration at time: {}", i);
+      LOG.info("Iteration at time: {} (out of {})", i, totTime);
       int droneAvailable = 0;
+      final AtomicInteger minWeight = new AtomicInteger(Integer.MAX_VALUE);
+      problem.getOrders().forEach(o -> o.getProducts2quantity().keySet().forEach(p -> {
+        minWeight.set(Math.min(p.getWeight(), minWeight.get()));
+      }));
+      int nextAvTime = Integer.MAX_VALUE;
       for (final Drone d : problem.getDrones()) {
         if (d.getNextTimeAvailable() <= i) {
           droneAvailable++;
@@ -59,12 +67,14 @@ public class ProblemSolver {
           final List<Order> completedOrdered = new ArrayList<>();
           for (final Order oneOrder : proximityOrders) {
             // check order is not too far away from warehouse
-            if (DistanceUtils.computeDistance(res.getWarehouse().getRow(), res.getWarehouse().getColumn(),
-                oneOrder.getRow(), oneOrder.getColumn()) > maxTravellingDistance) {
+            if ((DistanceUtils.computeDistance(res.getWarehouse().getRow(), res.getWarehouse().getColumn(),
+                oneOrder.getRow(), oneOrder.getColumn()) > maxTravellingDistance)
+                || (d.getAvailableCapacity() < minWeight.get())) {
               // stop here as all other orders are too far away, let other drones deal with it
               break;
             }
-            for (final Product p : oneOrder.getProducts2quantity().keySet()) {
+            final List<Product> allCurProducts = Lists.newArrayList(oneOrder.getProducts2quantity().keySet());
+            for (final Product p : allCurProducts) {
               final boolean isOrderCompleted = processDrone(d, res.getWarehouse(), oneOrder, p, loadProducts,
                   deliveringActions);
               if (isOrderCompleted) {
@@ -116,13 +126,20 @@ public class ProblemSolver {
 
           }
           d.setNextTimeAvailable(curTotTime);
+          nextAvTime = Math.min(nextAvTime, curTotTime);
+          // if orders are finished, break it here
+          if (problem.getOrders().isEmpty()) {
+            break;
+          }
         }
       }
-      LOG.info("Iteration completed with {} drones assigned, {} orders left to complete", droneAvailable,
-          problem.getOrders().size());
+      LOG.info("Iteration completed with {} drones assigned, curTotScore={}, {} orders left to complete",
+          droneAvailable, curScore, problem.getOrders().size());
+      i = nextAvTime;
     }
     final SolutionContainer c = new SolutionContainer();
     c.setActions(allActions);
+    c.score = curScore;
     LOG.info("Computation ended with total score: '{}'", curScore);
     return c;
   }
