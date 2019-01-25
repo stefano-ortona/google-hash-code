@@ -13,7 +13,7 @@ public class Main {
     final ProblemSolver solver = new ProblemSolver();
     final SolutionContainer solution = solver.process(reader.readProblem(inputFile));
     final ProblemWriter writer = new ProblemWriter();
-    writer.writeProblem(inputFile + "_output", solution);
+    //writer.writeProblem(inputFile + "_output", solution);
   }
 
 }

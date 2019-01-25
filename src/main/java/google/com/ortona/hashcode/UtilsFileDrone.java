@@ -22,6 +22,7 @@ public class UtilsFileDrone {
     // 1. define type of header items and data items
     private int[] header;
     private List<Product> products;
+    private Map<Integer, Product> id2product;
     private List<Order> orders;
     private List<Warehouse> warehouses;
     private List<Drone> drones;
@@ -76,27 +77,29 @@ public class UtilsFileDrone {
         this.problemContainer = problemContainer;
     }
 
-    public int getRowsAmount(){
+    public int getRowsAmount() {
         return this.header[0];
     }
 
-    public int getColumnsAmount(){
+    public int getColumnsAmount() {
         return this.header[1];
     }
 
-    public int getDronesAmount(){
+    public int getDronesAmount() {
         return this.header[2];
     }
 
-    public int getTurnsAmount(){
+    public int getTurnsAmount() {
         return this.header[3];
     }
 
-    public int getMaxPayload(){
+    public int getMaxPayload() {
         return this.header[4];
     }
 
-    public int getProductAmount() { return Integer.parseInt(this.file[1]); }
+    public int getProductAmount() {
+        return Integer.parseInt(this.file[1]);
+    }
 
     public int[] getProductWeights() {
         String line = this.file[2];
@@ -106,7 +109,44 @@ public class UtilsFileDrone {
         return converted;
     }
 
-    public int getWerehousesAmount() { return Integer.parseInt(this.file[3]); }
+    public int getWarehousesAmount() {
+        return Integer.parseInt(this.file[3]);
+    }
+
+    public Map<Integer, Product> getId2product() {
+        return id2product;
+    }
+
+    public void setId2product(Map<Integer, Product> id2product) {
+        this.id2product = id2product;
+    }
+
+    public int getOrderAmountIndex() {
+        int count = 0;
+
+        // add header row
+        count++;
+
+        // add products amount row
+        count++;
+
+        // add products weights row
+        count++;
+
+        // add warehouses amount row
+        count++;
+
+        // add warehouses description rows
+        int warehouseAmount = this.getWarehousesAmount();
+        int warehouseDescriptionRows = warehouseAmount * 2;
+        count = count + warehouseDescriptionRows;
+        return count;
+    }
+
+    public int getOrdersAmount() {
+        int index = this.getOrderAmountIndex();
+        return Integer.parseInt(this.file[index]);
+    }
 
     //3. define logic of createHeader() and createData()
 
@@ -123,46 +163,52 @@ public class UtilsFileDrone {
 
         Integer amount = this.getProductAmount();
         products = new ArrayList<>();
+        id2product = new HashMap<>();
+
         int[] weights = getProductWeights();
 
         for (int i = 0; i < amount; i++) {
-            products.add(new Product(i, weights[i]));
+            Product p = new Product(i, weights[i]);
+            id2product.put(i, p);
+            products.add(p);
         }
 
         // always finish with this.setProducts()
         this.setProducts(products);
+        this.setId2product(id2product);
     }
 
     public void createWarehouses() {
-        Integer amount = this.getWerehousesAmount();
+        Integer amount = this.getWarehousesAmount();
         warehouses = new ArrayList<>();
-        Integer fileIndex = 3;
+        Integer index = 3;
 
         for (int i = 0; i < amount; i++) {
             Warehouse w = new Warehouse();
-            Integer coordinatesIndex = fileIndex + 1;
-            Integer productsIndex = fileIndex + 2;
+
+            // Set id
+            w.setId(i);
 
             // Set coordinates
-            String[] coordinatesSplit = splitString(this.file[coordinatesIndex], " ");
+            index++;
+            String[] coordinatesSplit = splitString(this.file[index], " ");
             int[] coordinates = convertArrayOfStringToArrayOfInt(coordinatesSplit);
-            w.setId(i);
             w.setRow(coordinates[0]);
             w.setColumn(coordinates[1]);
 
             // Set products
-            String[] productSplit = splitString(this.file[productsIndex], " ");
+            index++;
+            String[] productSplit = splitString(this.file[index], " ");
             int[] ps = convertArrayOfStringToArrayOfInt(productSplit);
             Map<Product, Integer> product2quantity = new HashMap<>();
 
-            for (int j = 0; j < ps.length; j++){
+            for (int j = 0; j < ps.length; j++) {
                 if (ps[j] > 0) {
-                    //Product prod = products.stream().filter(p -> p.getId() == j);
-                    // find product
-                    // add to map Product, quantity (that is j)
+                    Product product = id2product.get(j);
+                    product2quantity.put(product, ps[j]);
                 }
             }
-            
+
             w.setProduct2quantity(product2quantity);
 
             warehouses.add(w);
@@ -173,27 +219,84 @@ public class UtilsFileDrone {
     }
 
     public void createOrders() {
-        String firstLine = getFirstLineOfFile();
-        String[] split = splitString(firstLine, " ");
-        int[] converted = convertArrayOfStringToArrayOfInt(split);
+        orders = new ArrayList<>();
+        int orderAmountIndex = this.getOrderAmountIndex();
+        int amount = this.getOrdersAmount();
+        int index = orderAmountIndex;
 
-        // always finish with this.setHeader()
-        this.setHeader(converted);
+        for (int i = 0; i < amount; i++) {
+            Order o = new Order();
+
+            // Set id
+            o.setId(i);
+
+            // Set coordinates
+            index++;
+            String[] coordinatesSplit = splitString(this.file[index], " ");
+
+            int[] coordinates = convertArrayOfStringToArrayOfInt(coordinatesSplit);
+            o.setRow(coordinates[0]);
+            o.setColumn(coordinates[1]);
+
+            // Set products
+            index++;
+            Integer productsAmount = Integer.parseInt(this.file[index]);
+
+            index++;
+            String[] split = splitString(this.file[index], " ");
+
+            Map<Product, Integer> products2quantity = new HashMap<>();
+
+            for (int j = 0; j < productsAmount; j++) {
+
+                Product p = id2product.get(split[j]);
+
+                int quantity = 1;
+
+                if (products2quantity.containsValue(p)) {
+                    quantity = products2quantity.get(p);
+                }
+
+                products2quantity.put(p, quantity);
+
+            }
+
+            orders.add(o);
+        }
+
+        this.setOrders(orders);
+
     }
 
     public void createDrones() {
-        String firstLine = getFirstLineOfFile();
-        String[] split = splitString(firstLine, " ");
-        int[] converted = convertArrayOfStringToArrayOfInt(split);
+        int amount = this.getDronesAmount();
+        drones = new ArrayList<>();
+        int payload = this.getMaxPayload();
 
-        // always finish with this.setHeader()
-        this.setHeader(converted);
+        for (int i = 0; i < amount; i++) {
+            Drone d = new Drone();
+            d.setId(i);
+            d.setCapacity(payload);
+            drones.add(d);
+        }
+
+        this.setDrones(drones);
     }
 
+    public void createProblemContainer() {
 
+        problemContainer = new ProblemContainer();
 
+        problemContainer.setOrders(this.getOrders());
+        problemContainer.setDrones(this.getDrones());
+        problemContainer.setWarehouses(this.getWarehouses());
+        problemContainer.setNumRows(this.getRowsAmount());
+        problemContainer.setNumColumns(this.getColumnsAmount());
+        problemContainer.setMaxInstant(this.getTurnsAmount());
 
+        this.setProblemContainer(problemContainer);
 
+    }
 
 
     // ====== Do not change below here
@@ -232,20 +335,17 @@ public class UtilsFileDrone {
             createWarehouses();
             //LOGGER.info("Warehouses creation: done");
 
-//
-//            //LOGGER.info("Orders creation: start");
-//            createOrders();
-//            //LOGGER.info("Orders creation: done");
-//
-//            //LOGGER.info("Drones creation: start");
-//            createDrones();
-//            //LOGGER.info("Drones creation: done");
+            //LOGGER.info("Drones creation: start");
+            createDrones();
+            //LOGGER.info("Drones creation: done");
 
-//            //LOGGER.info("Drones creation: start");
-//            createProblemContainer();
-//            //LOGGER.info("Drones creation: done");
+            //LOGGER.info("Orders creation: start");
+            createOrders();
+            //LOGGER.info("Orders creation: done");
 
-
+            //LOGGER.info("Drones creation: start");
+            createProblemContainer();
+            //LOGGER.info("Drones creation: done");
 
         } catch (Exception e) {
             e.printStackTrace();
