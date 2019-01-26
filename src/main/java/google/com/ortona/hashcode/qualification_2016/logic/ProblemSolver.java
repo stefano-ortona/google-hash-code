@@ -29,9 +29,11 @@ public class ProblemSolver {
 
   Logger LOG = LoggerFactory.getLogger(getClass());
 
-  final int maxTravellingDistance = Integer.MAX_VALUE;
+  int maxTravellingDistance = Integer.MAX_VALUE;
 
   public SolutionContainer process(ProblemContainer problem) {
+	  
+	  maxTravellingDistance = DistanceUtils.computeDistance(0, 0, problem.getNumRows(), problem.getNumColumns());
 
     int curScore = 0;
 
@@ -63,7 +65,7 @@ public class ProblemSolver {
           if (orderCompleted) {
             problem.getOrders().remove(res.getOrder());
           }
-          final List<Order> proximityOrders = warehousePicker.sortOrderListByDrone(problem.getOrders(), d);
+          final List<Order> proximityOrders = warehousePicker.sortOrderByDroneDistanceAndCompleteness(problem.getOrders(), d,res.getWarehouse());
           final List<Order> completedOrdered = new ArrayList<>();
           for (final Order oneOrder : proximityOrders) {
             // check order is not too far away from warehouse
@@ -135,7 +137,7 @@ public class ProblemSolver {
       }
       LOG.info("Iteration completed with {} drones assigned, curTotScore={}, {} orders left to complete",
           droneAvailable, curScore, problem.getOrders().size());
-      i = nextAvTime;
+      i = Math.min(nextAvTime,totTime);
     }
     final SolutionContainer c = new SolutionContainer();
     c.setActions(allActions);
@@ -188,7 +190,7 @@ public class ProblemSolver {
     int warehouseQuantity = 0;
     for (final Product p : w.getProduct2quantity().keySet()) {
       if (p.getId() == toPick.getId()) {
-        warehouseQuantity = o.getProducts2quantity().get(p);
+        warehouseQuantity = w.getProduct2quantity().get(p);
       }
     }
     final int targetQuantity = Math.min(productQuantity, warehouseQuantity);

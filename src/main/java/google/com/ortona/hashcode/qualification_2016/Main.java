@@ -21,8 +21,8 @@ public class Main {
 
   public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
     // final String inputFile = "example.in";
-    final List<String> inputFiles = Arrays.asList("example.in", "busy_day.in", "mother_of_all_warehouses.in",
-        "redundancy.in");
+	  // 
+    final List<String> inputFiles = Arrays.asList("example.in","redundancy.in","mother_of_all_warehouses.in","busy_day.in");
     final ProblemReader reader = new ProblemReader();
     final ProblemSolver solver = new ProblemSolver();
     final Map<String, Integer> file2score = new HashMap<>();

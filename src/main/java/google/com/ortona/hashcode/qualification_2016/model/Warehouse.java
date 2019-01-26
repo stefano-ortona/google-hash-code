@@ -54,8 +54,11 @@ public class Warehouse {
 
     public void releaseProduct(Product p, int quantity) {
         final Integer prevQuantity = product2quantity.get(p);
+        if(prevQuantity==null || prevQuantity<quantity){
+        	throw new RuntimeException("Trying to release more quantity than available!");
+        }
         if (prevQuantity != null) {
-            product2quantity.put(p, Math.max(0, prevQuantity - quantity));
+            product2quantity.put(p, prevQuantity - quantity);
         }
     }
 
