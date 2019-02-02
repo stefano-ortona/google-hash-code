@@ -7,6 +7,8 @@ public class Action {
   private int id; // can be warehouse or order
   private int quantity;
   private Order o;
+  
+  public boolean isLastActionForOrder = false;
 
   public Drone getDrone() {
     return drone;

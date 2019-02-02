@@ -25,15 +25,14 @@ import google.com.ortona.hashcode.qualification_2016.model.Warehouse;
  * @author stefano
  *
  */
-public class ProblemSolver {
+public class ProblemSolver implements GenericSolver{
 
   Logger LOG = LoggerFactory.getLogger(getClass());
 
   int maxTravellingDistance = Integer.MAX_VALUE;
 
   public SolutionContainer process(ProblemContainer problem) {
-	  
-	  maxTravellingDistance = DistanceUtils.computeDistance(0, 0, problem.getNumRows(), problem.getNumColumns());
+    maxTravellingDistance = DistanceUtils.computeDistance(0, 0, problem.getNumRows(), problem.getNumColumns());
 
     int curScore = 0;
 
@@ -120,7 +119,7 @@ public class ProblemSolver {
             // move the drone to the order
             d.setRow(a.getOrder().getRow());
             d.setColumn(a.getOrder().getColumn());
-            if (a.getOrder().isOrderSatisfied()) {
+            if (a.getOrder().isOrderSatisfied() && a.isLastActionForOrder) {
               final int score = (int) Math.ceil((((totTime - curTotTime) + 1) / (totTime * 1.)) * 100);
               LOG.info("I satisfied order '{}' with score '{}'", a.getOrder(), score);
               curScore += score;
@@ -176,6 +175,9 @@ public class ProblemSolver {
       c.setOrder(o);
       product2quantity.put(toPick.getId(), product2quantity.getOrDefault(toPick.getId(), 0) + targetQuantity);
       productActions.add(c);
+      if(o.isOrderSatisfied()){
+        c.isLastActionForOrder = true;
+      }
     }
     return o.isOrderSatisfied();
   }
