@@ -8,6 +8,8 @@ public class Request {
 	int quantity;
 	Endpoint e;
 
+	Cache cacheDesignated;
+
 	public Video getV() {
 		return v;
 	}
@@ -38,6 +40,14 @@ public class Request {
 
 	public void setE(Endpoint e) {
 		this.e = e;
+	}
+
+	public Cache getCacheDesignated() {
+		return cacheDesignated;
+	}
+
+	public void setCacheDesignated(Cache cacheDesignated) {
+		this.cacheDesignated = cacheDesignated;
 	}
 
 	@Override
