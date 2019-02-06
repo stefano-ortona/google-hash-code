@@ -19,8 +19,13 @@ public class Main {
 
 	static Logger LOG = LoggerFactory.getLogger(Main.class);
 
+	//
+	// kittens.in
+	// me_at_the_zoo.in
+	// trending_today.in
+
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-		final String inputFile1 = "example.in";
+		final String inputFile1 = "videos_worth_spreading.in";
 		final String inputFile2 = "";
 		final String inputFile3 = "";
 		final String inputFile4 = "";

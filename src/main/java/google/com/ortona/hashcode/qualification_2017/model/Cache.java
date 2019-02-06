@@ -1,11 +1,12 @@
 package google.com.ortona.hashcode.qualification_2017.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Cache {
 	int id;
 	int size;
-	Set<Video> videos;
+	Set<Video> videos = new HashSet<>();;
 	private final int availableCapacity = 0;
 
 	public int getId() {
