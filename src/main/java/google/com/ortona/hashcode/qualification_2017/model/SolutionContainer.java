@@ -21,5 +21,13 @@ public class SolutionContainer {
 	public void setScore(int score) {
 		this.score = score;
 	}
+	
+	public String toString() {
+		String caches = "";
+		for(Cache cache : this.getCaches()) {
+			caches += " " + cache.toString();
+		}
+		return caches;
+	}
 
 }
