@@ -27,10 +27,10 @@ public class Main {
 		final String inputFile4 = "trending_today.in";
 		final List<String> inputFiles = new LinkedList<>();
 		// inputFiles.add(inputFile1);
-		inputFiles.add(inputFile2);
+		//inputFiles.add(inputFile2);
 		// inputFiles.add(inputFile3);
 		// inputFiles.add(inputFile4);
-		//inputFiles.add(exampleFile);
+		inputFiles.add(exampleFile);
 
 		final ProblemReader reader = new ProblemReader();
 		final ProblemSolver solver = new ProblemSolver();

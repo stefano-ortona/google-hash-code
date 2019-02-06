@@ -56,7 +56,7 @@ public class UtilsFileStreaming {
     }
 
     public int getCacheSize() {
-        return this.getHeader()[5];
+        return this.getHeader()[4];
     }
 
 
@@ -163,7 +163,8 @@ public class UtilsFileStreaming {
 
                 Cache cache = new Cache();
                 cache.setId(cacheId);
-                cache.setSize(this.getCacheSize());
+                int size =this.getCacheSize();
+                cache.setSize(size);
 
                 cache2latency.put(cache, latency);
             }
