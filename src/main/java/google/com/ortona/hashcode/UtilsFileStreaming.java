@@ -163,6 +163,7 @@ public class UtilsFileStreaming {
 
                 Cache cache = new Cache();
                 cache.setId(cacheId);
+                cache.setSize(this.getCacheSize());
 
                 cache2latency.put(cache, latency);
             }
@@ -194,8 +195,6 @@ public class UtilsFileStreaming {
         for (int i = 0; i < dataRaw.length; i ++ ){
             String[] split = splitString(dataRaw[i], " ");
             int[] converted = convertArrayOfStringToArrayOfInt(split);
-System.out.println(converted[0]);
-            System.out.println(converted[1]);
             int videoId= converted[0];
             int endpointId= converted[1];
             int requestsAmount = converted[2];
