@@ -8,11 +8,11 @@ import google.com.ortona.hashcode.qualification_2017.model.SolutionContainer;
 
 public class ProblemSolver {
 
-  Logger LOG = LoggerFactory.getLogger(getClass());
+	Logger LOG = LoggerFactory.getLogger(getClass());
 
-  public SolutionContainer process(ProblemContainer problem) {
-    // TODO
-    return null;
-  }
+	public SolutionContainer process(ProblemContainer problem) {
+		// TODO
+		return null;
+	}
 
 }
