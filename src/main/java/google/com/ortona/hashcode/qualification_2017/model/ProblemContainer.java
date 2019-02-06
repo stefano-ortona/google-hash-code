@@ -12,5 +12,13 @@ public class ProblemContainer {
 	public void setRequest(List<Request> request) {
 		this.request = request;
 	}
+	
+	public String toString() {
+		String requests = "";
+		for(Request request : this.getRequest()) {
+			requests += " " + request.toString();
+		}
+		return requests;
+	}
 
 }

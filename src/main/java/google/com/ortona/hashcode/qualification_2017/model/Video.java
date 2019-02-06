@@ -1,5 +1,7 @@
 package google.com.ortona.hashcode.qualification_2017.model;
 
+import java.util.Map;
+
 public class Video {
 	int id;
 	int size;
@@ -44,6 +46,10 @@ public class Video {
 			return false;
 		}
 		return true;
+	}
+	
+	public String toString() {
+		return this.id + " " + this.size;
 	}
 
 }

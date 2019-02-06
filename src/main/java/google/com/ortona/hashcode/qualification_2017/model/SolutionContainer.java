@@ -1,25 +1,34 @@
 package google.com.ortona.hashcode.qualification_2017.model;
 
-import java.util.List;
+import java.util.Set;
 
 public class SolutionContainer {
-	List<Cache> caches;
-	public int score;
+	Set<Cache> caches;
+	public double score;
 
-	public List<Cache> getCaches() {
+	public Set<Cache> getCaches() {
 		return caches;
 	}
 
-	public void setCaches(List<Cache> caches) {
+	public void setCaches(Set<Cache> caches) {
 		this.caches = caches;
 	}
 
-	public int getScore() {
+	public double getScore() {
 		return score;
 	}
 
-	public void setScore(int score) {
+	public void setScore(double score) {
 		this.score = score;
+	}
+
+	@Override
+	public String toString() {
+		String caches = "";
+		for (final Cache cache : this.getCaches()) {
+			caches += " " + cache.toString();
+		}
+		return caches;
 	}
 
 }
