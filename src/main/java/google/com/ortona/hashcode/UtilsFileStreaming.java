@@ -214,6 +214,8 @@ public class UtilsFileStreaming {
 
         problemContainer.setRequest(this.getRequests());
 
+        this.setProblemContainer(problemContainer);
+
     }
 
 
@@ -254,6 +256,8 @@ public class UtilsFileStreaming {
             //LOGGER.info("Server creation: done");
 
             createRequests();
+
+            createProblemContainer();
 
 
         } catch (Exception e) {
