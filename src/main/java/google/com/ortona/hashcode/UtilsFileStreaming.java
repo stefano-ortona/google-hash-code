@@ -5,6 +5,7 @@ import google.com.ortona.hashcode.qualification_2017.model.Endpoint;
 import google.com.ortona.hashcode.qualification_2017.model.ProblemContainer;
 import google.com.ortona.hashcode.qualification_2017.model.Request;
 import google.com.ortona.hashcode.qualification_2017.model.Video;
+import google.com.ortona.hashcode.qualification_2017.model.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,9 +13,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class UtilsFileStreaming {
 
@@ -28,6 +27,7 @@ public class UtilsFileStreaming {
     // 1. define type of header items and data items
     private int[] header;
     private List<Video> videos;
+    private Map<Integer, Video> id2Video;
     private List<Endpoint> endpoints;
     private List<Request> requests;
     private ProblemContainer problemContainer;
@@ -112,20 +112,50 @@ public class UtilsFileStreaming {
         List<Video> result = new ArrayList<>();
 
         for (int i = 0; i < dataRaw.length; i++) {
-            result.add(new Video(i, dataRaw[i]));
+            Video v =new Video(i, dataRaw[i]);
+            id2Video.put(i, v);
+            result.add(v);
         }
         return result;
     }
 
     public void createEndpoints() {
         int endpointAmount = this.getEndpointsAmount();
+        int index = 1; // row index of the first endpoint - 1
 
         for (int i = 0; i < endpointAmount; i++) {
-            //Endpoint
+
+            Endpoint endpoint = new Endpoint();
+            endpoint.setId(i);
+
+            index++;
+            String[] split = splitString(this.file[index], " ");
+            int[] converted = convertArrayOfStringToArrayOfInt(split);
+
+            endpoint.setDataCenterLatency(converted[0]);
+            int connectedCaches = converted[1];
+
+            Map<Cache, Integer> cache2latency = new HashMap<>();
+
+            for(int j = 0 ; j < connectedCaches; j++ ) {
+
+                index++;
+                String[] details = splitString(this.file[index], " ");
+                int[] detailsConverted = convertArrayOfStringToArrayOfInt(details);
+
+                int cacheId = detailsConverted[0];
+                int latency = detailsConverted[1];
+
+                Cache cache = new Cache();
+                cache.setId(cacheId);
+
+                cache2latency.put(cache, latency);
+
+            }
+
+            endpoint.setCache2latency(cache2latency);
 
         }
-
-
 
     }
 
@@ -173,7 +203,7 @@ public class UtilsFileStreaming {
             //LOGGER.info("Unavailable slot creation: done");
 
             //LOGGER.info("Server creation: start");
-            //createEndponts();
+            createEndpoints();
             //LOGGER.info("Server creation: done");
 
 
