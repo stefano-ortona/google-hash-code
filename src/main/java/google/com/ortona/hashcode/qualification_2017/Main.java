@@ -44,7 +44,7 @@ public class Main {
 			LOG.info("Finished processing file '{}' with score '{}'", oneFile, curScore);
 		}
 		LOG.info("Individual scores: {}", file2score);
-		LOG.info("Tot score: {}", file2score.values().stream().mapToInt(Integer::intValue).sum());
+		LOG.info("Tot score: {}", file2score.values().stream().mapToDouble(Double::doubleValue).sum());
 	}
 
 }
