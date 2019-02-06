@@ -64,7 +64,6 @@ public class UtilsFileStreamingTest {
         Assert.assertEquals(headerExample[2], actualHeaderExample[2]);
     }
 
-
     @Test
     public void testCacheAmount() {
         Assert.assertEquals(headerExample[3], actualHeaderExample[3]);

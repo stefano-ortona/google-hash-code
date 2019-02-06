@@ -20,6 +20,7 @@ public class Main {
 	static Logger LOG = LoggerFactory.getLogger(Main.class);
 
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
+		final String exampleFile = "example.in";
 		final String inputFile1 = "videos_worth_spreading.in";
 		final String inputFile2 = "kittens.in";
 		final String inputFile3 = "me_at_the_zoo.in";
@@ -29,6 +30,7 @@ public class Main {
 		inputFiles.add(inputFile2);
 		// inputFiles.add(inputFile3);
 		// inputFiles.add(inputFile4);
+		//inputFiles.add(exampleFile);
 
 		final ProblemReader reader = new ProblemReader();
 		final ProblemSolver solver = new ProblemSolver();

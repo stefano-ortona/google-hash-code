@@ -2,6 +2,7 @@ package google.com.ortona.hashcode;
 
 
 import google.com.ortona.hashcode.qualification_2017.model.*;
+import org.jruby.RubyProcess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -179,18 +180,22 @@ public class UtilsFileStreaming {
 
     public void createRequests() {
 
-        int index = 1;
+        int index = 2;
         requests = new ArrayList<>();
 
         for (int i = 0; i < this.getEndpoints().size(); i ++){
-            index++;
             index = index + this.getEndpoints().get(i).getCache2latency().size();
+            index++;
         }
 
+        String[] dataRaw = cloneArrayOfString(file, index, file.length);
+
         // index is the first request
-        for (int i = 0; i < file.length; i ++ ){
-            String[] split = splitString(file[i], " ");
+        for (int i = 0; i < dataRaw.length; i ++ ){
+            String[] split = splitString(dataRaw[i], " ");
             int[] converted = convertArrayOfStringToArrayOfInt(split);
+System.out.println(converted[0]);
+            System.out.println(converted[1]);
             int videoId= converted[0];
             int endpointId= converted[1];
             int requestsAmount = converted[2];
