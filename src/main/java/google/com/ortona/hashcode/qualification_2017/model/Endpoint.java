@@ -1,11 +1,12 @@
 package google.com.ortona.hashcode.qualification_2017.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Endpoint {
 	int id;
 	int dataCenterLatency;
-	Map<Cache, Integer> cache2latency;
+	Map<Cache, Integer> cache2latency = new HashMap<>();
 
 	public int getId() {
 		return id;
@@ -30,10 +31,11 @@ public class Endpoint {
 	public void setCache2latency(Map<Cache, Integer> cache2latency) {
 		this.cache2latency = cache2latency;
 	}
-	
+
+	@Override
 	public String toString() {
 		String cache2latency = "";
-		for(Map.Entry<Cache, Integer> entry : this.cache2latency.entrySet()) {
+		for (final Map.Entry<Cache, Integer> entry : this.cache2latency.entrySet()) {
 			cache2latency += " " + entry.getKey().getId() + " " + entry.getValue();
 		}
 		return this.id + " " + cache2latency;
