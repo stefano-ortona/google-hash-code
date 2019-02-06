@@ -6,16 +6,13 @@
 package google.com.ortona.hashcode.qualification_2017;
 
 import google.com.ortona.hashcode.UtilsFileStreaming;
-import google.com.ortona.hashcode.qualification_2016.model.*;
 import google.com.ortona.hashcode.qualification_2017.model.Endpoint;
 import google.com.ortona.hashcode.qualification_2017.model.Video;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class UtilsFileStreamingTest {
@@ -75,20 +72,33 @@ public class UtilsFileStreamingTest {
         Assert.assertEquals(headerExample[4], actualHeaderExample[4]);
     }
 
-    // Videos
+    // Endpoint
     @Test
-    public void testVideos() {
-        //50 50 80 30 110
-//        endpointsActual.add(new Video(0, 50));
-//        endpointsActual.add(new Video(1, 50));
-//        endpointsActual.add(new Video(2, 80));
-//        endpointsActual.add(new Video(3, 30));
-//        endpointsActual.add(new Video(4, 110));
-        testVideos(videosExample, videosActual);
+    public void testEndpoint() {
+        /*
+        1000 3
+        0 100
+        2 200
+        1 300
+        */
+        Endpoint e1 = new Endpoint();
+        e1.setId(0);
+        e1.setDataCenterLatency(1000);
+        endpointsActual.add(e1);
+
+        /*
+        500 0
+         */
+        Endpoint e2 = new Endpoint();
+        e2.setId(0);
+        e2.setDataCenterLatency(1000);
+        endpointsActual.add(e2);
+
+
+        testEnd(endpointsExample, endpointsActual);
     }
 
     // Endpoints
-
 
 
     // ============================ utils
@@ -99,13 +109,12 @@ public class UtilsFileStreamingTest {
         }
     }
 
-    private void testVideos(List<Video> videos, List<Video> actual) {
+    private void testEnd(List<Endpoint> endpoints, List<Endpoint> actual) {
 
-        for (int i = 0; i < videos.size(); i++) {
-            Assert.assertEquals(videos.get(i), actual.get(i));
+        for (int i = 0; i < endpoints.size(); i++) {
+            Assert.assertEquals(endpoints.get(i), actual.get(i));
         }
     }
-
 
 
     private void testDataLineByLine(String[] actualData, char[][] data) {

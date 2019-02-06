@@ -32,12 +32,11 @@ public class Endpoint {
 		this.cache2latency = cache2latency;
 	}
 
-	@Override
-	public String toString() {
-		String cache2latency = "";
-		for (final Map.Entry<Cache, Integer> entry : this.cache2latency.entrySet()) {
-			cache2latency += " " + entry.getKey().getId() + " " + entry.getValue();
-		}
-		return this.id + " " + cache2latency;
-	}
+    public String toString() {
+        String cache2latency = "";
+        for (final Map.Entry<Cache, Integer> entry : this.cache2latency.entrySet()) {
+            cache2latency += " " + entry.getKey().getId() + " " + entry.getValue();
+        }
+        return this.id + " " + cache2latency;
+    }
 }

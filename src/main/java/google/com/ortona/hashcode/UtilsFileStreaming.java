@@ -29,6 +29,7 @@ public class UtilsFileStreaming {
     private List<Video> videos;
     private Map<Integer, Video> id2Video;
     private List<Endpoint> endpoints;
+    private Map<Integer, Endpoint> id2Endpoint;
     private List<Request> requests;
     private ProblemContainer problemContainer;
 
@@ -102,14 +103,17 @@ public class UtilsFileStreaming {
         String[] file = this.getFile();
         String dataVideos = file[1];
         String[] split = splitString(dataVideos, " ");
-        int[] converted = convertArrayOfStringToArrayOfInt(split);
 
-        this.setVideos(convertArrayOfStringToListOfVideo(converted));
+        int[] converted = convertArrayOfStringToArrayOfInt(split);
+        List<Video> videos = convertArrayOfStringToListOfVideo(converted);
+
+        this.setVideos(videos);
     }
 
     public List<Video> convertArrayOfStringToListOfVideo(int[] dataRaw) {
 
         List<Video> result = new ArrayList<>();
+        id2Video = new HashMap<>();
 
         for (int i = 0; i < dataRaw.length; i++) {
             Video v =new Video(i, dataRaw[i]);
@@ -122,6 +126,9 @@ public class UtilsFileStreaming {
     public void createEndpoints() {
         int endpointAmount = this.getEndpointsAmount();
         int index = 1; // row index of the first endpoint - 1
+
+        id2Endpoint = new HashMap<>();
+        endpoints =new ArrayList<>();
 
         for (int i = 0; i < endpointAmount; i++) {
 
@@ -153,9 +160,21 @@ public class UtilsFileStreaming {
 
             }
 
+            System.out.println(cache2latency.size());
+            System.out.println(cache2latency.size());
+            System.out.println(cache2latency.size());
+            System.out.println(cache2latency.size());
+            System.out.println(cache2latency.size());
+            System.out.println(cache2latency.size());
+
             endpoint.setCache2latency(cache2latency);
 
+            endpoints.add(endpoint);
+            id2Endpoint.put(endpoint.getId(), endpoint);
+
         }
+
+        this.setEndpoints(endpoints);
 
     }
 
