@@ -147,6 +147,7 @@ public class UtilsFileStreaming {
             for(int j = 0 ; j < connectedCaches; j++ ) {
 
                 index++;
+
                 String[] details = splitString(this.file[index], " ");
                 int[] detailsConverted = convertArrayOfStringToArrayOfInt(details);
 
@@ -157,15 +158,7 @@ public class UtilsFileStreaming {
                 cache.setId(cacheId);
 
                 cache2latency.put(cache, latency);
-
             }
-
-            System.out.println(cache2latency.size());
-            System.out.println(cache2latency.size());
-            System.out.println(cache2latency.size());
-            System.out.println(cache2latency.size());
-            System.out.println(cache2latency.size());
-            System.out.println(cache2latency.size());
 
             endpoint.setCache2latency(cache2latency);
 

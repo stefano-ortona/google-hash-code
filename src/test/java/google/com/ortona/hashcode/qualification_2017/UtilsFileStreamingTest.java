@@ -6,13 +6,16 @@
 package google.com.ortona.hashcode.qualification_2017;
 
 import google.com.ortona.hashcode.UtilsFileStreaming;
+import google.com.ortona.hashcode.qualification_2017.model.Cache;
 import google.com.ortona.hashcode.qualification_2017.model.Endpoint;
 import google.com.ortona.hashcode.qualification_2017.model.Video;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class UtilsFileStreamingTest {
@@ -85,15 +88,28 @@ public class UtilsFileStreamingTest {
         e1.setId(0);
         e1.setDataCenterLatency(1000);
         endpointsActual.add(e1);
+        Map<Cache, Integer> cache2latency = new HashMap<>();
+
+        Cache cache1 = new Cache();
+        cache1.setId(0);
+        cache2latency.put(cache1, 100);
+
+        Cache cache2 = new Cache();
+        cache2.setId(1);
+        cache2latency.put(cache2, 200);
+
+        Cache cache3 = new Cache();
+        cache3.setId(2);
+        cache2latency.put(cache3, 300);
+        e1.setCache2latency(cache2latency);
 
         /*
         500 0
          */
         Endpoint e2 = new Endpoint();
-        e2.setId(0);
-        e2.setDataCenterLatency(1000);
+        e2.setId(1);
+        e2.setDataCenterLatency(500);
         endpointsActual.add(e2);
-
 
         testEnd(endpointsExample, endpointsActual);
     }
