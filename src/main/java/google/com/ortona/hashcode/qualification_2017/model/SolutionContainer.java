@@ -4,7 +4,7 @@ import java.util.Set;
 
 public class SolutionContainer {
 	Set<Cache> caches;
-	public int score;
+	public double score;
 
 	public Set<Cache> getCaches() {
 		return caches;
@@ -14,17 +14,18 @@ public class SolutionContainer {
 		this.caches = caches;
 	}
 
-	public int getScore() {
+	public double getScore() {
 		return score;
 	}
 
 	public void setScore(int score) {
 		this.score = score;
 	}
-	
+
+	@Override
 	public String toString() {
 		String caches = "";
-		for(Cache cache : this.getCaches()) {
+		for (final Cache cache : this.getCaches()) {
 			caches += " " + cache.toString();
 		}
 		return caches;
