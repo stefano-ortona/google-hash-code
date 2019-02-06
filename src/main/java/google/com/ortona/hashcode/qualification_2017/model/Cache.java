@@ -48,7 +48,7 @@ public class Cache {
 		for (final Video video : this.getVideos()) {
 			videos += " " + video.getId();
 		}
-		return this.id + " " + videos;
+		return this.id + videos;
 	}
 
 	@Override
