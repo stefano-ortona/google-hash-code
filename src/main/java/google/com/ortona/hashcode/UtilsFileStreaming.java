@@ -1,11 +1,7 @@
 package google.com.ortona.hashcode;
 
 
-import google.com.ortona.hashcode.qualification_2017.model.Endpoint;
-import google.com.ortona.hashcode.qualification_2017.model.ProblemContainer;
-import google.com.ortona.hashcode.qualification_2017.model.Request;
-import google.com.ortona.hashcode.qualification_2017.model.Video;
-import google.com.ortona.hashcode.qualification_2017.model.Cache;
+import google.com.ortona.hashcode.qualification_2017.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,15 +38,25 @@ public class UtilsFileStreaming {
         return header;
     }
 
-    public int getVideosAmount() { return this.getHeader()[0];}
+    public int getVideosAmount() {
+        return this.getHeader()[0];
+    }
 
-    public int getEndpointsAmount() { return this.getHeader()[1];}
+    public int getEndpointsAmount() {
+        return this.getHeader()[1];
+    }
 
-    public int getRequestsAmount() { return this.getHeader()[2];}
+    public int getRequestsAmount() {
+        return this.getHeader()[2];
+    }
 
-    public int getCachesAmount() { return this.getHeader()[3];}
+    public int getCachesAmount() {
+        return this.getHeader()[3];
+    }
 
-    public int getCacheSize() { return this.getHeader()[5];}
+    public int getCacheSize() {
+        return this.getHeader()[5];
+    }
 
 
     public List<Video> getVideos() {
@@ -116,7 +122,7 @@ public class UtilsFileStreaming {
         id2Video = new HashMap<>();
 
         for (int i = 0; i < dataRaw.length; i++) {
-            Video v =new Video(i, dataRaw[i]);
+            Video v = new Video(i, dataRaw[i]);
             id2Video.put(i, v);
             result.add(v);
         }
@@ -128,7 +134,7 @@ public class UtilsFileStreaming {
         int index = 1; // row index of the first endpoint - 1
 
         id2Endpoint = new HashMap<>();
-        endpoints =new ArrayList<>();
+        endpoints = new ArrayList<>();
 
         for (int i = 0; i < endpointAmount; i++) {
 
@@ -144,7 +150,7 @@ public class UtilsFileStreaming {
 
             Map<Cache, Integer> cache2latency = new HashMap<>();
 
-            for(int j = 0 ; j < connectedCaches; j++ ) {
+            for (int j = 0; j < connectedCaches; j++) {
 
                 index++;
 
@@ -173,13 +179,13 @@ public class UtilsFileStreaming {
 
     public void createRequests() {
 
+
+
     }
 
     public void createProblemContainer() {
 
     }
-
-
 
 
     // ====== Do not change below here

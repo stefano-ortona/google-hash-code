@@ -2,13 +2,14 @@ package google.com.ortona.hashcode.qualification_2017.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Endpoint {
 	int id;
 	int dataCenterLatency;
 	Map<Cache, Integer> cache2latency = new HashMap<>();
 
-	public int getId() {
+    public int getId() {
 		return id;
 	}
 
@@ -38,5 +39,19 @@ public class Endpoint {
             cache2latency += " " + entry.getKey().getId() + " " + entry.getValue();
         }
         return this.id + " " + cache2latency;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Endpoint endpoint = (Endpoint) o;
+        return id == endpoint.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
