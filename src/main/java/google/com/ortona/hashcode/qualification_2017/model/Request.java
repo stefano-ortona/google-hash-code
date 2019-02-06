@@ -8,7 +8,9 @@ public class Request {
 	int quantity;
 	Endpoint e;
 
+	// internal
 	Cache cacheDesignated;
+	int score;
 
 	public Video getV() {
 		return v;
@@ -48,6 +50,14 @@ public class Request {
 
 	public void setCacheDesignated(Cache cacheDesignated) {
 		this.cacheDesignated = cacheDesignated;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	@Override

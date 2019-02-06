@@ -2,6 +2,7 @@ package google.com.ortona.hashcode.qualification_2017.logic;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 import google.com.ortona.hashcode.qualification_2017.model.Cache;
 import google.com.ortona.hashcode.qualification_2017.model.Pair;
@@ -63,23 +64,22 @@ public class GetNextBestRequest {
 
     public void orderedRequestList(List<Request> requestList) {
 
-        Collections.sort(requestList, new Comparator<Request>() {
-            @Override
-            public int compare(Request o1, Request o2) {
-                final int score1 = calculateBestRequestScore(o1.getV(), o1.getQuantity(), o1.getE().getDataCenterLatency(), o1.getE().getCache2latency());
-                final int score2 = calculateBestRequestScore(o2.getV(), o2.getQuantity(), o2.getE().getDataCenterLatency(), o2.getE().getCache2latency());
-                return 0;
-            }
-        });
+        requestList.forEach(request -> calculateBestRequestScore(request, request.getE().getCache2latency()));
+
+        requestList.sort((o1, o2) -> o2.getScore() - o1.getScore());
     }
 
-    private int calculateBestRequestScore(Video video, int quantity, int dataCenterLatency, Map<Cache, Integer> cache2latency) {
+    private int calculateBestRequestScore(Request request, Map<Cache, Integer> cache2latency) {
         int bestScore = 0;
 
         for (Map.Entry<Cache, Integer> cacheIntegerEntry : cache2latency.entrySet()) {
-            int curScore = calculateScore(quantity, dataCenterLatency, cacheIntegerEntry.getKey().getAvailableCapacity());
-            if (cacheIntegerEntry.getKey().getAvailableCapacity() >= video.getSize()) {
+            int curScore = calculateScore(request.getQuantity()
+                    , request.getE().getDataCenterLatency()
+                    , cacheIntegerEntry.getKey().getAvailableCapacity());
+            if (cacheIntegerEntry.getKey().getAvailableCapacity() >= request.getV().getSize()) {
                 bestScore = Math.max(bestScore, curScore);
+                request.setCacheDesignated(cacheIntegerEntry.getKey());
+                request.setScore(bestScore);
             }
         }
 
@@ -95,9 +95,9 @@ public class GetNextBestRequest {
      * Internal methods
      */
 
-	private boolean isCacheLargeEnough(Request request, Map.Entry<Cache, Integer> cache2LatencyEntry) {
-		return cache2LatencyEntry.getKey().getAvailableCapacity() >= request.getV().getSize();
-	}
+    private boolean isCacheLargeEnough(Request request, Map.Entry<Cache, Integer> cache2LatencyEntry) {
+        return cache2LatencyEntry.getKey().getAvailableCapacity() >= request.getV().getSize();
+    }
 
     private int calculateScore(int quantityRequest, int endpointLatency, int cacheLatency) {
         return quantityRequest * (endpointLatency - cacheLatency);
