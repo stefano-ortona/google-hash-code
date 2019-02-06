@@ -6,8 +6,8 @@ import java.util.Set;
 public class Cache {
 	int id;
 	int size;
-	Set<Video> videos = new HashSet<>();;
-	private final int availableCapacity = 0;
+	Set<Video> videos = new HashSet<>();
+	private int availableCapacity = 0;
 
 	public int getId() {
 		return id;
@@ -23,6 +23,7 @@ public class Cache {
 
 	public void setSize(int size) {
 		this.size = size;
+		this.availableCapacity = size;
 	}
 
 	public Set<Video> getVideos() {
@@ -38,6 +39,7 @@ public class Cache {
 			throw new RuntimeException("Video is too big or already present!");
 		}
 		videos.add(v);
+		availableCapacity -= v.getSize();
 	}
 
 	@Override
