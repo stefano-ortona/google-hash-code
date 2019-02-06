@@ -19,21 +19,16 @@ public class Main {
 
 	static Logger LOG = LoggerFactory.getLogger(Main.class);
 
-	//
-	// kittens.in
-	// me_at_the_zoo.in
-	// trending_today.in
-
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
 		final String inputFile1 = "videos_worth_spreading.in";
-		final String inputFile2 = "";
-		final String inputFile3 = "";
-		final String inputFile4 = "";
+		final String inputFile2 = "kittens.in";
+		final String inputFile3 = "me_at_the_zoo.in";
+		final String inputFile4 = "trending_today.in";
 		final List<String> inputFiles = new LinkedList<>();
-		inputFiles.add(inputFile1);
+		// inputFiles.add(inputFile1);
 		inputFiles.add(inputFile2);
-		inputFiles.add(inputFile3);
-		inputFiles.add(inputFile4);
+		// inputFiles.add(inputFile3);
+		// inputFiles.add(inputFile4);
 
 		final ProblemReader reader = new ProblemReader();
 		final ProblemSolver solver = new ProblemSolver();
