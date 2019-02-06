@@ -22,4 +22,6 @@ public class SolutionContainer {
     this.actions = actions;
   }
 
+  public int score;
+
 }

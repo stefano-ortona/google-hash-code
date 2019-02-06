@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Lists;
 
 import google.com.ortona.hashcode.qualification_2016.model.Action;
 import google.com.ortona.hashcode.qualification_2016.model.BestWarehouseResult;
@@ -22,13 +25,14 @@ import google.com.ortona.hashcode.qualification_2016.model.Warehouse;
  * @author stefano
  *
  */
-public class ProblemSolver {
+public class ProblemSolver implements GenericSolver{
 
   Logger LOG = LoggerFactory.getLogger(getClass());
 
-  final int maxTravellingDistance = Integer.MAX_VALUE;
+  int maxTravellingDistance = Integer.MAX_VALUE;
 
   public SolutionContainer process(ProblemContainer problem) {
+    maxTravellingDistance = DistanceUtils.computeDistance(0, 0, problem.getNumRows(), problem.getNumColumns());
 
     int curScore = 0;
 
@@ -39,8 +43,13 @@ public class ProblemSolver {
     final List<Action> allActions = new ArrayList<>();
 
     for (int i = 0; (i < totTime) && !problem.getOrders().isEmpty(); i++) {
-      LOG.info("Iteration at time: {}", i);
+      LOG.info("Iteration at time: {} (out of {})", i, totTime);
       int droneAvailable = 0;
+      final AtomicInteger minWeight = new AtomicInteger(Integer.MAX_VALUE);
+      problem.getOrders().forEach(o -> o.getProducts2quantity().keySet().forEach(p -> {
+        minWeight.set(Math.min(p.getWeight(), minWeight.get()));
+      }));
+      int nextAvTime = Integer.MAX_VALUE;
       for (final Drone d : problem.getDrones()) {
         if (d.getNextTimeAvailable() <= i) {
           droneAvailable++;
@@ -55,16 +64,18 @@ public class ProblemSolver {
           if (orderCompleted) {
             problem.getOrders().remove(res.getOrder());
           }
-          final List<Order> proximityOrders = warehousePicker.sortOrderListByDrone(problem.getOrders(), d);
+          final List<Order> proximityOrders = warehousePicker.sortOrderByDroneDistanceAndCompleteness(problem.getOrders(), d,res.getWarehouse());
           final List<Order> completedOrdered = new ArrayList<>();
           for (final Order oneOrder : proximityOrders) {
             // check order is not too far away from warehouse
-            if (DistanceUtils.computeDistance(res.getWarehouse().getRow(), res.getWarehouse().getColumn(),
-                oneOrder.getRow(), oneOrder.getColumn()) > maxTravellingDistance) {
+            if ((DistanceUtils.computeDistance(res.getWarehouse().getRow(), res.getWarehouse().getColumn(),
+                oneOrder.getRow(), oneOrder.getColumn()) > maxTravellingDistance)
+                || (d.getAvailableCapacity() < minWeight.get())) {
               // stop here as all other orders are too far away, let other drones deal with it
               break;
             }
-            for (final Product p : oneOrder.getProducts2quantity().keySet()) {
+            final List<Product> allCurProducts = Lists.newArrayList(oneOrder.getProducts2quantity().keySet());
+            for (final Product p : allCurProducts) {
               final boolean isOrderCompleted = processDrone(d, res.getWarehouse(), oneOrder, p, loadProducts,
                   deliveringActions);
               if (isOrderCompleted) {
@@ -108,7 +119,7 @@ public class ProblemSolver {
             // move the drone to the order
             d.setRow(a.getOrder().getRow());
             d.setColumn(a.getOrder().getColumn());
-            if (a.getOrder().isOrderSatisfied()) {
+            if (a.getOrder().isOrderSatisfied() && a.isLastActionForOrder) {
               final int score = (int) Math.ceil((((totTime - curTotTime) + 1) / (totTime * 1.)) * 100);
               LOG.info("I satisfied order '{}' with score '{}'", a.getOrder(), score);
               curScore += score;
@@ -116,13 +127,20 @@ public class ProblemSolver {
 
           }
           d.setNextTimeAvailable(curTotTime);
+          nextAvTime = Math.min(nextAvTime, curTotTime);
+          // if orders are finished, break it here
+          if (problem.getOrders().isEmpty()) {
+            break;
+          }
         }
       }
-      LOG.info("Iteration completed with {} drones assigned, {} orders left to complete", droneAvailable,
-          problem.getOrders().size());
+      LOG.info("Iteration completed with {} drones assigned, curTotScore={}, {} orders left to complete",
+          droneAvailable, curScore, problem.getOrders().size());
+      i = Math.min(nextAvTime,totTime);
     }
     final SolutionContainer c = new SolutionContainer();
     c.setActions(allActions);
+    c.score = curScore;
     LOG.info("Computation ended with total score: '{}'", curScore);
     return c;
   }
@@ -157,6 +175,9 @@ public class ProblemSolver {
       c.setOrder(o);
       product2quantity.put(toPick.getId(), product2quantity.getOrDefault(toPick.getId(), 0) + targetQuantity);
       productActions.add(c);
+      if(o.isOrderSatisfied()){
+        c.isLastActionForOrder = true;
+      }
     }
     return o.isOrderSatisfied();
   }
@@ -171,7 +192,7 @@ public class ProblemSolver {
     int warehouseQuantity = 0;
     for (final Product p : w.getProduct2quantity().keySet()) {
       if (p.getId() == toPick.getId()) {
-        warehouseQuantity = o.getProducts2quantity().get(p);
+        warehouseQuantity = w.getProduct2quantity().get(p);
       }
     }
     final int targetQuantity = Math.min(productQuantity, warehouseQuantity);

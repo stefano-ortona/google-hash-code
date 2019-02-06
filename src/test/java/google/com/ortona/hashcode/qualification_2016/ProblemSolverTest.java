@@ -114,13 +114,13 @@ public class ProblemSolverTest {
     problem.setWarehouses(warehouses);
     final SolutionContainer solution = SOLVER.process(problem);
     try {
-			ProblemWriter.writeProblem("testOutput.txt", solution);
-		} catch (FileNotFoundException e) {
-			System.out.println("FileNotFoundException");
-		} catch (UnsupportedEncodingException e) {
-			System.out.println("UnsupportedEncodingException");
-		}
-    
+      ProblemWriter.writeProblem("testOutput.txt", solution);
+    } catch (final FileNotFoundException e) {
+      System.out.println("FileNotFoundException");
+    } catch (final UnsupportedEncodingException e) {
+      System.out.println("UnsupportedEncodingException");
+    }
+
     Assert.assertNotNull(solution);
     int counter = 0;
 
@@ -134,6 +134,11 @@ public class ProblemSolverTest {
       counter++;
       System.out.println("----------");
     }
+  }
+
+  @Test
+  public void testEmptyOrders() {
+
   }
 
 }
