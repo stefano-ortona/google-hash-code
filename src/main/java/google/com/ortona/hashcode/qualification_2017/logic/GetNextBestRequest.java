@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import google.com.ortona.hashcode.qualification_2017.model.Cache;
 import google.com.ortona.hashcode.qualification_2017.model.Request;
+import google.com.ortona.hashcode.qualification_2017.model.Video;
 
 public class GetNextBestRequest {
 
@@ -26,7 +27,6 @@ public class GetNextBestRequest {
                         updateResult(result, request, cache);
                     }
                 }));
-
         return result.isEmpty() ? null : result;
     }
 
