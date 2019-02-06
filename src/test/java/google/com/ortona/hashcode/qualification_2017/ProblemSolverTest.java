@@ -1,7 +1,9 @@
 package google.com.ortona.hashcode.qualification_2017;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -42,8 +44,12 @@ public class ProblemSolverTest {
   	request.setId(0);
   	request.setE(e);
   	request.setQuantity(1);
+  	
+  	List<Request> requests = new ArrayList<Request>();
+  	requests.add(request);
  
     final ProblemContainer problem = new ProblemContainer();
+    problem.setRequest(requests);
     final SolutionContainer solution = SOLVER.process(problem);
     int counter = 0;
 
