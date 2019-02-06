@@ -179,8 +179,7 @@ public class UtilsFileStreaming {
 
     public void createRequests() {
 
-        int fixed = 1; // header + videos
-        int index = fixed;
+        int index = 1;
         requests = new ArrayList<>();
 
         for (int i = 0; i < this.getEndpoints().size(); i ++){
@@ -189,8 +188,6 @@ public class UtilsFileStreaming {
         }
 
         // index is the first request
-        String[] dataRaw = cloneArrayOfString(file, index, file.length);
-
         for (int i = 0; i < file.length; i ++ ){
             String[] split = splitString(file[i], " ");
             int[] converted = convertArrayOfStringToArrayOfInt(split);
@@ -209,11 +206,13 @@ public class UtilsFileStreaming {
 
         this.setRequests(requests);
 
-
-
     }
 
     public void createProblemContainer() {
+
+        ProblemContainer problemContainer = new ProblemContainer();
+
+        problemContainer.setRequest(this.getRequests());
 
     }
 
