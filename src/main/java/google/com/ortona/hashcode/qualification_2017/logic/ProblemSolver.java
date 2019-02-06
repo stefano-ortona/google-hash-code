@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +24,13 @@ public class ProblemSolver {
 
 	public SolutionContainer process(ProblemContainer problem) {
 		final List<Request> allRequests = problem.getRequest();
-		int totScore = 0;
+		final AtomicInteger totScore = new AtomicInteger();
 		final Set<Cache> usedCaches = new HashSet<>();
 		final AtomicDouble allReqSize = new AtomicDouble(0);
 		allRequests.forEach(r -> allReqSize.addAndGet(r.getQuantity()));
 		while (!allRequests.isEmpty()) {
 			// get next best request
-			final Map<Request, Cache> best = bRequest.getNextRequest(allRequests);
+			final Map<Request, Cache> best = bRequest.getNextRequest(allRequests, totScore);
 			if ((best == null) || best.isEmpty()) {
 				LOG.info("Finished processing as there are no more caches available!");
 				break;
@@ -40,14 +41,14 @@ public class ProblemSolver {
 			allRequests.remove(r);
 			LOG.info("Improved request '{}' for video '{}' with score '{}'. Remaining {} requests", r.getId(), r.getV(),
 					curScore, allRequests.size());
-			totScore += curScore;
+			totScore.addAndGet(curScore);
 			// add to the cache
 			c.addVideo(r.getV());
 			// add used cache
 			usedCaches.add(c);
 		}
 		final SolutionContainer sContainer = new SolutionContainer();
-		sContainer.setScore((totScore / allReqSize.get()) * 1000);
+		sContainer.setScore((totScore.get() / allReqSize.get()) * 1000);
 		sContainer.setCaches(usedCaches);
 		return sContainer;
 	}

@@ -1,6 +1,7 @@
 package google.com.ortona.hashcode.qualification_2017.logic;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -12,13 +13,16 @@ import google.com.ortona.hashcode.qualification_2017.model.Video;
 
 public class GetNextBestRequest {
 
-	public Map<Request, Cache> getNextRequest(List<Request> requests) {
+	public Map<Request, Cache> getNextRequest(List<Request> requests, AtomicInteger curScore) {
 
 		final Map<Request, Cache> result = new HashMap<>();
 
 		final AtomicInteger scoreBest = new AtomicInteger(0);
 
-		requests.forEach(request -> {
+		final Iterator<Request> requestIt = requests.iterator();
+
+		while (requestIt.hasNext()) {
+			final Request request = requestIt.next();
 
 			final Pair<Cache, Integer> currentResult = new Pair<>();
 
@@ -44,9 +48,17 @@ public class GetNextBestRequest {
 						scoreBest.set(currentResult.getValue());
 					}
 				}
+			} else {
+				// if request already satisfied, need to increment the score
+				if ((currentResult.getKey() != null) && currentResult.getKey().getVideos().contains(request.getV())) {
+					curScore.addAndGet(calculateScore(request.getQuantity(), request.getE().getDataCenterLatency(),
+							request.getE().getCache2latency().get(currentResult.getKey())));
+				}
+				// request is already satisfied or cannot be satisfied anymore
+				requestIt.remove();
 			}
 
-		});
+		}
 
 		return result.isEmpty() ? null : result; // TODO: 2019-02-06 attenzione a oggetto fake
 	}
@@ -69,7 +81,7 @@ public class GetNextBestRequest {
 		 * Optional<Map.Entry<Cache, Integer>> otherCache2LatencyWithVideo =
 		 * cache2latency.entrySet() .stream() .filter(new Predicate<Map.Entry<Cache,
 		 * Integer>>() {
-		 * 
+		 *
 		 * @Override public boolean test(Map.Entry<Cache, Integer> cacheIntegerEntry) {
 		 * return cacheIntegerEntry.getKey().getVideos().contains(video) &&
 		 * !cacheIntegerEntry.getKey().equals(cacheBest); } }) .findFirst();
