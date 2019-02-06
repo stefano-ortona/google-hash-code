@@ -254,23 +254,16 @@ public class ProblemSolverTest {
 	  for (Cache cache: solution.getCaches()) {
 	  	System.out.println(counter + " Cache: " + cache.toString());
 	  }
-	  Assert.assertEquals(3, solution.getCaches().size());
-	  Assert.assertEquals(462500, solution.getScore(), 0);
+	  Assert.assertEquals(1, solution.getCaches().size());
+	  Assert.assertEquals(562500, solution.getScore(), 0);
 	  for (Cache cache: solution.getCaches()) {
 	    System.out.print(counter + " Cache: " + cache.toString());
 	    counter++;
 	    if (cache.getId() == 0) {
-	    	Assert.assertEquals(cache.getVideos().size(), 1);
-	    	Assert.assertTrue(cache.getVideos().contains(v2));
-	    } else if (cache.getId() == 1) {
 	    	Assert.assertEquals(cache.getVideos().size(), 2);
+	    	Assert.assertTrue(cache.getVideos().contains(v1));
 	    	Assert.assertTrue(cache.getVideos().contains(v3));
-	    	Assert.assertTrue(cache.getVideos().contains(v1));
-	    } else if (cache.getId() == 2) {
-	    	Assert.assertEquals(cache.getVideos().size(), 2);
-	    	Assert.assertTrue(cache.getVideos().contains(v0));
-	    	Assert.assertTrue(cache.getVideos().contains(v1));
-	    }
+	    } 
 	    System.out.println("----------");
 	  }
 	}
