@@ -17,34 +17,34 @@ import google.com.ortona.hashcode.qualification_2017.model.SolutionContainer;
 
 public class Main {
 
-  static Logger LOG = LoggerFactory.getLogger(Main.class);
+	static Logger LOG = LoggerFactory.getLogger(Main.class);
 
-  public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-    final String inputFile1 = "example.in";
-    final String inputFile2 = "";
-    final String inputFile3 = "";
-    final String inputFile4 = "";
-    final List<String> inputFiles = new LinkedList<>();
-    inputFiles.add(inputFile1);
-    inputFiles.add(inputFile2);
-    inputFiles.add(inputFile3);
-    inputFiles.add(inputFile4);
+	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
+		final String inputFile1 = "example.in";
+		final String inputFile2 = "";
+		final String inputFile3 = "";
+		final String inputFile4 = "";
+		final List<String> inputFiles = new LinkedList<>();
+		inputFiles.add(inputFile1);
+		inputFiles.add(inputFile2);
+		inputFiles.add(inputFile3);
+		inputFiles.add(inputFile4);
 
-    final ProblemReader reader = new ProblemReader();
-    final ProblemSolver solver = new ProblemSolver();
-    final ProblemWriter writer = new ProblemWriter();
+		final ProblemReader reader = new ProblemReader();
+		final ProblemSolver solver = new ProblemSolver();
+		final ProblemWriter writer = new ProblemWriter();
 
-    final Map<String, Integer> file2score = new HashMap<>();
-    for (final String oneFile : inputFiles) {
-      LOG.info("Processing file: '{}'", oneFile);
-      final SolutionContainer solution = solver.process(reader.readProblem(oneFile));
-      final int curScore = solution.score;
-      file2score.put(oneFile, curScore);
-      writer.writeProblem(oneFile + "_output", solution);
-      LOG.info("Finished processing file '{}' with score '{}'", oneFile, curScore);
-    }
-    LOG.info("Individual scores: {}", file2score);
-    LOG.info("Tot score: {}", file2score.values().stream().mapToInt(Integer::intValue).sum());
-  }
+		final Map<String, Double> file2score = new HashMap<>();
+		for (final String oneFile : inputFiles) {
+			LOG.info("Processing file: '{}'", oneFile);
+			final SolutionContainer solution = solver.process(reader.readProblem(oneFile));
+			final double curScore = solution.score;
+			file2score.put(oneFile, curScore);
+			writer.writeProblem(oneFile + "_output", solution);
+			LOG.info("Finished processing file '{}' with score '{}'", oneFile, curScore);
+		}
+		LOG.info("Individual scores: {}", file2score);
+		LOG.info("Tot score: {}", file2score.values().stream().mapToInt(Integer::intValue).sum());
+	}
 
 }
