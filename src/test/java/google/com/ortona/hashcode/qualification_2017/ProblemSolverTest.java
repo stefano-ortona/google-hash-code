@@ -154,7 +154,7 @@ public class ProblemSolverTest {
 	
 	  System.out.println("TEST 3 PRINT %%% ");
 	  Assert.assertEquals(1, solution.getCaches().size());
-	  Assert.assertEquals(18, solution.getScore(), 0);
+	  Assert.assertEquals(6000, solution.getScore(), 0);
 	  for (Cache cache: solution.getCaches()) {
 	    System.out.print(counter + " Cache: " + cache.toString());
 	    counter++;
