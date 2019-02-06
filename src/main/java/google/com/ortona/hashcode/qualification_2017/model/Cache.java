@@ -38,5 +38,13 @@ public class Cache {
 		}
 		videos.add(v);
 	}
+	
+	public String toString() {
+		String videos = "";
+		for(Video video: this.getVideos()) {
+			videos += " " + video.getId();
+		}
+		return this.id + " " + videos;
+	}
 
 }

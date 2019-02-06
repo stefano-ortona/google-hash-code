@@ -1,5 +1,7 @@
 package google.com.ortona.hashcode.qualification_2017.model;
 
+import java.util.Map;
+
 public class Request {
 	int id;
 	Video v;
@@ -37,5 +39,8 @@ public class Request {
 	public void setE(Endpoint e) {
 		this.e = e;
 	}
-
+	
+	public String toString() {
+		return this.id + " " + this.getQuantity() + " " + this.getV().getId() + " " + this.getE().getId();
+	}
 }
