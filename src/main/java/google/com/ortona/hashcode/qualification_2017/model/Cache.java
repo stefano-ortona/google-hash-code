@@ -17,8 +17,12 @@ public class Cache {
 		this.id = id;
 	}
 
-	public int getSize() {
+	private int getSize() {
 		return size;
+	}
+
+	public int getAvailableCapacity() {
+		return this.availableCapacity;
 	}
 
 	public void setSize(int size) {

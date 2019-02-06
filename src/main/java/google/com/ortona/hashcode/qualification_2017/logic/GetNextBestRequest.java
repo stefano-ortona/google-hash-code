@@ -68,7 +68,7 @@ public class GetNextBestRequest {
 	 */
 
 	private boolean isCacheLargeEnough(Request request, Map.Entry<Cache, Integer> cache2LatencyEntry) {
-		return cache2LatencyEntry.getKey().getSize() >= request.getV().getSize();
+		return cache2LatencyEntry.getKey().getAvailableCapacity() >= request.getV().getSize();
 	}
 
 	private int calculateScore(int quantityRequest, int endpointLatency, int cacheLatency) {
