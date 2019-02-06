@@ -112,8 +112,8 @@ public class ProblemSolverTest {
 		cache2latency.put(c, 1);
 		
 		final Cache c2 = new Cache();
-		c.setId(1);
-		c.setSize(1);
+		c2.setId(1);
+		c2.setSize(1);
 		final Map<Cache, Integer> cache2latency2 = new HashMap<Cache,Integer>();
 		cache2latency.put(c2, 1);
 		
@@ -124,7 +124,7 @@ public class ProblemSolverTest {
 		
 		final Endpoint e2 = new Endpoint();
 		e2.setId(1);
-		e.setCache2latency(cache2latency2);
+		e2.setCache2latency(cache2latency2);
 		e2.setDataCenterLatency(10);
 		
 		final Video v = new Video();
