@@ -179,6 +179,36 @@ public class UtilsFileStreaming {
 
     public void createRequests() {
 
+        int fixed = 1; // header + videos
+        int index = fixed;
+        requests = new ArrayList<>();
+
+        for (int i = 0; i < this.getEndpoints().size(); i ++){
+            index++;
+            index = index + this.getEndpoints().get(i).getCache2latency().size();
+        }
+
+        // index is the first request
+        String[] dataRaw = cloneArrayOfString(file, index, file.length);
+
+        for (int i = 0; i < file.length; i ++ ){
+            String[] split = splitString(file[i], " ");
+            int[] converted = convertArrayOfStringToArrayOfInt(split);
+            int videoId= converted[0];
+            int endpointId= converted[1];
+            int requestsAmount = converted[2];
+
+            Request request = new Request();
+            request.setId(i);
+            request.setE(id2Endpoint.get(endpointId));
+            request.setQuantity(requestsAmount);
+            request.setV(id2Video.get(videoId));
+
+            requests.add(request);
+        }
+
+        this.setRequests(requests);
+
 
 
     }
@@ -223,6 +253,8 @@ public class UtilsFileStreaming {
             //LOGGER.info("Server creation: start");
             createEndpoints();
             //LOGGER.info("Server creation: done");
+
+            createRequests();
 
 
         } catch (Exception e) {
