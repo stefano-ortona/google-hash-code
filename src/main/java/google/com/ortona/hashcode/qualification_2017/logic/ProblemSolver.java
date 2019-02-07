@@ -67,6 +67,8 @@ public class ProblemSolver {
 					return;
 				}
 			}
+			// add it as last one
+			orderedRequests.add(orderedRequests.size(), r);
 		}
 	}
 
