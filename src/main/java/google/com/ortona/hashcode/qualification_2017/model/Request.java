@@ -1,7 +1,5 @@
 package google.com.ortona.hashcode.qualification_2017.model;
 
-import java.util.Map;
-
 public class Request {
 	int id;
 	Video v;
@@ -10,7 +8,7 @@ public class Request {
 
 	// internal
 	Cache cacheDesignated;
-	int score;
+	long score;
 
 	public Video getV() {
 		return v;
@@ -52,11 +50,11 @@ public class Request {
 		this.cacheDesignated = cacheDesignated;
 	}
 
-	public int getScore() {
+	public long getScore() {
 		return score;
 	}
 
-	public void setScore(int score) {
+	public void setScore(long score) {
 		this.score = score;
 	}
 
@@ -85,7 +83,8 @@ public class Request {
 		}
 		return true;
 	}
-	
+
+	@Override
 	public String toString() {
 		return this.id + " " + this.getQuantity() + " " + this.getV().getId() + " " + this.getE().getId();
 	}
