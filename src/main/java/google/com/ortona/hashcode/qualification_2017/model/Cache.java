@@ -2,6 +2,7 @@ package google.com.ortona.hashcode.qualification_2017.model;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Cache {
 	int id;
@@ -15,10 +16,6 @@ public class Cache {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	private int getSize() {
-		return size;
 	}
 
 	public int getAvailableCapacity() {
@@ -44,6 +41,17 @@ public class Cache {
 		}
 		videos.add(v);
 		availableCapacity -= v.getSize();
+	}
+
+	public boolean checkSoundess() {
+		final AtomicLong allSizes = new AtomicLong(0);
+		this.videos.forEach(v -> {
+			if (v.getSize() <= 0) {
+				throw new IllegalArgumentException("Video " + v + " has size: " + v.getSize());
+			}
+			allSizes.addAndGet(v.getSize());
+		});
+		return allSizes.get() <= this.size;
 	}
 
 	@Override
