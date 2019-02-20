@@ -142,6 +142,7 @@ public class UtilsFileStreet {
         for (int i = 0; i < this.getCarAmount(); i++) {
             Car c = new Car();
             c.setId(i);
+            c.moveToJunction(id2junction.get(this.getInitialJunction()));
             cars.add(c);
             id2car.put(i, c);
         }
@@ -151,13 +152,61 @@ public class UtilsFileStreet {
     }
 
     // Junction
-//    public void createJunctions() {
-//        String[] file = this.getFile();
-//        String[] dataRaw = cloneArrayOfString(file, 1, this.getJunctionAmount());
-//
-//        // always finish with this.setData()
-//        this.setData(matrix);
-//    }
+    public void createJunctions() {
+        String[] file = this.getFile();
+        String[] dataRaw = cloneArrayOfString(file, 1, 1 + this.getJunctionAmount());
+
+        junctions = new ArrayList<>();
+        id2junction = new HashMap<>();
+
+        for (int i = 0; i < this.getJunctionAmount(); i++) {
+            Junction junction = new Junction();
+            junction.setId(i);
+
+            // coordinates
+            String[] coordinatesSplit = splitString(dataRaw[i], " ");
+            junction.setLat(Double.parseDouble(coordinatesSplit[0]));
+            junction.setLng(Double.parseDouble(coordinatesSplit[1]));
+
+            junctions.add(junction);
+            id2junction.put(i, junction);
+        }
+
+        this.setJunctions(junctions);
+        this.setId2junction(id2junction);
+    }
+
+    // Street
+    public void createStreets() {
+        String[] file = this.getFile();
+        String[] dataRaw = cloneArrayOfString(file, 1 + this.getJunctionAmount(), this.getFile().length);
+        streets = new ArrayList<>();
+        id2street = new HashMap<>();
+
+        for (int i = 0; i < this.getStreetAmount(); i++) {
+            Street street = new Street();
+            //street.setId(i);
+            String[] split = splitString(dataRaw[i], " ");
+            int[] converted = convertArrayOfStringToArrayOfInt(split);
+
+            Junction start = this.id2junction.get(converted[0]);
+            street.setStart(start);
+            start.getOutgoingStreets().add(street);
+
+            Junction end = this.id2junction.get(converted[1]);
+            street.setEnd(end);
+            boolean isBidirectional = (converted[2] == 2);
+            street.setBidirectional(isBidirectional);
+            double length =  converted[3];
+            street.setLength(length);
+
+            streets.add(street);
+            id2street.put(i, street);
+        }
+
+        this.setStreets(streets);
+        this.setId2street(id2street);
+    }
 
 
     // ====== Do not change below here
@@ -184,13 +233,13 @@ public class UtilsFileStreet {
             LOGGER.info("File absolute path:" + absolutePath);
             readFile(absolutePath);
 
-            //LOGGER.info("Header creation: start");
             createHeader();
-            //LOGGER.info("Header creation: done");
 
-            //LOGGER.info("Header creation: start");
+            createJunctions();
+
+            createStreets();
+
             createCars();
-            //LOGGER.info("Header creation: done");
 
 
         } catch (Exception e) {
@@ -251,5 +300,6 @@ public class UtilsFileStreet {
         return Arrays.asList(strings).stream().mapToInt(Integer::parseInt).toArray();
 
     }
+
 
 }

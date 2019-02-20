@@ -6,6 +6,8 @@
 package google.com.ortona.hashcode.final_2014;
 
 import google.com.ortona.hashcode.UtilsFileStreet;
+import google.com.ortona.hashcode.final_2014.model.Car;
+import google.com.ortona.hashcode.final_2014.model.Junction;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -42,8 +44,29 @@ public class UtilsFileStreetTest {
     public void testCars(){
         Assert.assertEquals(fr.getCarAmount(), fr.getCars().size());
         for (int i = 0; i < fr.getCars().size(); i++) {
-            Assert.assertEquals(i, fr.getCars().get(i).getId());
+            Car c = fr.getCars().get(i);
+            Junction  j =new Junction();
+            j.setId(fr.getInitialJunction());
+            Assert.assertEquals(i, c.getId());
+            Assert.assertEquals(c.getCurrent(), j);
+
         }
+    }
+
+    @Test
+    public void testJunctions(){
+        Assert.assertEquals(fr.getJunctionAmount(), fr.getJunctions().size());
+        for (int i = 0; i < fr.getJunctions().size(); i++) {
+            Assert.assertEquals(i, fr.getJunctions().get(i).getId());
+        }
+    }
+
+    @Test
+    public void testStreets(){
+        Assert.assertEquals(fr.getStreetAmount(), fr.getStreets().size());
+//        for (int i = 0; i < fr.getJunctions().size(); i++) {
+//            Assert.assertEquals(i, fr.getJunctions().get(i).getId());
+//        }
     }
 
     // ============================ utils
