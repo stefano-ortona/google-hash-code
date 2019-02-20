@@ -228,9 +228,9 @@ public class ProblemSolverTest {
   	
   	Junction junction3 = new Junction();
   	street2.setEnd(junction3);
-  	junction1.setId(3);
-  	junction1.setLat(1);
-  	junction1.setLng(1);
+  	junction3.setId(3);
+  	junction3.setLat(1);
+  	junction3.setLng(1);
   	
   	Car car0 = new Car();
   	car0.setId(0);
