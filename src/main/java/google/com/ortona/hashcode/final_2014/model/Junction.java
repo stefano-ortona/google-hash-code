@@ -96,4 +96,9 @@ public class Junction {
     return true;
   }
 
+  @Override
+  public String toString() {
+    return this.id + "";
+  }
+
 }

@@ -16,7 +16,7 @@ public class BestJunction {
 
   public Junction computeBestJunction(Car c, ProblemContainer container) {
     final Junction j = c.getCurrent();
-    double max = Double.MIN_VALUE;
+    double max = Double.MAX_VALUE * -1;
     Junction bestJunction = null;
     for (final Street s : j.getOutgoingStreets()) {
       Junction arrival = s.getEnd();
@@ -27,6 +27,10 @@ public class BestJunction {
       if (curScore > max) {
         max = curScore;
         bestJunction = arrival;
+      } else {
+        if ((curScore == max) && !s.isVisited()) {
+          bestJunction = arrival;
+        }
       }
     }
     return bestJunction;

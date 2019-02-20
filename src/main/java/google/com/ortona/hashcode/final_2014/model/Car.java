@@ -85,4 +85,9 @@ public class Car {
     return this.visitedJunctions;
   }
 
+  @Override
+  public String toString() {
+    return this.id + "";
+  }
+
 }
