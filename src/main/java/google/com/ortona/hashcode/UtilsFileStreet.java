@@ -2,6 +2,7 @@ package google.com.ortona.hashcode;
 
 import google.com.ortona.hashcode.final_2014.model.Car;
 import google.com.ortona.hashcode.final_2014.model.Junction;
+import google.com.ortona.hashcode.final_2014.model.ProblemContainer;
 import google.com.ortona.hashcode.final_2014.model.Street;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,9 +31,20 @@ public class UtilsFileStreet {
     private List<Junction> junctions;
     private Map<Integer, Junction> id2junction;
 
+
+    private ProblemContainer problemContainer;
+
     private char[][] data;
 
     // 2. generate setters and getters for header and data
+    public ProblemContainer getProblemContainer() {
+        return problemContainer;
+    }
+
+    public void setProblemContainer(ProblemContainer problemContainer) {
+        this.problemContainer = problemContainer;
+    }
+
     public void setHeader(int[] header) {
         this.header = header;
     }
@@ -208,6 +220,16 @@ public class UtilsFileStreet {
         this.setId2street(id2street);
     }
 
+    public void createProblemContainer() {
+
+        problemContainer = new ProblemContainer();
+        problemContainer.setTotTime(this.getAllowedTime());
+        problemContainer.setAllCars(this.getCars());
+        problemContainer.setAllJunctions(this.getJunctions());
+
+        this.setProblemContainer(problemContainer);
+    }
+
 
     // ====== Do not change below here
 
@@ -241,6 +263,7 @@ public class UtilsFileStreet {
 
             createCars();
 
+            createProblemContainer();
 
         } catch (Exception e) {
             e.printStackTrace();
