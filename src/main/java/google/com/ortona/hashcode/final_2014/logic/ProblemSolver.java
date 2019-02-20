@@ -31,6 +31,10 @@ public class ProblemSolver {
       final long tmp = i;
       final List<Car> availableCars = problem.getAllCars().stream().filter(c -> c.getNextTimeAvailable() <= tmp)
           .collect(Collectors.toList());
+      if (availableCars.size() > 0) {
+        LOG.info("At iteration '{}' (out of '{}') I have '{}' cars to assign", i, problem.getTotTime(),
+            availableCars.size());
+      }
       for (final Car c : availableCars) {
         // get next best junction
         final Junction target = bJ.computeBestJunction(c, problem);
