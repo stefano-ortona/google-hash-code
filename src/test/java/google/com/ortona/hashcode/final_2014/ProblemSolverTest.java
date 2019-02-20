@@ -255,8 +255,9 @@ public class ProblemSolverTest {
     problem.setAllJunctions(allJunctions);
     SolutionContainer solution = SOLVER.process(problem);
     
-    Assert.assertEquals(1, solution.getAllCars().size());
+    Assert.assertEquals(2, solution.getAllCars().size());
     int counter = 0;
+    System.out.println("soluzione " + solution.toString());
     for (Car car: solution.getAllCars()) {
       System.out.print(counter + " Car: " + car.toString());
       counter++;
