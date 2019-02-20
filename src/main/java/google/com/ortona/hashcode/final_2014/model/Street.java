@@ -94,4 +94,12 @@ public class Street {
     return true;
   }
 
+  @Override
+  public String toString() {
+    if (this.isBidirectional) {
+      return start.toString() + "<->" + end.toString();
+    }
+    return this.start.toString() + "->" + end.toString();
+  }
+
 }

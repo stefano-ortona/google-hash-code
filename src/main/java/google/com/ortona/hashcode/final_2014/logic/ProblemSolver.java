@@ -38,11 +38,17 @@ public class ProblemSolver {
       for (final Car c : availableCars) {
         // get next best junction
         final Junction target = bJ.computeBestJunction(c, problem);
-        final Street connection = c.getCurrent().getTargetStreet(target);
-        if ((c.getNextTimeAvailable() + connection.getTimeCost()) >= problem.getTotTime()) {
-          LOG.info("I'm trying to move a car but I have no more time!");
+        if (target == null) {
+          // car cannot be moved anymore, change its next available time to end of the game
+          LOG.info("Car '{}' cannot be moved any longer", c.getId());
+          c.setNextTimeAvailable(problem.getTotTime() + 1);
         } else {
-          c.moveToJunction(target);
+          final Street connection = c.getCurrent().getTargetStreet(target);
+          if ((c.getNextTimeAvailable() + connection.getTimeCost()) > problem.getTotTime()) {
+            LOG.info("I'm trying to move a car but I have no more time!");
+          } else {
+            c.moveToJunction(target);
+          }
         }
       }
     }
