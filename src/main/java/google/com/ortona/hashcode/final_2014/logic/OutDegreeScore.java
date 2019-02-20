@@ -1,24 +1,15 @@
 package google.com.ortona.hashcode.final_2014.logic;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import google.com.ortona.hashcode.final_2014.model.Car;
 import google.com.ortona.hashcode.final_2014.model.Junction;
 import google.com.ortona.hashcode.final_2014.model.ProblemContainer;
 import google.com.ortona.hashcode.final_2014.model.Street;
 
-public class NaiveScoreComputation implements ScoreComputation {
-
-  Logger LOG = LoggerFactory.getLogger(getClass());
+public class OutDegreeScore implements ScoreComputation {
 
   @Override
   public double computeScore(Car car, Junction arrival, Street s, ProblemContainer c) {
-    final double score = (s.getLength() / s.getTimeCost()) * arrival.getJunctionScore();
-    if (score <= 0) {
-      LOG.info("Look I computed a negative score!");
-    }
-    return score;
+    return arrival.getOutgoingStreets().size();
   }
 
 }

@@ -1,7 +1,5 @@
 package google.com.ortona.hashcode.final_2014;
 
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,16 +17,12 @@ public class Main {
 
   static Logger LOG = LoggerFactory.getLogger(Main.class);
 
-  public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-    final String inputFile1 = "";
-    final String inputFile2 = "";
-    final String inputFile3 = "";
-    final String inputFile4 = "";
+  public static void main(String[] args) throws Exception {
+    final String inputFile1 = "paris_54000.in";
+    final String inputFile2 = "test_4.in";
     final List<String> inputFiles = new LinkedList<>();
     inputFiles.add(inputFile1);
-    inputFiles.add(inputFile2);
-    inputFiles.add(inputFile3);
-    inputFiles.add(inputFile4);
+    // inputFiles.add(inputFile2);
 
     final ProblemReader reader = new ProblemReader();
     final ProblemSolver solver = new ProblemSolver();

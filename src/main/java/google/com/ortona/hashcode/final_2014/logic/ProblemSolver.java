@@ -40,8 +40,7 @@ public class ProblemSolver {
         final Junction target = bJ.computeBestJunction(c, problem);
         if (target == null) {
           // car cannot be moved anymore, change its next available time to end of the game
-          LOG.info("Car '{}' cannot be moved any longer", c.getId());
-          c.setNextTimeAvailable(problem.getTotTime() + 1);
+          // throw new RuntimeException("Car '" + c.getId() + "' cannot be moved any longer");
         } else {
           final Street connection = c.getCurrent().getTargetStreet(target);
           if ((c.getNextTimeAvailable() + connection.getTimeCost()) > problem.getTotTime()) {

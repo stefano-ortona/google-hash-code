@@ -14,7 +14,20 @@ public class BestJunction {
   // TO change if we want different strategies
   ScoreComputation scoreComp = new NaiveScoreComputation();
 
+  double curScore;
+
   public Junction computeBestJunction(Car c, ProblemContainer container) {
+    Junction best = computeBestJunction(c, new NaiveScoreComputation(), container);
+    if (curScore <= 0) {
+      best = computeBestJunction(c, new BestStupidScore(), container);
+      if (curScore <= 0) {
+        best = computeBestJunction(c, new OutDegreeScore(), container);
+      }
+    }
+    return best;
+  }
+
+  private Junction computeBestJunction(Car c, ScoreComputation score, ProblemContainer container) {
     final Junction j = c.getCurrent();
     double max = Double.MAX_VALUE * -1;
     Junction bestJunction = null;
@@ -23,7 +36,7 @@ public class BestJunction {
       if (arrival.equals(j)) {
         arrival = s.getStart();
       }
-      final double curScore = scoreComp.computeScore(arrival, s, container);
+      final double curScore = score.computeScore(c, arrival, s, container);
       if (curScore > max) {
         max = curScore;
         bestJunction = arrival;
@@ -33,7 +46,9 @@ public class BestJunction {
         }
       }
     }
+    curScore = max;
     return bestJunction;
+
   }
 
 }
