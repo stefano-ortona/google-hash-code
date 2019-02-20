@@ -8,6 +8,7 @@ public class Car {
   private Junction current;
   private double nextTimeAvailable = 0;
   List<Street> streetsVisited = new LinkedList<>();
+  List<Junction> visitedJunctions = new LinkedList<>();
 
   public int getId() {
     return id;
@@ -77,6 +78,11 @@ public class Car {
     }
     this.current = j;
     j.addCar(this);
+    this.visitedJunctions.add(j);
+  }
+
+  public List<Junction> getVisitedJunctions() {
+    return this.visitedJunctions;
   }
 
 }
