@@ -42,7 +42,7 @@ public class ProblemSolverTest {
   	
   	Car car0 = new Car();
   	car0.setId(0);
-  	car0.setCurrent(junction0);
+  	car0.moveToJunction(junction0);
   	
   	List<Car> allCars = new ArrayList<Car>();
   	allCars.add(car0);
@@ -90,7 +90,7 @@ public class ProblemSolverTest {
   	
   	Car car0 = new Car();
   	car0.setId(0);
-  	car0.setCurrent(junction0);
+  	car0.moveToJunction(junction0);
   	
   	List<Car> allCars = new ArrayList<Car>();
   	allCars.add(car0);
@@ -155,7 +155,7 @@ public class ProblemSolverTest {
   	
   	Car car0 = new Car();
   	car0.setId(0);
-  	car0.setCurrent(junction0);
+  	car0.moveToJunction(junction0);
   	
   	List<Car> allCars = new ArrayList<Car>();
   	allCars.add(car0);
@@ -234,10 +234,10 @@ public class ProblemSolverTest {
   	
   	Car car0 = new Car();
   	car0.setId(0);
-  	car0.setCurrent(junction0);
+  	car0.moveToJunction(junction0);
   	Car car1 = new Car();
   	car1.setId(1);
-  	car1.setCurrent(junction0);
+  	car1.moveToJunction(junction0);
   	
   	List<Car> allCars = new ArrayList<Car>();
   	allCars.add(car0);
