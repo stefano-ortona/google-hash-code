@@ -207,9 +207,14 @@ public class UtilsFileStreet {
 
             Junction end = this.id2junction.get(converted[1]);
             street.setEnd(end);
+
             boolean isBidirectional = (converted[2] == 2);
             street.setBidirectional(isBidirectional);
-            double length =  converted[3];
+
+            double timeCost = converted[3];
+            street.setTimeCost(timeCost);
+
+            double length =  converted[4];
             street.setLength(length);
 
             streets.add(street);
