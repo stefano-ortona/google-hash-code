@@ -33,18 +33,18 @@ public class Main {
     final ProblemReader reader = new ProblemReader();
     final ProblemSolver solver = new ProblemSolver();
 
-    final Map<String, Integer> file2score = new HashMap<>();
+    final Map<String, Double> file2score = new HashMap<>();
     for (final String oneFile : inputFiles) {
       LOG.info("Processing file: '{}'", oneFile);
       final SolutionContainer solution = solver.process(reader.readProblem(oneFile));
       final ProblemWriter writer = new ProblemWriter();
-      final int curScore = solution.score;
+      final double curScore = solution.score;
       file2score.put(oneFile, curScore);
       writer.writeProblem(oneFile + "_output", solution);
       LOG.info("Finished processing file '{}' with score '{}'", oneFile, curScore);
     }
     LOG.info("Individual scores: {}", file2score);
-    LOG.info("Tot score: {}", file2score.values().stream().mapToInt(Integer::intValue).sum());
+    LOG.info("Tot score: {}", file2score.values().stream().mapToDouble(Double::doubleValue).sum());
   }
 
 }
