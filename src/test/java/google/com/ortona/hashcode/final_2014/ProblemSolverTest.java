@@ -260,18 +260,21 @@ public class ProblemSolverTest {
     for (Car car: solution.getAllCars()) {
       System.out.print(counter + " Car: " + car.toString());
       counter++;
-      if(car.getId() == 0) {
+      if(car.getStreetsVisited().size() == 1) {
       	Assert.assertEquals(1, car.getStreetsVisited().size());
       	Iterator<Street> iter = car.getStreetsVisited().iterator();
         Street first = iter.next();
         Assert.assertEquals(street2, first);
-      } else if (car.getId() == 1 ){
+      } else if (car.getStreetsVisited().size() == 2 ){
       	Assert.assertEquals(2, car.getStreetsVisited().size());
         Iterator<Street> iter = car.getStreetsVisited().iterator();
         Street first = iter.next();
         Assert.assertEquals(street0, first);
         Street second = iter.next();
         Assert.assertEquals(street1, second);
+      }
+       else {
+      	 throw new RuntimeException("una macchina ha " + car.getStreetsVisited().size());
       }
       
     }
