@@ -7,10 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import google.com.ortona.hashcode.final_2014.model.Car;
-import google.com.ortona.hashcode.final_2014.model.Junction;
+import google.com.ortona.hashcode.final_2014.model.Path;
 import google.com.ortona.hashcode.final_2014.model.ProblemContainer;
 import google.com.ortona.hashcode.final_2014.model.SolutionContainer;
-import google.com.ortona.hashcode.final_2014.model.Street;
 
 /**
  *
@@ -22,6 +21,8 @@ public class ProblemSolver {
   Logger LOG = LoggerFactory.getLogger(getClass());
 
   BestJunction bJ = new BestJunction();
+
+  ComputeAllPaths computeP = new ComputeAllPaths();
 
   public SolutionContainer process(ProblemContainer problem) {
     final SolutionContainer sCont = new SolutionContainer();
@@ -36,17 +37,10 @@ public class ProblemSolver {
             availableCars.size());
       }
       for (final Car c : availableCars) {
-        // get next best junction
-        final Junction target = bJ.computeBestJunction(c, problem);
-        if (target == null) {
-          // car cannot be moved anymore, change its next available time to end of the game
-          // throw new RuntimeException("Car '" + c.getId() + "' cannot be moved any longer");
-        } else {
-          final Street connection = c.getCurrent().getTargetStreet(target);
-          if ((c.getNextTimeAvailable() + connection.getTimeCost()) > problem.getTotTime()) {
-            LOG.info("I'm trying to move a car but I have no more time!");
-          } else {
-            c.moveToJunction(target);
+        final Path bestP = computeP.computeBest(c, problem.getTotTime());
+        if (bestP != null) {
+          for (int j = 1; j < bestP.getJunctions().size(); j++) {
+            c.moveToJunction(bestP.getJunctions().get(j));
           }
         }
       }
