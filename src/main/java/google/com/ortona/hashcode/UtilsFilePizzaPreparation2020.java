@@ -64,13 +64,13 @@ public class UtilsFilePizzaPreparation2020 {
 
     public void createData() {
         String[] file = this.getFile();
-        String[] dataRaw = cloneArrayOfString(file, 1, file.length);
-        int[] rawNumbers = convertArrayOfStringToArrayOfInt(dataRaw);
+        String secondLine = file[1];
+        String[] num = splitString(secondLine, " ");
         List<Integer> numbers = new ArrayList<>();
 
         // convert to ArrayList
-        for (int i = 0 ; i<rawNumbers.length; i++){
-            numbers.add(rawNumbers[i]);
+        for (int i = 0 ; i<num.length; i++){
+            numbers.add(Integer.parseInt(num[i]));
         }
 
         // always finish with this.setData()
@@ -94,7 +94,7 @@ public class UtilsFilePizzaPreparation2020 {
     // ====== Do not change below here
 
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
-    private static final String RESOURCE_PATH = "src/main/resources/google/com/ortona/hashcode/preparation_2020";
+    private static final String RESOURCE_PATH = "src/main/resources/google/com/ortona/hashcode/preparation_2020/";
     private String[] file;
 
     public void setFile(String[] file) {
