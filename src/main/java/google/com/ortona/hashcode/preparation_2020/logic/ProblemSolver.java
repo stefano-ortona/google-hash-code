@@ -38,10 +38,10 @@ public class ProblemSolver {
                 }
                 if (isLeft) {
                     chunk.add(new Pair(startIndex, allNumbers.get(startIndex)));
-                    startIndex++;
+                    endIndex--;
                 } else {
                     chunk.add(new Pair(endIndex, allNumbers.get(endIndex)));
-                    endIndex--;
+                    startIndex++;
                 }
                 isLeft = !isLeft;
 				chunkCurrentSize++;
