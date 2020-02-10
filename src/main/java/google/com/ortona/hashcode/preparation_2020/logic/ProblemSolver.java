@@ -20,7 +20,7 @@ public class ProblemSolver {
     public SolutionContainer solve(ProblemContainer problem) {
         List<Integer> allNumbers = problem.getNumbers();
 
-        int chunkNumber = Math.max(1, allNumbers.size() / CHUNK_LENGTH));
+        int chunkNumber = Math.max(1, allNumbers.size() / CHUNK_LENGTH);
 
         int startIndex = 0;
         int endIndex = allNumbers.size() - 1;
@@ -49,7 +49,7 @@ public class ProblemSolver {
                 chunkCurrentSize++;
             }
 
-            allResults.addAll(subChunkProcessor.solve(chunk, Math.max(problem.getGoal(), problem.getGoal() / chunkNumber)));
+            allResults.addAll(subChunkProcessor.solve(chunk, problem.getGoal() / chunkNumber));
         }
 
         int totalScore = 0;
