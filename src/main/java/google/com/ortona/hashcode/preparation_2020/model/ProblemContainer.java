@@ -29,4 +29,8 @@ public class ProblemContainer {
     this.goal = goal;
   }
 
+  public ProblemContainer() {
+  }
+
+
 }
