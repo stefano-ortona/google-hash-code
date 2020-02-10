@@ -1,7 +1,6 @@
 package google.com.ortona.hashcode;
 
 import google.com.ortona.hashcode.preparation_2020.model.ProblemContainer;
-import google.com.ortona.hashcode.final_2014.model.Street;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,6 +68,7 @@ public class UtilsFilePizzaPreparation2020 {
         int[] rawNumbers = convertArrayOfStringToArrayOfInt(dataRaw);
         List<Integer> numbers = new ArrayList<>();
 
+        // convert to ArrayList
         for (int i = 0 ; i<rawNumbers.length; i++){
             numbers.add(rawNumbers[i]);
         }
