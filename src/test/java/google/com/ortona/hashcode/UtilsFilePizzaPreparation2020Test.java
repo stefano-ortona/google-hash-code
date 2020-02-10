@@ -14,8 +14,8 @@ public class UtilsFilePizzaPreparation2020Test {
 
     static int expectedGoal = 17;
     static Integer[] integers = new Integer[] {1,2,3,4,5};
-    static List<Integer> list21 =  Arrays.asList(integers); // returns a fixed-size list backed by the specified array.
-    static List<Integer> expectedNumbers = new ArrayList<>(Arrays.asList(integers)); // good
+    static List<Integer> listOfInteger =  Arrays.asList(integers); // returns a fixed-size list backed by the specified array.
+    static List<Integer> expectedNumbers = new ArrayList<>(listOfInteger); // good
 
     @Test
     private void testGoal() {
