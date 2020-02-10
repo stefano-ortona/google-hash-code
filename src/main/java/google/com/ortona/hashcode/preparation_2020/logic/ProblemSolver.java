@@ -28,31 +28,32 @@ public class ProblemSolver {
         boolean isLeft = false;
 
         while (startIndex < endIndex) {
-        	int chunkCurrentSize = 0;
+            int chunkCurrentSize = 0;
 
-			List<Pair> chunk = new ArrayList<>();
+            List<Pair> chunk = new ArrayList<>();
 
-			while (chunkCurrentSize < CHUNK_LENGTH) {
-				if (startIndex >= endIndex) {
-					break;
-				}
-				if (isLeft) {
-					chunk.add(new Pair(startIndex, allNumbers.get(startIndex)));
-					startIndex++;
-				} else {
-					chunk.add(new Pair(endIndex, allNumbers.get(endIndex)));
-					endIndex--;
-				}
-				isLeft = !isLeft;
-			}
+            while (chunkCurrentSize < CHUNK_LENGTH) {
+                if (startIndex >= endIndex) {
+                    break;
+                }
+                if (isLeft) {
+                    chunk.add(new Pair(startIndex, allNumbers.get(startIndex)));
+                    startIndex++;
+                } else {
+                    chunk.add(new Pair(endIndex, allNumbers.get(endIndex)));
+                    endIndex--;
+                }
+                isLeft = !isLeft;
+				chunkCurrentSize++;
+            }
 
-			allResults.addAll(subChunkProcessor.solve(chunk, problem.getGoal() / CHUNK_LENGTH));
+            allResults.addAll(subChunkProcessor.solve(chunk, Math.max(problem.getGoal(), problem.getGoal() / CHUNK_LENGTH)));
         }
 
         int totalScore = 0;
-		for (Integer index : allResults) {
-			totalScore += allNumbers.get(index);
-		}
+        for (Integer index : allResults) {
+            totalScore += allNumbers.get(index);
+        }
 
         SolutionContainer solution = new SolutionContainer(allResults, totalScore);
 
