@@ -46,7 +46,7 @@ public class ProblemSolver {
 				isLeft = !isLeft;
 			}
 
-			allResults.addAll(subChunkProcessor.solve(chunk, problem.getGoal()));
+			allResults.addAll(subChunkProcessor.solve(chunk, problem.getGoal() / CHUNK_LENGTH));
         }
 
         int totalScore = 0;
