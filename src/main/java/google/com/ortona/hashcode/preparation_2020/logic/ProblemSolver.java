@@ -20,6 +20,8 @@ public class ProblemSolver {
     public SolutionContainer solve(ProblemContainer problem) {
         List<Integer> allNumbers = problem.getNumbers();
 
+        int chunkNumber = Math.max(1, allNumbers.size() / CHUNK_LENGTH));
+
         int startIndex = 0;
         int endIndex = allNumbers.size() - 1;
 
@@ -33,21 +35,21 @@ public class ProblemSolver {
             List<Pair> chunk = new ArrayList<>();
 
             while (chunkCurrentSize < CHUNK_LENGTH) {
-                if (startIndex >= endIndex) {
+                if (startIndex > endIndex) {
                     break;
                 }
                 if (isLeft) {
                     chunk.add(new Pair(startIndex, allNumbers.get(startIndex)));
-                    endIndex--;
+                    startIndex++;
                 } else {
                     chunk.add(new Pair(endIndex, allNumbers.get(endIndex)));
-                    startIndex++;
+                    endIndex--;
                 }
                 isLeft = !isLeft;
-				chunkCurrentSize++;
+                chunkCurrentSize++;
             }
 
-            allResults.addAll(subChunkProcessor.solve(chunk, Math.max(problem.getGoal(), problem.getGoal() / CHUNK_LENGTH)));
+            allResults.addAll(subChunkProcessor.solve(chunk, Math.max(problem.getGoal(), problem.getGoal() / chunkNumber)));
         }
 
         int totalScore = 0;
