@@ -49,8 +49,8 @@ public class ProblemSolverTest {
 				100
 		);
 		SolutionContainer solution = SOLVER.solve(problem);
-		Assert.assertEquals(16, solution.getScore());
-		Assert.assertEquals(Arrays.asList(0,2,3), solution.getIndexes());
+		Assert.assertEquals(100, solution.getScore());
+		Assert.assertEquals(Arrays.asList(0,1,7), solution.getIndexes());
 		Integer sum = 0;
 		for (final Integer index : solution.getIndexes()) {
 			LOG.info(index + " number: " + problem.getNumbers().get(index));
