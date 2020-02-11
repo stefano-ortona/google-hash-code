@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import google.com.ortona.hashcode.preparation_2020.io.ProblemReader;
-import google.com.ortona.hashcode.preparation_2020.logic.ProblemSolver;
+import google.com.ortona.hashcode.preparation_2020.logic.ProblemSolverOptimal;
 import google.com.ortona.hashcode.preparation_2020.model.ProblemContainer;
 import google.com.ortona.hashcode.preparation_2020.model.SolutionContainer;
 
@@ -17,7 +17,7 @@ import google.com.ortona.hashcode.preparation_2020.model.SolutionContainer;
  */
 public class ProblemSolverTest {
 
-  private final static ProblemSolver SOLVER = new ProblemSolver();
+  private final static ProblemSolverOptimal SOLVER = new ProblemSolverOptimal();
 
   private final Logger LOG = LoggerFactory.getLogger(getClass());
 
@@ -61,8 +61,7 @@ public class ProblemSolverTest {
         41, 45, 46, 56, 61, 61, 62, 63, 65, 68, 76, 77, 77, 92, 93, 94, 97, 103, 113, 114, 114, 120, 135, 145, 145, 149,
         156, 157, 160, 169, 172, 179, 184, 185, 189, 194, 195, 195), 4500);
     final SolutionContainer solution = SOLVER.solve(problem);
-    Assert.assertEquals(16, solution.getScore());
-    Assert.assertEquals(Arrays.asList(0, 2, 3), solution.getIndexes());
+    Assert.assertEquals(4500, solution.getScore());
     Integer sum = 0;
     for (final Integer index : solution.getIndexes()) {
       LOG.info(index + " number: " + problem.getNumbers().get(index));
@@ -72,7 +71,15 @@ public class ProblemSolverTest {
   }
 
   @Test
-  public void forReal() {
+  public void testD() {
+    final ProblemReader r = new ProblemReader();
+    final ProblemContainer p = r.readProblem("d_quite_big.in");
+    final SolutionContainer sC = SOLVER.solve(p);
+    LOG.info("Final score: " + sC.getScore());
+  }
+
+  @Test
+  public void testE() {
     final ProblemReader r = new ProblemReader();
     final ProblemContainer p = r.readProblem("e_also_big.in");
     final SolutionContainer sC = SOLVER.solve(p);
