@@ -46,4 +46,32 @@ public class Status {
 
 	}
 
+
+	/*
+	 * Getters
+	 */
+
+	public List<Baloon> getBaloons() {
+		return baloons;
+	}
+
+	public boolean[][] getOriginalGrid() {
+		return originalGrid;
+	}
+
+	public boolean[][] getTransientGrid() {
+		return transientGrid;
+	}
+
+	public int getMaxHeight() {
+		return maxHeight;
+	}
+
+	public int getMaxTurns() {
+		return maxTurns;
+	}
+
+	public List<int[][]> getWinds() {
+		return winds;
+	}
 }

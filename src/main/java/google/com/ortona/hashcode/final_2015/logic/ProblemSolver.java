@@ -17,7 +17,12 @@ public class ProblemSolver {
 	private static Logger LOG = LoggerFactory.getLogger(ProblemSolver.class);
 
 	public SolutionContainer solve(ProblemContainer problem) {
-		final Status s = problem.getStatus();
+		final Status status = problem.getStatus();
+
+		status.
+
+
+
 
 		// iterate for all turns
 		// for every turns, iterate over baloons B
