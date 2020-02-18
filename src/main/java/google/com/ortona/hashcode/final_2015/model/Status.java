@@ -45,10 +45,11 @@ public class Status {
 	}
 
 	private int getCoveredCellsAndModify(int i, int j, boolean modify) {
+		for(int )
 
 	}
 
-	public List<Integer> getDistanceWithOtherBaloons(int i, int j) {
+	public List<Integer> getDistanceWithOtherBaloons(int i, int j, int baloonId) {
 		final List<Integer> dis = new LinkedList<>();
 		for (final Baloon b : this.baloons) {
 			dis.add((int) Math.ceil(Math.pow(i - b.row, 2) + Math.pow(j - b.column, 2)));
@@ -72,6 +73,7 @@ public class Status {
 	}
 
 	public static void main(String[] args) {
+		System.out.println(3 % 4);
 	}
 
 	/*
