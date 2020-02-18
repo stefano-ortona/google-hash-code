@@ -22,10 +22,11 @@ public class ProblemSolver {
 
         for (int i = 0; i < status.getMaxTurns(); i++) {
             for (Baloon baloon : status.getBaloons()) {
-                Pair newPosition = calculateNewBestPositionForBaloon(baloon, status);
+                NextBestPositionBundle nextPositionBundle = calculateNewBestPositionForBaloon(baloon, status);
 
-                if (newPosition != null) {
-                    status.moveBaloon(newPosition.x, newPosition.y);
+                if (nextPositionBundle.nextPosition != null) {
+                    status.moveBaloon(nextPositionBundle.nextPosition.x, nextPositionBundle.nextPosition.y);
+                    baloon.addMove(nextPositionBundle.move);
                 } else {
                     LOG.error("NEXT POSITION NOT FOUND! -> baloon id: " + baloon.getId());
                 }
@@ -44,11 +45,12 @@ public class ProblemSolver {
      * Internal methods
      */
 
-    private Pair calculateNewBestPositionForBaloon(Baloon baloon, Status status) {
+    private NextBestPositionBundle calculateNewBestPositionForBaloon(Baloon baloon, Status status) {
         List<Integer> possibleMoves = generatePossibleMovesForBaloon(baloon, status);
 
         int finalCoveredCells = 0;
         Pair finalPosition = null;
+        int finalMove = -100;
 
         for (Integer move : possibleMoves) {
             Pair curPosition = status.getNextPosition(baloon.getRow(), baloon.getColumn(), baloon.getHeight(), move);
@@ -62,6 +64,7 @@ public class ProblemSolver {
             if (finalPosition == null || curCoveredCells > finalCoveredCells) { // check best coverage (or first step)
                 finalPosition = curPosition;
                 finalCoveredCells = curCoveredCells;
+                finalMove = move;
 
             } else if (curCoveredCells == finalCoveredCells) { // check farther distance between baloons
                 int curMinDistance = Collections.min(status.getDistanceWithOtherBaloons(curPosition.x, curPosition.y, baloon.getId()));
@@ -70,15 +73,16 @@ public class ProblemSolver {
                 if (curMinDistance > finalMinDistance) {
                     finalPosition = curPosition;
                     finalCoveredCells = curCoveredCells;
+                    finalMove = move;
                 }
             }
         }
 
-        if (finalPosition == null) {
+        if (finalPosition == null || finalMove == -100) {
             throw new RuntimeException("NO NEXT POSITION FOUND for baloon: " + baloon.getId());
         }
 
-        return finalPosition;
+        return new NextBestPositionBundle(finalPosition, finalMove);
     }
 
     private List<Integer> generatePossibleMovesForBaloon(Baloon baloon, Status status) {
@@ -94,6 +98,22 @@ public class ProblemSolver {
         moves.add(0);
 
         return moves;
+    }
+
+
+    /*
+     * Internal class
+     */
+
+    private static class NextBestPositionBundle {
+
+        Pair nextPosition;
+        int move;
+
+        public NextBestPositionBundle(Pair nextPosition, int move) {
+            this.nextPosition = nextPosition;
+            this.move = move;
+        }
     }
 
 }
