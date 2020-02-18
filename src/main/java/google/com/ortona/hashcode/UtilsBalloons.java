@@ -33,6 +33,8 @@ public class UtilsBalloons {
     private int turns;
     private int initialCellX;
     private int initialCellY;
+    boolean[][] grid;
+    List<Pair[][]> winds;
 
     // 2. generate setters and getters for header and data
 
@@ -153,49 +155,51 @@ public class UtilsBalloons {
         this.setInitialCellX(thirdRowConverted[0]);
         this.setInitialCellY(thirdRowConverted[1]);
 
-        // Pairs of target cells
-        List<Pair> targetCells = new ArrayList<>();
+        // Init Grid
+        grid = new boolean[this.getRow()][this.getColumns()];
+        for (int r = 0; r < this.getRow(); r ++){
+            for (int c = 0; c < this.getColumns(); c ++){
+                // Init all to false
+                grid[r][c] = false;
+            }
+        }
+        // mark target cells to true
         for (int i = 0; i<this.getTargetCellAmount(); i++){
+            // 3 fixed row
             String currentRow = this.file[2 + 1 + i];
             String[] currentRowSplit = splitString(currentRow, " ");
             int[] currentRowConverted = convertArrayOfStringToArrayOfInt(currentRowSplit);
-
-            targetCells.add(new Pair(currentRowConverted[0], currentRowConverted[1]));
+            // Set to true
+            grid[currentRowConverted[0]][currentRowConverted[1]] = true;
         }
 
-        // Winds
-        for (int j = 0; j<this.getHeights(); j++){
-            for (int k = 0; k<this.getRow(); k++){
-                // 3 fixed row
-                String currentWind = this.file[3 + this.getTargetCellAmount() + 1 + j + k];
+        // Init winds - List<Pair[][]> winds;
+        int index = 2 + this.getTargetCellAmount();
+        winds = new ArrayList<>();
+
+        for (int j = 0; j< this.getHeights(); j++){
+            Pair[][] matrix = new Pair[this.getRow()][this.getColumns()];
+            for (int k = 0; k < this.getRow(); k++){
+                index++;
+                String currentWind = this.file[index];
                 String[] currentWindSplit = splitString(currentWind, " ");
                 int[] currentWindConverted = convertArrayOfStringToArrayOfInt(currentWindSplit);
 
-                //for (int p = 0; )
+                for (int p = 0; p < currentWindConverted.length; p++){
+                    Pair pa = new Pair(currentWindConverted[p], currentWindConverted[p + 1]);
+                    matrix[j][k] = pa;
+                    //System.out.println(pa.toString());
+                    p++;
+                }
 
-                System.out.println(currentWindConverted[0]);
-                System.out.println(currentWindConverted[1]);
-                System.out.println(currentWindConverted[2]);
-                System.out.println(" ----");
-
-
+                //System.out.println("---- row");
 
             }
+            //System.out.println("---- heigh");
+            winds.add(matrix);
         }
 
     }
-
-    public void createData() {
-        String[] file = this.getFile();
-        String[] dataRaw = cloneArrayOfString(file, 1, file.length);
-        char[][] matrix = convertArrayOfStringToArrayOfCharArrays(dataRaw);
-
-        // always finish with this.setData()
-       // this.setData(matrix);
-    }
-
-
-
 
 
     // ====== Do not change below here

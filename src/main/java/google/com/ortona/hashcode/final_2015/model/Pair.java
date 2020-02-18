@@ -13,4 +13,11 @@ public class Pair {
 		this.y = y;
 	}
 
+	@Override
+	public String toString() {
+		return "Pair{" +
+				"x=" + x +
+				", y=" + y +
+				'}';
+	}
 }
