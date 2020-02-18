@@ -1,5 +1,6 @@
 package google.com.ortona.hashcode;
 
+import google.com.ortona.hashcode.final_2015.model.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -152,11 +153,26 @@ public class UtilsBalloons {
         this.setInitialCellX(thirdRowConverted[0]);
         this.setInitialCellY(thirdRowConverted[1]);
 
-        System.out.println(this.getInitialCellX());
-        System.out.println(this.getInitialCellY());
+        // Pairs of target cells
+        List<Pair> targetCells = new ArrayList<>();
+        for (int i = 0; i<this.getTargetCellAmount(); i++){
+            String currentRow = this.file[2 + 1 + i];
+            String[] currentRowSplit = splitString(currentRow, " ");
+            int[] currentRowConverted = convertArrayOfStringToArrayOfInt(currentRowSplit);
 
-        // always finish with this.setHeader()
-        //this.setHeader(converted);
+            targetCells.add(new Pair(currentRowConverted[0], currentRowConverted[1]));
+        }
+
+        // Winds
+        for (int j = 0; j<this.getHeights(); j++){
+            for (int k = 0; k<this.getRow(); k++){
+
+
+
+
+            }
+        }
+
     }
 
     public void createData() {
