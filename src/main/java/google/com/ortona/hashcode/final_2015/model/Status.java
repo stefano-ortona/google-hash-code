@@ -11,13 +11,16 @@ public class Status {
 	int maxHeight;
 	int maxTurns;
 	List<Pair[][]> winds;
+	int radius;
 
-	public Status(List<Baloon> baloons, boolean[][] originalGrid, int maxHeight, int maxTurns, List<Pair[][]> winds) {
+	public Status(List<Baloon> baloons, boolean[][] originalGrid, int maxHeight, int maxTurns, List<Pair[][]> winds,
+			int radius) {
 		this.baloons = baloons;
 		this.originalGrid = originalGrid;
 		this.maxHeight = maxHeight;
 		this.maxTurns = maxTurns;
 		this.winds = winds;
+		this.radius = radius;
 		this.reset();
 	}
 
@@ -38,7 +41,10 @@ public class Status {
 	}
 
 	public int getCoveredCell(int i, int j) {
-		return 0;
+		return getCoveredCellsAndModify(i, j, false;);
+	}
+
+	private int getCoveredCellsAndModify(int i, int j, boolean modify) {
 
 	}
 
@@ -66,7 +72,6 @@ public class Status {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(9 % 10);
 	}
 
 	/*
