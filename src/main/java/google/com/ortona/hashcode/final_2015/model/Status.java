@@ -8,9 +8,9 @@ public class Status {
 	boolean[][] transientGrid;
 	int maxHeight;
 	int maxTurns;
-	List<int[][]> winds;
+	List<Pair[][]> winds;
 
-	public Status(List<Baloon> baloons, boolean[][] originalGrid, int maxHeight, int maxTurns, List<int[][]> winds) {
+	public Status(List<Baloon> baloons, boolean[][] originalGrid, int maxHeight, int maxTurns, List<Pair[][]> winds) {
 		this.baloons = baloons;
 		this.originalGrid = originalGrid;
 		this.maxHeight = maxHeight;
@@ -20,7 +20,11 @@ public class Status {
 	}
 
 	public int[] getNextPosition(int i, int j, int curHeight, int move) {
-		return null;
+		if (((curHeight + move) <= 0) || ((curHeight + move) > maxHeight)) {
+			return null;
+		}
+		final int[][] nextWind = winds.get(curHeight + move);
+		final int nextI = i + nextWind[i]
 
 	}
 
@@ -45,7 +49,6 @@ public class Status {
 		// put transient grid in the original state
 
 	}
-
 
 	/*
 	 * Getters
