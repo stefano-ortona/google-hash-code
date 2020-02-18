@@ -166,7 +166,17 @@ public class UtilsBalloons {
         // Winds
         for (int j = 0; j<this.getHeights(); j++){
             for (int k = 0; k<this.getRow(); k++){
+                // 3 fixed row
+                String currentWind = this.file[3 + this.getTargetCellAmount() + 1 + j + k];
+                String[] currentWindSplit = splitString(currentWind, " ");
+                int[] currentWindConverted = convertArrayOfStringToArrayOfInt(currentWindSplit);
 
+                //for (int p = 0; )
+
+                System.out.println(currentWindConverted[0]);
+                System.out.println(currentWindConverted[1]);
+                System.out.println(currentWindConverted[2]);
+                System.out.println(" ----");
 
 
 
