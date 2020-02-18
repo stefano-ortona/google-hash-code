@@ -1,6 +1,7 @@
 package google.com.ortona.hashcode.final_2015.model;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class Status {
 		}
 		final Pair[][] nextWind = winds.get(curHeight + move);
 		final int nextI = i + nextWind[i][j].x;
-		final int nextJ = (j + nextWind[i][j].y) % originalGrid[0].length;
+		final int nextJ = modifyColumn(j);
 		if ((nextI < 0) || (nextI >= originalGrid.length)) {
 			return null;
 		}
@@ -38,6 +39,16 @@ public class Status {
 		res.x = nextI;
 		res.y = nextJ;
 		return res;
+	}
+
+	private int modifyColumn(int j) {
+		if (j >= this.originalGrid[0].length) {
+			return j % this.originalGrid[0].length;
+		}
+		if (j < 0) {
+			return this.originalGrid[0].length + j;
+		}
+		return j;
 	}
 
 	public int getCoveredCell(int i, int j) {
@@ -48,17 +59,30 @@ public class Status {
 		int totCell = 0;
 		for (int i = row - radius; i <= (row + this.radius); i++) {
 			for (int j = col - radius; j <= (col + this.radius); j++) {
-				totCell += countCell(i, j, modify);
+				totCell += countCell(i, j, row, col, modify);
 			}
 		}
 		return totCell;
 	}
 
-	private int countCell(int i, int j, boolean modify) {
+	private int countCell(int i, int j, int row, int col, boolean modify) {
 		if ((i < 0) || (i >= this.originalGrid.length)) {
 			return 0;
 		}
+		j = modifyColumn(j);
+		if (isRadiusCell(i, j, row, col) && this.transientGrid[i][j]) {
+			if (modify) {
+				this.transientGrid[i][j] = false;
+			}
+			return 1;
+		}
 		return 0;
+	}
+
+	private boolean isRadiusCell(int i, int j, int otherI, int otherJ) {
+		final double val = Math.pow(i - otherI, 2)
+				+ Math.pow(Math.min(Math.abs(j - otherJ), this.originalGrid[0].length - Math.abs(j - otherJ)), 2);
+		return val <= Math.pow(this.radius, 2);
 	}
 
 	public List<Integer> getDistanceWithOtherBaloons(int i, int j, int baloonId) {
@@ -72,9 +96,7 @@ public class Status {
 	}
 
 	public void moveBaloon(int i, int j) {
-		// go in the sorrounding of i and j, and mark as false all cells in the
-		// sorrounding
-
+		this.getCoveredCellsAndModify(i, j, true);
 	}
 
 	public void reset() {
@@ -87,7 +109,15 @@ public class Status {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(3 % 4);
+		final boolean[][] grid = new boolean[7][7];
+		for (int i = 0; i < grid.length; i++) {
+			Arrays.fill(grid[i], true);
+		}
+		final Status s = new Status(Collections.emptyList(), grid, 0, 0, null, 3);
+		s.getCoveredCellsAndModify(3, 3, true);
+		for (int i = 0; i < grid.length; i++) {
+			System.out.println(Arrays.toString(s.transientGrid[i]));
+		}
 	}
 
 	/*
