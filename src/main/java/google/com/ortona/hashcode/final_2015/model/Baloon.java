@@ -10,6 +10,13 @@ public class Baloon {
 	int height;
 	List<Integer> moves = new ArrayList<>();
 	boolean hasMoved = false;
+	
+	public Baloon(int id, int row, int column, int height) {
+		this.id = id;
+		this.row = row;
+		this.column = column;
+		this.height = height;
+	}
 
 	// move = 0, +1, -1
 	public void addMove(int move) {
