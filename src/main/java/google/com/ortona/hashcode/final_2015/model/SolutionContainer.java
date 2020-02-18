@@ -1,20 +1,28 @@
 package google.com.ortona.hashcode.final_2015.model;
 
+import java.util.List;
+
 public class SolutionContainer {
 
-  private int score;
+	List<Baloon> baloons;
 
-  public void setScore(int score) {
-    this.score = score;
-  }
+	public SolutionContainer(List<Baloon> baloons) {
+		this.baloons = baloons;
+	}
 
-  public int getScore() {
-    return this.score;
-  }
+	private int score;
 
-  @Override
-  public String toString() {
-    // TODO
-    return null;
-  }
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public int getScore() {
+		return this.score;
+	}
+
+	@Override
+	public String toString() {
+		// TODO
+		return null;
+	}
 }
