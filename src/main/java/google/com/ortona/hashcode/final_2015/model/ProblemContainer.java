@@ -7,4 +7,8 @@ public class ProblemContainer {
 		this.status = status;
 	}
 
+	public Status getStatus() {
+		return this.status;
+	}
+
 }
