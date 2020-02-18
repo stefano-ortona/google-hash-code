@@ -162,7 +162,7 @@ public class UtilsBalloons {
 
     //3. define logic of createHeader() and createData()
 
-    public void createHeader() {
+    public void createModels() {
         String firstLine = getFirstLineOfFile();
         String[] firstLineSplit = splitString(firstLine, " ");
         int[] firstLineConverted = convertArrayOfStringToArrayOfInt(firstLineSplit);
@@ -236,6 +236,22 @@ public class UtilsBalloons {
         }
         this.setWinds(winds);
 
+        // Init balloons
+        System.out.println("--" + this.getAvailableBalloons());
+        baloons = new ArrayList<>();
+        for (int b = 0; b < this.getAvailableBalloons(); b ++){
+            //int id, int row, int column, int height
+            Baloon bal = new Baloon(b, this.getInitialCellX(), this.getInitialCellY(), 0);
+            baloons.add(bal);
+
+            //System.out.println(baloons.get(b).toString());
+
+        }
+
+        System.out.println("--" + this.getBaloons().size());
+
+        this.setBaloons(baloons);
+
     }
 
     public void setProblemContainer(ProblemContainer problemContainer) {
@@ -243,17 +259,6 @@ public class UtilsBalloons {
     }
 
     public void createProblemContainer() {
-
-        baloons = new ArrayList<>();
-        for (int b = 0; b < this.getAvailableBalloons(); b ++){
-            //int id, int row, int column, int height
-            Baloon bal = new Baloon(b, this.getInitialCellX(), this.getInitialCellY(), 0);
-            baloons.add(bal);
-        }
-
-        this.setBaloons(baloons);
-//        System.out.print(baloons.get(0).toString());
-
         Status status = new  Status(this.getBaloons(), this.getGrid(), this.getHeights(), this.getTurns(), this.getWinds(), this.getCoveredRadius());
         problemContainer = new ProblemContainer(status);
         this.setProblemContainer(problemContainer);
@@ -284,8 +289,7 @@ public class UtilsBalloons {
             LOGGER.info("File absolute path:" + absolutePath);
             readFile(absolutePath);
 
-            //LOGGER.info("Header creation: start");
-            createHeader();
+            createModels();
             //LOGGER.info("Header creation: done");
 
             //LOGGER.info("Data creation: start");
