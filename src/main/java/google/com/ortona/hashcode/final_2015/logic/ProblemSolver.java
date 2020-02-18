@@ -1,11 +1,12 @@
 package google.com.ortona.hashcode.final_2015.logic;
 
+import google.com.ortona.hashcode.final_2015.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import google.com.ortona.hashcode.final_2015.model.ProblemContainer;
-import google.com.ortona.hashcode.final_2015.model.SolutionContainer;
-import google.com.ortona.hashcode.final_2015.model.Status;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 //for each baloon b:
 //	for each move m:
@@ -14,26 +15,82 @@ import google.com.ortona.hashcode.final_2015.model.Status;
 //			compute distance with b'
 //	pick best move m based on covered cell and distance with other baloons
 public class ProblemSolver {
-	private static Logger LOG = LoggerFactory.getLogger(ProblemSolver.class);
+    private static Logger LOG = LoggerFactory.getLogger(ProblemSolver.class);
 
-	public SolutionContainer solve(ProblemContainer problem) {
-		final Status status = problem.getStatus();
+    public SolutionContainer solve(ProblemContainer problem) {
+        final Status status = problem.getStatus();
 
-		//status.
+        for (int i = 0; i < status.getMaxTurns(); i++) {
+            for (Baloon baloon : status.getBaloons()) {
+                Pair newPosition = getBestNewPositionForBaloon(baloon, status);
 
-		return null;
+                if (newPosition != null) {
+                    status.moveBaloon(newPosition.x, newPosition.y);
+                } else {
+                    LOG.error("NEXT POSITION NOT FOUND! -> baloon id: " + baloon.getId());
+                }
+            }
+
+            status.reset();
+        }
+
+        SolutionContainer container = new SolutionContainer(status.getBaloons());
+
+        return container;
+    }
 
 
+    /*
+     * Internal methods
+     */
 
-		// iterate for all turns
-		// for every turns, iterate over baloons B
-		// pick the best move for B
-		// move B
+    private Pair getBestNewPositionForBaloon(Baloon baloon, Status status) {
+        List<Integer> possibleMoves = getPossibleMovesForBaloon(baloon, status);
 
-	}
+        int finalCoveredCells = 0;
+        Pair finalPosition = null;
 
-	public static void main(String[] args) {
-		LOG.info("Hello World!");
-	}
+        for (Integer move : possibleMoves) {
+            Pair curPosition = status.getNextPosition(baloon.getRow(), baloon.getColumn(), baloon.getHeight(), move);
+
+            if (curPosition == null) {
+                throw new RuntimeException("NO NEXT POSITION FOUND for baloon: " + baloon.getId());
+                // continue; // SKIP
+            }
+
+            int curCoveredCells = status.getCoveredCell(curPosition.x, curPosition.y);
+
+            if (finalPosition == null || curCoveredCells > finalCoveredCells) { // check best coverage (or first step)
+                finalPosition = curPosition;
+                finalCoveredCells = curCoveredCells;
+
+            } else if (curCoveredCells == finalCoveredCells) { // check farther distance between baloons
+                int curMinDistance = Collections.min(status.getDistanceWithOtherBaloons(curPosition.x, curPosition.y, baloon.getId()));
+                int finalMinDistance = Collections.min(status.getDistanceWithOtherBaloons(finalPosition.x, finalPosition.y, baloon.getId()));
+
+                if (curMinDistance > finalMinDistance) {
+                    finalPosition = curPosition;
+                    finalCoveredCells = curCoveredCells;
+                }
+            }
+        }
+
+        return finalPosition;
+    }
+
+    private List<Integer> getPossibleMovesForBaloon(Baloon baloon, Status status) {
+        List<Integer> moves = new ArrayList<>();
+
+        if (baloon.getHeight() > 1) {
+            moves.add(-1);
+        }
+        if (baloon.getHeight() < status.getMaxHeight()) {
+            moves.add(+1);
+        }
+
+        moves.add(0);
+
+        return moves;
+    }
 
 }
