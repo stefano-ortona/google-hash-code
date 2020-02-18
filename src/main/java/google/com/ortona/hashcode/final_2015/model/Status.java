@@ -19,13 +19,20 @@ public class Status {
 		this.reset();
 	}
 
-	public int[] getNextPosition(int i, int j, int curHeight, int move) {
+	public Pair getNextPosition(int i, int j, int curHeight, int move) {
 		if (((curHeight + move) <= 0) || ((curHeight + move) > maxHeight)) {
 			return null;
 		}
-		final int[][] nextWind = winds.get(curHeight + move);
-		final int nextI = i + nextWind[i]
-
+		final Pair[][] nextWind = winds.get(curHeight + move);
+		final int nextI = i + nextWind[i][j].x;
+		final int nextJ = (j + nextWind[i][j].y) % originalGrid[0].length;
+		if ((nextI < 0) || (nextI >= originalGrid.length)) {
+			return null;
+		}
+		final Pair res = new Pair();
+		res.x = nextI;
+		res.y = nextJ;
+		return res;
 	}
 
 	public int getCoveredCell(int i, int j) {
@@ -48,6 +55,10 @@ public class Status {
 		this.baloons.forEach(b -> b.reset());
 		// put transient grid in the original state
 
+	}
+
+	public static void main(String[] args) {
+		System.out.println(9 % 10);
 	}
 
 	/*
