@@ -52,5 +52,9 @@ public class Baloon {
 	public void setHeight(int height) {
 		this.height = height;
 	}
+	
+	public List<Integer> getMoves(){
+		return this.moves;
+	}
 
 }
