@@ -5,7 +5,12 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Status {
+	Logger LOG = LoggerFactory.getLogger(getClass());
+
 	List<Baloon> baloons;
 	boolean[][] originalGrid;
 	boolean[][] transientGrid;
@@ -30,7 +35,7 @@ public class Status {
 		if (((curHeight + move) <= 0) || ((curHeight + move) > maxHeight)) {
 			return null;
 		}
-		final Pair[][] nextWind = winds.get(curHeight + move);
+		final Pair[][] nextWind = winds.get((curHeight + move) - 1);
 		final int nextI = i + nextWind[i][j].x;
 		final int nextJ = modifyColumn(j);
 		if ((nextI < 0) || (nextI >= originalGrid.length)) {
@@ -105,6 +110,7 @@ public class Status {
 	}
 
 	public void reset() {
+		LOG.info("Current score is: {}", this.totScore);
 		this.baloons.forEach(b -> b.reset());
 		// put transient grid in the original state
 		this.transientGrid = new boolean[this.originalGrid.length][this.originalGrid[0].length];
