@@ -32,9 +32,9 @@ public class SolutionContainer {
 	@Override
 	public String toString() {
 		final StringBuilder string = new StringBuilder();
-	    for (int i=0; i<getBaloons().get(0).moves.size(); i++) {
+	    for (int i=0; i<getBaloons().get(0).getMoves().size(); i++) {
 	    	for (final Baloon baloon : getBaloons()) {
-		    	string.append(baloon.moves.get(i));
+		    	string.append(baloon.getMoves().get(i));
 		    }
 	    	string.append("\n");
 	    }
