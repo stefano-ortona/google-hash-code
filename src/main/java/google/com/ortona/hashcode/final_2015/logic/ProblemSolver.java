@@ -53,6 +53,10 @@ public class ProblemSolver {
         for (Integer move : possibleMoves) {
             Pair curPosition = status.getNextPosition(baloon.getRow(), baloon.getColumn(), baloon.getHeight(), move);
 
+            if (curPosition == null) {
+                continue; // SKIP
+            }
+
             int curCoveredCells = status.getCoveredCell(curPosition.x, curPosition.y);
 
             if (finalPosition == null || curCoveredCells > finalCoveredCells) { // check best coverage (or first step)
@@ -72,7 +76,6 @@ public class ProblemSolver {
 
         if (finalPosition == null) {
             throw new RuntimeException("NO NEXT POSITION FOUND for baloon: " + baloon.getId());
-            // continue; // SKIP
         }
 
         return finalPosition;
