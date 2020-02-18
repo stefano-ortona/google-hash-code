@@ -1,5 +1,7 @@
 package google.com.ortona.hashcode.final_2015.model;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Status {
@@ -41,8 +43,11 @@ public class Status {
 	}
 
 	public List<Integer> getDistanceWithOtherBaloons(int i, int j) {
-		return null;
-
+		final List<Integer> dis = new LinkedList<>();
+		for (final Baloon b : this.baloons) {
+			dis.add((int) Math.ceil(Math.pow(i - b.row, 2) + Math.pow(j - b.column, 2)));
+		}
+		return dis;
 	}
 
 	public void moveBaloon(int i, int j) {
@@ -54,7 +59,10 @@ public class Status {
 	public void reset() {
 		this.baloons.forEach(b -> b.reset());
 		// put transient grid in the original state
-
+		this.transientGrid = new boolean[this.originalGrid.length][this.originalGrid[0].length];
+		for (int i = 0; i < this.originalGrid.length; i++) {
+			this.transientGrid[i] = Arrays.copyOf(this.originalGrid[i], this.originalGrid[i].length);
+		}
 	}
 
 	public static void main(String[] args) {
@@ -85,7 +93,7 @@ public class Status {
 		return maxTurns;
 	}
 
-	public List<int[][]> getWinds() {
+	public List<Pair[][]> getWinds() {
 		return winds;
 	}
 }
