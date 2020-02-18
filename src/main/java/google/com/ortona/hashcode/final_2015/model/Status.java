@@ -41,18 +41,32 @@ public class Status {
 	}
 
 	public int getCoveredCell(int i, int j) {
-		return getCoveredCellsAndModify(i, j, false;);
+		return getCoveredCellsAndModify(i, j, false);
 	}
 
-	private int getCoveredCellsAndModify(int i, int j, boolean modify) {
-		for(int )
+	private int getCoveredCellsAndModify(int row, int col, boolean modify) {
+		int totCell = 0;
+		for (int i = row - radius; i <= (row + this.radius); i++) {
+			for (int j = col - radius; j <= (col + this.radius); j++) {
+				totCell += countCell(i, j, modify);
+			}
+		}
+		return totCell;
+	}
 
+	private int countCell(int i, int j, boolean modify) {
+		if ((i < 0) || (i >= this.originalGrid.length)) {
+			return 0;
+		}
+		return 0;
 	}
 
 	public List<Integer> getDistanceWithOtherBaloons(int i, int j, int baloonId) {
 		final List<Integer> dis = new LinkedList<>();
 		for (final Baloon b : this.baloons) {
-			dis.add((int) Math.ceil(Math.pow(i - b.row, 2) + Math.pow(j - b.column, 2)));
+			if (b.id != baloonId) {
+				dis.add((int) Math.ceil(Math.pow(i - b.row, 2) + Math.pow(j - b.column, 2)));
+			}
 		}
 		return dis;
 	}
