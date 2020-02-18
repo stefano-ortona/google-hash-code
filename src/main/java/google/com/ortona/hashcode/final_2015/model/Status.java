@@ -13,6 +13,7 @@ public class Status {
 	int maxTurns;
 	List<Pair[][]> winds;
 	int radius;
+	int totScore = 0;
 
 	public Status(List<Baloon> baloons, boolean[][] originalGrid, int maxHeight, int maxTurns, List<Pair[][]> winds,
 			int radius) {
@@ -96,7 +97,11 @@ public class Status {
 	}
 
 	public void moveBaloon(int i, int j) {
-		this.getCoveredCellsAndModify(i, j, true);
+		this.totScore += this.getCoveredCellsAndModify(i, j, true);
+	}
+
+	public int getTotalScore() {
+		return this.totScore;
 	}
 
 	public void reset() {
