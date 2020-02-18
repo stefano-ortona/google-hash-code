@@ -87,7 +87,7 @@ public class ProblemSolverTest {
 	  wind2[2][4] = new Pair(0,1);
 	  
 	  final List<Pair[][]> winds = Arrays.asList(wind0, wind1, wind2);
-	  final boolean originalGrid[][] = {{false, false, true, false, false},{false, false, false, false, true},{false, false ,false, false, false}};
+	  final boolean originalGrid[][] = {{false, false, true, false, true},{false, false, false, false, false},{false, false ,false, false, false}};
 	  final Status status = new Status(baloons, originalGrid, 3, 5, winds, 1);
 	  final ProblemContainer problem = new ProblemContainer(status);
 	  final SolutionContainer solution = SOLVER.solve(problem); // new SolutionContainer(Arrays.asList(0,2,3), 16);
