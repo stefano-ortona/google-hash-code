@@ -19,8 +19,9 @@ public class ProblemSolver {
 	public SolutionContainer solve(ProblemContainer problem) {
 		final Status status = problem.getStatus();
 
-		status.
+		//status.
 
+		return null;
 
 
 
