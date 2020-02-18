@@ -22,7 +22,7 @@ public class ProblemSolver {
 
         for (int i = 0; i < status.getMaxTurns(); i++) {
             for (Baloon baloon : status.getBaloons()) {
-                Pair newPosition = getBestNewPositionForBaloon(baloon, status);
+                Pair newPosition = canculateNewBestPositionForBaloon(baloon, status);
 
                 if (newPosition != null) {
                     status.moveBaloon(newPosition.x, newPosition.y);
@@ -44,8 +44,8 @@ public class ProblemSolver {
      * Internal methods
      */
 
-    private Pair getBestNewPositionForBaloon(Baloon baloon, Status status) {
-        List<Integer> possibleMoves = getPossibleMovesForBaloon(baloon, status);
+    private Pair canculateNewBestPositionForBaloon(Baloon baloon, Status status) {
+        List<Integer> possibleMoves = generatePossibleMovesForBaloon(baloon, status);
 
         int finalCoveredCells = 0;
         Pair finalPosition = null;
@@ -78,7 +78,7 @@ public class ProblemSolver {
         return finalPosition;
     }
 
-    private List<Integer> getPossibleMovesForBaloon(Baloon baloon, Status status) {
+    private List<Integer> generatePossibleMovesForBaloon(Baloon baloon, Status status) {
         List<Integer> moves = new ArrayList<>();
 
         if (baloon.getHeight() > 1) {
