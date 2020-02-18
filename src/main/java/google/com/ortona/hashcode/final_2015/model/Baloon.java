@@ -64,4 +64,16 @@ public class Baloon {
 	public void setId(int id) {
 		this.id = id;
 	}
+
+	@Override
+	public String toString() {
+		return "Baloon{" +
+				"id=" + id +
+				", row=" + row +
+				", column=" + column +
+				", height=" + height +
+				", moves=" + moves +
+				", hasMoved=" + hasMoved +
+				'}';
+	}
 }

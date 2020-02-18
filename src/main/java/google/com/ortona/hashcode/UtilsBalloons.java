@@ -1,6 +1,9 @@
 package google.com.ortona.hashcode;
 
+import google.com.ortona.hashcode.final_2015.model.Baloon;
 import google.com.ortona.hashcode.final_2015.model.Pair;
+import google.com.ortona.hashcode.final_2015.model.ProblemContainer;
+import google.com.ortona.hashcode.final_2015.model.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +38,8 @@ public class UtilsBalloons {
     private int initialCellY;
     boolean[][] grid;
     List<Pair[][]> winds;
+    ProblemContainer problemContainer;
+    List< Baloon > baloons;
 
     // 2. generate setters and getters for header and data
 
@@ -125,7 +130,37 @@ public class UtilsBalloons {
     public void setInitialCellY(int initialCellY) {
         this.initialCellY = initialCellY;
     }
-//3. define logic of createHeader() and createData()
+
+
+    public ProblemContainer getProblemContainer() {
+        return problemContainer;
+    }
+
+    public boolean[][] getGrid() {
+        return grid;
+    }
+
+    public void setGrid(boolean[][] grid) {
+        this.grid = grid;
+    }
+
+    public List<Pair[][]> getWinds() {
+        return winds;
+    }
+
+    public void setWinds(List<Pair[][]> winds) {
+        this.winds = winds;
+    }
+
+    public List<Baloon> getBaloons() {
+        return baloons;
+    }
+
+    public void setBaloons(List<Baloon> baloons) {
+        this.baloons = baloons;
+    }
+
+    //3. define logic of createHeader() and createData()
 
     public void createHeader() {
         String firstLine = getFirstLineOfFile();
@@ -172,6 +207,7 @@ public class UtilsBalloons {
             // Set to true
             grid[currentRowConverted[0]][currentRowConverted[1]] = true;
         }
+        this.setGrid(grid);
 
         // Init winds - List<Pair[][]> winds;
         int index = 2 + this.getTargetCellAmount();
@@ -198,7 +234,29 @@ public class UtilsBalloons {
             //System.out.println("---- heigh");
             winds.add(matrix);
         }
+        this.setWinds(winds);
 
+    }
+
+    public void setProblemContainer(ProblemContainer problemContainer) {
+        this.problemContainer = problemContainer;
+    }
+
+    public void createProblemContainer() {
+
+        baloons = new ArrayList<>();
+        for (int b = 0; b < this.getAvailableBalloons(); b ++){
+            //int id, int row, int column, int height
+            Baloon bal = new Baloon(b, this.getInitialCellX(), this.getInitialCellY(), 0);
+            baloons.add(bal);
+        }
+
+        this.setBaloons(baloons);
+//        System.out.print(baloons.get(0).toString());
+
+        Status status = new  Status(this.getBaloons(), this.getGrid(), this.getHeights(), this.getTurns(), this.getWinds(), this.getCoveredRadius());
+        problemContainer = new ProblemContainer(status);
+        this.setProblemContainer(problemContainer);
     }
 
 
@@ -231,7 +289,7 @@ public class UtilsBalloons {
             //LOGGER.info("Header creation: done");
 
             //LOGGER.info("Data creation: start");
-            //createData();
+            createProblemContainer();
             //LOGGER.info("Data creation: done");
         } catch (Exception e) {
             e.printStackTrace();
