@@ -32,6 +32,11 @@ public class Status {
 	}
 
 	public Pair getNextPosition(int i, int j, int curHeight, int move) {
+		if ((curHeight == 0) && (move == 0)) {
+			// stay in initial position
+			return new Pair(i, j);
+		}
+
 		if (((curHeight + move) <= 0) || ((curHeight + move) > maxHeight)) {
 			return null;
 		}

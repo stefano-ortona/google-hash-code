@@ -41,6 +41,7 @@ public class ProblemSolver {
 				} else {
 					LOG.error("NEXT POSITION NOT FOUND! -> baloon id: " + baloon.getId());
 					baloon.setDead();
+					baloon.addMove(0);
 				}
 			}
 
@@ -74,7 +75,7 @@ public class ProblemSolver {
 			final int curCoveredCells = status.getCoveredCell(curPosition.x, curPosition.y);
 
 			if ((finalPosition == null) || (curCoveredCells > finalCoveredCells)) { // check best coverage (or first
-																					// step)
+				// step)
 				finalPosition = curPosition;
 				finalCoveredCells = curCoveredCells;
 				finalMove = move;
