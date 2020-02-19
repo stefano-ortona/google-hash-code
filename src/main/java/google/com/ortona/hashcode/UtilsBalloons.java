@@ -214,7 +214,7 @@ public class UtilsBalloons {
         winds = new ArrayList<>();
 
         for (int j = 0; j< this.getHeights(); j++){
-            Pair[][] matrix = new Pair[this.getColumns()][this.getRow()];
+            Pair[][] matrix = new Pair[this.getRow()][this.getColumns()];
             for (int k = 0; k < this.getRow(); k++){
                 index++;
                 String currentWind = this.file[index];
@@ -224,7 +224,7 @@ public class UtilsBalloons {
                 for (int p = 0; p < currentWindConverted.length; p++){
                     Pair pa = new Pair(currentWindConverted[p], currentWindConverted[p + 1]);
                     int columnIndex = p / 2;
-                    matrix[columnIndex][k] = pa;
+                    matrix[k][columnIndex] = pa;
 //                    System.out.println(columnIndex + " x");
 //                    System.out.println(k + " y");
 //                    System.out.println(pa.toString());
