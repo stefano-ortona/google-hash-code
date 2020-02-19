@@ -10,12 +10,21 @@ public class Baloon {
 	int height;
 	List<Integer> moves = new ArrayList<>();
 	boolean hasMoved = false;
-	
+	boolean isDead = false;
+
 	public Baloon(int id, int row, int column, int height) {
 		this.id = id;
 		this.row = row;
 		this.column = column;
 		this.height = height;
+	}
+
+	public boolean isDead() {
+		return this.isDead;
+	}
+
+	public void setDead() {
+		this.isDead = true;
 	}
 
 	// move = 0, +1, -1
@@ -52,8 +61,8 @@ public class Baloon {
 	public void setHeight(int height) {
 		this.height = height;
 	}
-	
-	public List<Integer> getMoves(){
+
+	public List<Integer> getMoves() {
 		return this.moves;
 	}
 
@@ -67,13 +76,7 @@ public class Baloon {
 
 	@Override
 	public String toString() {
-		return "Baloon{" +
-				"id=" + id +
-				", row=" + row +
-				", column=" + column +
-				", height=" + height +
-				", moves=" + moves +
-				", hasMoved=" + hasMoved +
-				'}';
+		return "Baloon{" + "id=" + id + ", row=" + row + ", column=" + column + ", height=" + height + ", moves="
+				+ moves + ", hasMoved=" + hasMoved + '}';
 	}
 }

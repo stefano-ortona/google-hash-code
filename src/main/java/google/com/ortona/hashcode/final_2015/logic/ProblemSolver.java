@@ -27,6 +27,10 @@ public class ProblemSolver {
 
 		for (int i = 0; i < status.getMaxTurns(); i++) {
 			for (final Baloon baloon : status.getBaloons()) {
+				if (baloon.isDead()) {
+					baloon.addMove(0);
+					continue;
+				}
 				final NextBestPositionBundle nextPositionBundle = calculateNewBestPositionForBaloon(baloon, status);
 
 				if (nextPositionBundle.nextPosition != null) {
@@ -36,6 +40,7 @@ public class ProblemSolver {
 					baloon.setColumn(nextPositionBundle.nextPosition.y);
 				} else {
 					LOG.error("NEXT POSITION NOT FOUND! -> baloon id: " + baloon.getId());
+					baloon.setDead();
 				}
 			}
 
@@ -86,10 +91,6 @@ public class ProblemSolver {
 					finalMove = move;
 				}
 			}
-		}
-
-		if ((finalPosition == null) || (finalMove == -100)) {
-			throw new RuntimeException("NO NEXT POSITION FOUND for baloon: " + baloon.getId());
 		}
 
 		return new NextBestPositionBundle(finalPosition, finalMove);

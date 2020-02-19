@@ -37,7 +37,7 @@ public class Status {
 		}
 		final Pair[][] nextWind = winds.get((curHeight + move) - 1);
 		final int nextI = i + nextWind[i][j].x;
-		final int nextJ = modifyColumn(j);
+		final int nextJ = modifyColumn(j + nextWind[i][j].y);
 		if ((nextI < 0) || (nextI >= originalGrid.length)) {
 			return null;
 		}
@@ -97,6 +97,9 @@ public class Status {
 			if (b.id != baloonId) {
 				dis.add((int) Math.ceil(Math.pow(i - b.row, 2) + Math.pow(j - b.column, 2)));
 			}
+		}
+		if (dis.isEmpty()) {
+			dis.add(0);
 		}
 		return dis;
 	}
