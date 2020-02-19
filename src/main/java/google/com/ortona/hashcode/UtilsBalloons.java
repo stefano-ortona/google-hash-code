@@ -213,6 +213,9 @@ public class UtilsBalloons {
         int index = 2 + this.getTargetCellAmount();
         winds = new ArrayList<>();
 
+        System.out.println("heighs" + this.getHeights());
+        System.out.println("row" + this.getRow());
+
         for (int j = 0; j< this.getHeights(); j++){
             Pair[][] matrix = new Pair[this.getRow()][this.getColumns()];
             for (int k = 0; k < this.getRow(); k++){
@@ -235,6 +238,8 @@ public class UtilsBalloons {
             winds.add(matrix);
         }
         this.setWinds(winds);
+
+        //System.out.println(this.getWinds().get());
 
         // Init balloons
         System.out.println("--" + this.getAvailableBalloons());
