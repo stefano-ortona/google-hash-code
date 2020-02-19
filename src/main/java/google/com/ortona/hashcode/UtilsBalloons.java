@@ -213,11 +213,8 @@ public class UtilsBalloons {
         int index = 2 + this.getTargetCellAmount();
         winds = new ArrayList<>();
 
-        System.out.println("heighs" + this.getHeights());
-        System.out.println("row" + this.getRow());
-
         for (int j = 0; j< this.getHeights(); j++){
-            Pair[][] matrix = new Pair[this.getRow()][this.getColumns()];
+            Pair[][] matrix = new Pair[this.getColumns()][this.getRow()];
             for (int k = 0; k < this.getRow(); k++){
                 index++;
                 String currentWind = this.file[index];
@@ -226,15 +223,17 @@ public class UtilsBalloons {
 
                 for (int p = 0; p < currentWindConverted.length; p++){
                     Pair pa = new Pair(currentWindConverted[p], currentWindConverted[p + 1]);
-                    matrix[j][k] = pa;
-                    //System.out.println(pa.toString());
+                    int columnIndex = p / 2;
+                    matrix[columnIndex][k] = pa;
+//                    System.out.println(columnIndex + " x");
+//                    System.out.println(k + " y");
+//                    System.out.println(pa.toString());
+//                    System.out.println("-");
                     p++;
                 }
-
-                //System.out.println("---- row");
-
             }
-            //System.out.println("---- heigh");
+
+            //System.out.println("------- Layer " + j);
             winds.add(matrix);
         }
         this.setWinds(winds);
@@ -242,18 +241,12 @@ public class UtilsBalloons {
         //System.out.println(this.getWinds().get());
 
         // Init balloons
-        System.out.println("--" + this.getAvailableBalloons());
         baloons = new ArrayList<>();
         for (int b = 0; b < this.getAvailableBalloons(); b ++){
             //int id, int row, int column, int height
             Baloon bal = new Baloon(b, this.getInitialCellX(), this.getInitialCellY(), 0);
             baloons.add(bal);
-
-            //System.out.println(baloons.get(b).toString());
-
         }
-
-        System.out.println("--" + this.getBaloons().size());
 
         this.setBaloons(baloons);
 
