@@ -3,6 +3,8 @@ package google.com.ortona.hashcode.y_2021.pizza.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import google.com.ortona.hashcode.qualification_2017.model.Cache;
+
 public class SolutionContainer {
 
     private List<TeamAllocation> allocationList = new ArrayList<>();
@@ -10,18 +12,22 @@ public class SolutionContainer {
     public SolutionContainer() {
     }
 
-	public List<TeamAllocation> getAllocationList() {
-		return allocationList;
-	}
+    public List<TeamAllocation> getAllocationList() {
+        return allocationList;
+    }
 
-	public void setAllocationList(List<TeamAllocation> allocationList) {
-		this.allocationList = allocationList;
-	}
+    public void setAllocationList(List<TeamAllocation> allocationList) {
+        this.allocationList = allocationList;
+    }
 
-	@Override
+    @Override
     public String toString() {
-        // TODO
-        return "";
+        String caches = "";
+        caches += allocationList.size();
+        for (final TeamAllocation ta : getAllocationList()) {
+            caches += "\n" + ta.toString();
+        }
+        return caches;
     }
 
     public int getScore() {

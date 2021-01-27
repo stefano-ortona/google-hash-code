@@ -7,9 +7,9 @@ import java.util.Map;
 
 public class ProblemContainer {
 
-    private Map<Integer, Integer> teamMap = new HashMap<>();
+	private Map<Integer, Integer> teamMap = new HashMap<>();
 
-    private List<Pizza> pizzaList = new ArrayList<>();
+	private List<Pizza> pizzaList = new ArrayList<>();
 
 	public ProblemContainer(Map<Integer, Integer> teamMap, List<Pizza> pizzaList) {
 		this.teamMap = teamMap;
@@ -30,5 +30,13 @@ public class ProblemContainer {
 
 	public void setPizzaList(List<Pizza> pizzaList) {
 		this.pizzaList = pizzaList;
+	}
+
+	@Override
+	public String toString() {
+		return "ProblemContainer{" +
+				"teamMap=" + teamMap +
+				", pizzaList=" + pizzaList +
+				'}';
 	}
 }
