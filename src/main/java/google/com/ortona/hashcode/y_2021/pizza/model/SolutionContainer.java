@@ -8,7 +8,7 @@ public class SolutionContainer {
 	@Override
 	public String toString() {
 		// TODO
-		return null;
+		return "";
 	}
 
 	public int getScore() {
