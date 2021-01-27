@@ -1,7 +1,9 @@
 package google.com.ortona.hashcode.y_2021.pizza.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TeamAllocation {
 
@@ -24,7 +26,11 @@ public class TeamAllocation {
      */
 
     public int getScore() {
-        return 0;
+        Set<String> ingredientSet = new HashSet<>();
+        for (Pizza pizza : getPizzaList()) {
+            ingredientSet.addAll(pizza.getIngredientList());
+        }
+        return (int) Math.pow(ingredientSet.size(), 2);
     }
 
     @Override
@@ -32,7 +38,7 @@ public class TeamAllocation {
         String string = "";
         string += pizzaList.size();
         for (final Pizza pa : getPizzaList()) {
-            string += "\n" + pa.getId();
+            string += " " + pa.getId();
         }
         return string;
     }

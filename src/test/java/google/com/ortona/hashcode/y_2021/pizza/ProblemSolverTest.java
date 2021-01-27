@@ -36,7 +36,7 @@ public class ProblemSolverTest {
 		LOG.info("First test is starting");
 		// create here a mock input for test
 		final Map<Integer, Integer> teamSize2Number = new HashMap<Integer,Integer>();
-		teamSize2Number.put(2, 1);
+		teamSize2Number.put(2, 2);
 		teamSize2Number.put(3, 2);
 		teamSize2Number.put(4, 1);
 		final List<Pizza> pizzaList = new ArrayList<>();
@@ -45,20 +45,20 @@ public class ProblemSolverTest {
 		pizza1.setIngredientList(Arrays.asList("onion","pepper", "olive"));
 		pizzaList.add(pizza1);
 		final Pizza pizza2 = new Pizza();
-		pizza1.setId(2);
-		pizza1.setIngredientList(Arrays.asList("mushroom","tomato", "basil"));
+		pizza2.setId(2);
+		pizza2.setIngredientList(Arrays.asList("mushroom","tomato", "basil"));
 		pizzaList.add(pizza2);
 		final Pizza pizza3 = new Pizza();
-		pizza1.setId(3);
-		pizza1.setIngredientList(Arrays.asList("chicken","mushroom", "pepper"));
+		pizza3.setId(3);
+		pizza3.setIngredientList(Arrays.asList("chicken","mushroom", "pepper"));
 		pizzaList.add(pizza3);
 		final Pizza pizza4 = new Pizza();
-		pizza1.setId(4);
-		pizza1.setIngredientList(Arrays.asList("tomato","mushroom", "basil"));
+		pizza4.setId(4);
+		pizza4.setIngredientList(Arrays.asList("tomato","mushroom", "basil"));
 		pizzaList.add(pizza4);
 		final Pizza pizza5 = new Pizza();
-		pizza1.setId(5);
-		pizza1.setIngredientList(Arrays.asList("chicken","basil"));
+		pizza5.setId(5);
+		pizza5.setIngredientList(Arrays.asList("chicken","basil"));
 		pizzaList.add(pizza5);
 		
 		final ProblemContainer problem = new ProblemContainer(teamSize2Number, pizzaList);
@@ -70,12 +70,17 @@ public class ProblemSolverTest {
 
 	@Test
 	public void testFirstInput() throws IOException {
-		final ProblemContainer p = READER.readProblem("a_example");
+		//final ProblemContainer p = READER.readProblem("a_example");
+		final ProblemContainer p = READER.readProblem("b_little_bit_of_everything.in");
+		//final ProblemContainer p = READER.readProblem("c_many_ingredients.in");
+		//final ProblemContainer p = READER.readProblem("d_many_pizzas.in");
+		//final ProblemContainer p = READER.readProblem("e_many_teams.in");
+
 		LOG.info(p.toString());
 
-//		final SolutionContainer sC = SOLVER.solve(p);
-//		WRITER.writeProblem("output_file", sC);
-//		LOG.info("test1 solution: " + sC.toString() + "\nScore: " + sC.getScore());
+		final SolutionContainer sC = SOLVER.solve(p);
+		WRITER.writeProblem("output_file", sC);
+		LOG.info("test1 solution: " + sC.toString() + "\nScore: " + sC.getScore());
 	}
 
 }

@@ -39,4 +39,11 @@ public class Pizza {
         return Objects.hash(id);
     }
 
+    @Override
+    public String toString() {
+        return "Pizza{" +
+                "id=" + id +
+                ", ingredientList=" + ingredientList +
+                '}';
+    }
 }

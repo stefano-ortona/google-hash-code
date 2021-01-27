@@ -23,7 +23,10 @@ public abstract class APizzaChooser {
         List<Pizza> pizzaAllocated = new ArrayList<>();
 
         if (isLastStep(teamMap, pizzaList.size())) {
-            System.out.println(pizzaList);
+            System.out.println("last step: pizzaList :: " + pizzaList);
+            System.out.println("last step: teamMap :: " + teamMap);
+            // TODO: gestire implementazione
+            return null; // EXIT
         }
 
         while (true) {
@@ -46,7 +49,7 @@ public abstract class APizzaChooser {
         tmpTeamMap.put(teamSizeMin, tmpTeamMap.get(teamSizeMin) - 1);
         int tmpTeamSizeMin = getTeamSizeMin(teamMap);
 
-        return remain >= tmpTeamSizeMin;
+        return remain < tmpTeamSizeMin;
     }
 
     private Pizza getNextPizza(List<Pizza> pizzaList, List<Pizza> pizzaAllocated, boolean hasTeam_2, boolean hasTeam_3, boolean hasTeam_4) {
