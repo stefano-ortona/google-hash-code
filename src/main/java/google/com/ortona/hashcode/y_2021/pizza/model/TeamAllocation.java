@@ -26,4 +26,14 @@ public class TeamAllocation {
     public int getScore() {
         return 0;
     }
+    
+    @Override
+    public String toString() {
+		String string = "";
+		string += pizzaList.size();
+		for (final Pizza pa : getPizzaList()) {
+			string += "\n" + pa.getId();
+		}
+		return string;
+    }
 }
