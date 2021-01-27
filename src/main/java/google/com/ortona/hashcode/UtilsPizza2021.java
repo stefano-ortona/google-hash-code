@@ -105,7 +105,7 @@ public class UtilsPizza2021 {
         String[] dataRaw = cloneArrayOfString(file, 1, file.length);
         pizzas = new ArrayList<>();
 
-        for (int i=0; i< dataRaw.length-1; i++){
+        for (int i=0; i< dataRaw.length; i++){
             String[] parsed = splitString(dataRaw[i], " ");
             String[] ingredients = cloneArrayOfString(parsed, 1, parsed.length);
             Pizza p = new Pizza();
@@ -135,7 +135,8 @@ public class UtilsPizza2021 {
     // ====== Do not change below here
 
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
-    private static final String RESOURCE_PATH = "src/main/resources/google/com/ortona/hashcode/y_2021/pizza/";
+    private static final String RESOURCE_PATH = "src/main/resources/google/com/ortona/hashcode/y_2021.pizza/";
+                                                 //src/main/resources/google/com/ortona/hashcode/y_2021.pizza
     private String[] file;
 
     public void setFile(String[] file) {

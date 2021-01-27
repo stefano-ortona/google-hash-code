@@ -70,10 +70,12 @@ public class ProblemSolverTest {
 
 	@Test
 	public void testFirstInput() throws IOException {
-		final ProblemContainer p = READER.readProblem("input_file");
-		final SolutionContainer sC = SOLVER.solve(p);
-		WRITER.writeProblem("output_file", sC);
-		LOG.info("test1 solution: " + sC.toString() + "\nScore: " + sC.getScore());
+		final ProblemContainer p = READER.readProblem("a_example");
+		LOG.info(p.toString());
+
+//		final SolutionContainer sC = SOLVER.solve(p);
+//		WRITER.writeProblem("output_file", sC);
+//		LOG.info("test1 solution: " + sC.toString() + "\nScore: " + sC.getScore());
 	}
 
 }
