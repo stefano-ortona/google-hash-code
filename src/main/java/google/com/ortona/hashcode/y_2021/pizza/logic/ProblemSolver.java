@@ -10,25 +10,20 @@ import google.com.ortona.hashcode.y_2021.pizza.model.SolutionContainer;
 public class ProblemSolver {
     private static Logger LOG = LoggerFactory.getLogger(ProblemSolver.class);
 
-    private SimplePizzaChooser pizzaChooser = new SimplePizzaChooser();
+    private APizzaChooser pizzaChooser = new AlwaysMinimumPizzaChooser();
 
     private SolutionContainer solutionContainer = new SolutionContainer();
 
     public SolutionContainer solve(ProblemContainer problem) {
 
-
         while (true) {
-            TeamAllocation teamAllocation = pizzaChooser.choose(problem.getPizzaList(),
-                    problem.getTeamMap().get(2) > 0,
-                    problem.getTeamMap().get(3) > 0,
-                    problem.getTeamMap().get(4) > 0);
+            TeamAllocation teamAllocation = pizzaChooser.choose(problem.getTeamMap(), problem.getPizzaList());
 
             if (teamAllocation == null) break; // EXIT
 
             int teamSize = teamAllocation.getPizzaList().size();
 
             problem.getTeamMap().put(teamSize, problem.getTeamMap().get(teamSize) - 1); // decrement team count
-            problem.getPizzaList().removeAll(teamAllocation.getPizzaList()); // decrement pizza list
 
             solutionContainer.getAllocationList().add(teamAllocation);
         }

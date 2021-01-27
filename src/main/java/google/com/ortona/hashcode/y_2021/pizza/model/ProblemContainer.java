@@ -31,12 +31,4 @@ public class ProblemContainer {
 	public void setPizzaList(List<Pizza> pizzaList) {
 		this.pizzaList = pizzaList;
 	}
-
-	@Override
-	public String toString() {
-		return "ProblemContainer{" +
-				"teamMap=" + teamMap +
-				", pizzaList=" + pizzaList +
-				'}';
-	}
 }
