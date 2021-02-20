@@ -10,7 +10,7 @@ import google.com.ortona.hashcode.y_2021.pizza.model.SolutionContainer;
 public class ProblemSolver {
     private static Logger LOG = LoggerFactory.getLogger(ProblemSolver.class);
 
-    private APizzaChooser pizzaChooser = new AlwaysMinimumPizzaChooser();
+    private APizzaChooser pizzaChooser = new AlwaysMaximumPizzaChooser();
 
     private SolutionContainer solutionContainer = new SolutionContainer();
 
