@@ -1,7 +1,9 @@
 package google.com.ortona.hashcode.y_2022.pizza;
 
 import java.io.IOException;
+import java.util.Arrays;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,8 @@ import google.com.ortona.hashcode.y_2022.pizza.io.ProblemWriter;
 import google.com.ortona.hashcode.y_2022.pizza.logic.ProblemSolver;
 import google.com.ortona.hashcode.y_2022.pizza.model.ProblemContainer;
 import google.com.ortona.hashcode.y_2022.pizza.model.SolutionContainer;
+import google.com.ortona.hashcode.y_2022.pizza.model.Client;
+
 
 /**
  *
@@ -28,6 +32,23 @@ public class ProblemSolverTest {
 		LOG.info("----------------------");
 		LOG.info("First test is starting");
 		// create here a mock input for test
+		final Client c1 = new Client();
+		c1.setLikes(Arrays.asList("cheese","peppers"));
+		c1.setDislikes(Arrays.asList());
+		
+		final Client c2 = new Client();
+		c2.setLikes(Arrays.asList("basil"));
+		c2.setDislikes(Arrays.asList("pineapple"));
+		
+		final Client c3 = new Client();
+		c3.setLikes(Arrays.asList("mushrooms","tomatoes"));
+		c3.setDislikes(Arrays.asList("basil"));
+		
+		final ProblemContainer problem = new ProblemContainer();
+		problem.setClients(Arrays.asList(c1,c2,c3));
+		final SolutionContainer solution = SOLVER.solve(problem);
+		Assert.assertNotNull(solution);
+		LOG.info("test1 solution: " + solution.toString() + "\nScore: " + solution.getScore());
 		
 	}
 
@@ -42,7 +63,7 @@ public class ProblemSolverTest {
 		// LOG.info(p.toString());
 
 		final SolutionContainer sC = SOLVER.solve(p);
-		WRITER.writeProblem("output_file", sC);
+		// WRITER.writeProblem("output_file", sC);
 		LOG.info("test1 solution: " + sC.toString() + "\nScore: " + sC.getScore());
 	}
 

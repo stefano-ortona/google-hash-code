@@ -11,7 +11,7 @@ public class ProblemContainer {
 		return allClients;
 	}
 	
-	private void setClients(List<Client> clients) {
+	public void setClients(List<Client> clients) {
 		this.allClients = clients;
 	}
 
