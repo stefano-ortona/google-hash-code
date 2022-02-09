@@ -55,9 +55,9 @@ public class ProblemSolverTest {
 
 	@Test
 	public void testFirstInput() throws IOException {
-		//final ProblemContainer p = READER.readProblem("a_example");
+		final ProblemContainer p = READER.readProblem("a_an_example");
 		//final ProblemContainer p = READER.readProblem("b_little_bit_of_everything.in");
-		final ProblemContainer p = READER.readProblem("c_many_ingredients.in");
+//		final ProblemContainer p = READER.readProblem("c_many_ingredients.in");
 		//final ProblemContainer p = READER.readProblem("d_many_pizzas.in");
 		//final ProblemContainer p = READER.readProblem("e_many_teams.in");
 
