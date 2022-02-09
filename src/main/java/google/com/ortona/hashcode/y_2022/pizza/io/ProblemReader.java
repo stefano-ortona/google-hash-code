@@ -31,7 +31,7 @@ public class ProblemReader {
 		
 		ProblemContainer pC = new ProblemContainer();
 		pC.setClients(allClients);
-		return null;
+		return pC;
 	}
 	
 	

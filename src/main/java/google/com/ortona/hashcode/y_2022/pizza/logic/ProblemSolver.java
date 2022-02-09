@@ -17,7 +17,6 @@ import google.com.ortona.hashcode.y_2022.pizza.model.SolutionContainer;
 public class ProblemSolver {
     private static Logger LOG = LoggerFactory.getLogger(ProblemSolver.class);
 
-    private SolutionContainer solutionContainer = new SolutionContainer();
 
     Set<String> takenIngredients = new HashSet<>();
 
@@ -30,7 +29,7 @@ public class ProblemSolver {
 
         while (true) {
             Map<String, Integer> ingr2score = updateIngredientScore(problem.getClients(), takenIngredients);
-            int currentScore = (int) problem.getClients().stream().filter(c -> c.getTaken()).count();
+            int currentScore = (int) problem.getClients().stream().filter(c -> c.getTaken() != null && c.getTaken() == true).count();
 
             LOG.debug("Current score: {} with {} ingredients", currentScore, takenIngredients.size());
 
@@ -43,6 +42,7 @@ public class ProblemSolver {
             if (shouldStop) break; // EXIT
 
             Client best = getBestClient(problem.getClients(), ingr2score);
+            if(best == null) break;
             int nIngr = takenIngredients.size();
             takenIngredients.addAll(best.getLikes());
             shouldStop = nIngr == takenIngredients.size();
@@ -50,7 +50,9 @@ public class ProblemSolver {
 
 
         SolutionContainer sC = new SolutionContainer();
-        return solutionContainer;
+        sC.finalIngredients = finalIngredients;
+        sC.score = bestScore;
+        return sC;
     }
 
 
