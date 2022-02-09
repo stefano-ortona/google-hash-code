@@ -4,10 +4,15 @@ import java.util.List;
 
 public class ProblemContainer {
 	
+	private List<Client> allClients;
+	
 	
 	public List<Client> getClients(){
-		//TODO
-		return null;
+		return allClients;
+	}
+	
+	private void setClients(List<Client> clients) {
+		this.allClients = clients;
 	}
 
 	@Override
