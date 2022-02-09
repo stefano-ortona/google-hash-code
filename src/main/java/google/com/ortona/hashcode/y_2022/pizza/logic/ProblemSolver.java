@@ -42,7 +42,7 @@ public class ProblemSolver {
 
             if (shouldStop) break; // EXIT
 
-            Client best = getBestClient(problem.getClients(), ingr2score);
+            Client best = getBestClient(problem.getClients());
             int nIngr = takenIngredients.size();
             takenIngredients.addAll(best.getLikes());
             shouldStop = nIngr == takenIngredients.size();
@@ -54,7 +54,7 @@ public class ProblemSolver {
     }
 
 
-    private Client getBestClient(List<Client> allClients, Map<String, Integer> ingr2score) {
+    private Client getBestClient(List<Client> allClients) {
         Client bestClient = null;
         int bestScore = Integer.MIN_VALUE;
         for (Client c : allClients) {
