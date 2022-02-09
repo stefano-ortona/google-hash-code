@@ -42,7 +42,7 @@ public class ProblemSolver {
 
             if (shouldStop) break; // EXIT
 
-            Client best = getBestClient(problem.getClients());
+            Client best = getBestClient(problem.getClients(), ingr2score);
             int nIngr = takenIngredients.size();
             takenIngredients.addAll(best.getLikes());
             shouldStop = nIngr == takenIngredients.size();
@@ -54,7 +54,7 @@ public class ProblemSolver {
     }
 
 
-    private Client getBestClient(List<Client> allClients) {
+    private Client getBestClient(List<Client> allClients, Map<String, Integer> ingr2score) {
         Client bestClient = null;
         int bestScore = Integer.MIN_VALUE;
         for (Client c : allClients) {
@@ -63,8 +63,10 @@ public class ProblemSolver {
             }
             //compute score of the client and return the client with the best score
             // skip already taken ingredients
-            int score = (int) c.getLikes().stream().filter(ingr -> !takenIngredients.contains(ingr)).count()
-                    - (int) c.getDislikes().stream().filter(ingr -> !takenIngredients.contains(ingr)).count();
+            int score = c.getLikes().stream().filter(ingr -> !takenIngredients.contains(ingr))
+                    .map(ingr -> ingr2score.getOrDefault(ingr, 0)).reduce(0, Integer::sum)
+                    - c.getDislikes().stream().filter(ingr -> !takenIngredients.contains(ingr))
+                    .map(ingr -> ingr2score.getOrDefault(ingr, 0)).reduce(0, Integer::sum);
             if (bestClient == null || score > bestScore) {
                 bestClient = c;
                 bestScore = score;
