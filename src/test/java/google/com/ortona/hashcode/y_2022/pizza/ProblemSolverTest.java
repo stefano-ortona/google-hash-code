@@ -2,6 +2,7 @@ package google.com.ortona.hashcode.y_2022.pizza;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,7 +35,7 @@ public class ProblemSolverTest {
 		// create here a mock input for test
 		final Client c1 = new Client();
 		c1.setLikes(Arrays.asList("cheese","peppers"));
-		c1.setDislikes(Arrays.asList());
+		c1.setDislikes(Collections.<String>emptyList());
 		
 		final Client c2 = new Client();
 		c2.setLikes(Arrays.asList("basil"));

@@ -18,7 +18,7 @@ public class ProblemContainer {
 	@Override
 	public String toString() {
 		return "ProblemContainer{" +
-				"allClients=" + allClients +
+				"allClients=" + getClients().toString() +
 				'}';
 	}
 }
