@@ -1,8 +1,6 @@
 package google.com.ortona.hashcode.y_2022.pizza.io;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -12,10 +10,10 @@ import google.com.ortona.hashcode.y_2022.pizza.model.Client;
 import google.com.ortona.hashcode.y_2022.pizza.model.ProblemContainer;
 
 public class ProblemReader {
-	String folder = "src/main/resources/google/com/ortona/hashcode/y_2022.pizza2/io/";
+
 	public ProblemContainer readProblem(String fileLocation) throws IOException {
 		List<Client> allClients = new ArrayList<>();
-		BufferedReader br = new BufferedReader(new FileReader(new File(folder+fileLocation)));
+		BufferedReader br = new BufferedReader(new InputStreamReader(ProblemReader.class.getResourceAsStream(fileLocation)));
 		
 		int clients = Integer.valueOf(br.readLine()); 
 		for(int i = 0; i < clients; i++) {

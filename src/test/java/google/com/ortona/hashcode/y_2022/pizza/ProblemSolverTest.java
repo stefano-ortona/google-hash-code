@@ -54,17 +54,17 @@ public class ProblemSolverTest {
 	}
 
 	@Test
-	public void testFirstInput() throws IOException {
-//		final ProblemContainer p = READER.readProblem("a_an_example");
-		//final ProblemContainer p = READER.readProblem("b_little_bit_of_everything.in");
-//		final ProblemContainer p = READER.readProblem("c_many_ingredients.in");
-		//final ProblemContainer p = READER.readProblem("d_many_pizzas.in");
-		final ProblemContainer p = READER.readProblem("d_difficult_in");
-
-		// LOG.info(p.toString());
+	public void testRealInput() throws IOException {
+		final String inputFile = "a_an_example";
+//		final String inputFile = "b_little_bit_of_everything";
+//		final String inputFile = "c_many_ingredients";
+//		final String inputFile = "d_difficult_in";
+//		final String inputFile = "e_elaborate_in";
+		
+		final ProblemContainer p = READER.readProblem(inputFile);
 
 		final SolutionContainer sC = SOLVER.solve(p);
-		// WRITER.writeProblem("output_file", sC);
+		WRITER.writeProblem("output_" + inputFile, sC);
 		LOG.info("test1 solution: " + sC.toString() + "\nScore: " + sC.getScore());
 	}
 
