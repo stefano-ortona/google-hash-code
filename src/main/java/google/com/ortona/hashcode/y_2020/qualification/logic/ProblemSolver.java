@@ -25,7 +25,7 @@ public class ProblemSolver {
 
         int day = 0;
         while (true) {
-            Library.LibraryScoreBundle libraryScore = getBestLibraryScore(problem.LIBRARY_LIST, day, problem.TOTAL_DAY_COUNT); // TODO: 15/02/2022 gestire diverse liste per evitare iterazione intere
+            Library.LibraryScoreBundle libraryScore = getBestLibraryScore(problem.LIBRARY_LIST, day, problem.TOTAL_DAY_COUNT);
 
             if (libraryScore == null) {
                 break;
