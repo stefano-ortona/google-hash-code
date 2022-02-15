@@ -30,6 +30,13 @@ public class SolutionContainer {
     }
 
     public int getScore() {
-        return 0;
+        int score = 0;
+        for (final Library library : LIBRARY_SOLUTION_LIST) {
+        	score += library.getBookList().stream()
+    				.filter(book -> book.getLibraryId() == library.getId())
+    				.map(book -> book.getScore())
+    				.reduce(0, (a, b) -> a + b);
+		}
+        return score;
     }
 }
