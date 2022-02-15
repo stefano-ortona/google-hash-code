@@ -90,6 +90,10 @@ public class Library {
     }
 
 
+    /*
+     * Structures
+     */
+
     public static class LibraryScoreBundle {
         public int score;
         public int totalTime;
