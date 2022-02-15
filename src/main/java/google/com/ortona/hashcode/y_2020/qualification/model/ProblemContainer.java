@@ -6,9 +6,9 @@ import java.util.List;
 
 public class ProblemContainer {
 
-    public static int TOTAL_DAY_COUNT = 0;
+    public int TOTAL_DAY_COUNT = 0;
 
-    public static List<Library> LIBRARY_LIST = new ArrayList<>();
+    public List<Library> LIBRARY_LIST = new ArrayList<>();
 
     @Override
     public String toString() {
