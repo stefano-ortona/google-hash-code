@@ -70,17 +70,4 @@ public class ProblemSolver {
         }
     }
 
-
-    /*
-     * Library comparator
-     */
-
-    private static class LibraryComparator implements Comparator<Library> {
-        @Override
-        public int compare(Library o1, Library o2) {
-            return 0;
-        }
-
-    }
-
 }
