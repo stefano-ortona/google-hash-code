@@ -1,5 +1,6 @@
 package google.com.ortona.hashcode.y_2020.qualification.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -86,8 +87,32 @@ public class Library {
      */
 
     public LibraryScoreBundle computeScore(int currentDay, int totalDayCount) {
-        return null;
+        int daysForShipping = totalDayCount - (currentDay+signup);
+        int totBooksToDeliver = daysForShipping * books4days;
+        
+        int actualDelivered = 0;
+        int score = 0;
+        List<Book> chosenBooks = new ArrayList<>();
+        for(Book oneB : bookList) {
+        	if(oneB.getLibraryId() == null) {
+        		score += oneB.getScore();
+        		actualDelivered++;
+        		chosenBooks.add(oneB);
+        	}
+        	if(actualDelivered >= totBooksToDeliver) {
+        		break;
+        	}
+        }
+        
+        LibraryScoreBundle lSB = new LibraryScoreBundle();
+        lSB.library = this;
+        lSB.score = score;
+        lSB.totalTime = signup + (actualDelivered/books4days);
+        lSB.chosenBooks = chosenBooks;
+        
+        return lSB;
     }
+    
 
 
     /*
@@ -97,6 +122,9 @@ public class Library {
     public static class LibraryScoreBundle {
         public int score;
         public int totalTime;
+        public List<Book> chosenBooks;
+        public Library library;
+        
     }
 
 }
