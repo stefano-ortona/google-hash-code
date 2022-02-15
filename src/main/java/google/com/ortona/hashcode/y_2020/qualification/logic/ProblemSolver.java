@@ -2,13 +2,11 @@ package google.com.ortona.hashcode.y_2020.qualification.logic;
 
 import google.com.ortona.hashcode.y_2020.qualification.model.Book;
 import google.com.ortona.hashcode.y_2020.qualification.model.Library;
+import google.com.ortona.hashcode.y_2020.qualification.model.ProblemContainer;
+import google.com.ortona.hashcode.y_2020.qualification.model.SolutionContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import google.com.ortona.hashcode.y_2020.qualification.model.ProblemContainer;
-import google.com.ortona.hashcode.y_2020.qualification.model.SolutionContainer;
-
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -17,6 +15,9 @@ public class ProblemSolver {
     private static Logger LOG = LoggerFactory.getLogger(ProblemSolver.class);
 
     private SolutionContainer solutionContainer = new SolutionContainer();
+
+    private IBestLibraryRanker RANKER = new SimpleBestLibraryRanker();
+
 
     public static void main(String[] args) {
         LOG.info("Hello World!");
@@ -36,7 +37,7 @@ public class ProblemSolver {
 
             solutionContainer.LIBRARY_SOLUTION_LIST.add(libraryScore.library);
 
-            day += libraryScore.library.getSignupDay();
+            day += libraryScore.library.getSignup();
         }
 
         return solutionContainer;
@@ -52,16 +53,12 @@ public class ProblemSolver {
                 .filter(library -> library.getSignupDay() == null)
                 .map(library -> library.computeScore(day, totDayCount))
                 .filter(Objects::nonNull)
-                .sorted(new Comparator<Library.LibraryScoreBundle>() {
-                    @Override
-                    public int compare(Library.LibraryScoreBundle o1, Library.LibraryScoreBundle o2) {
-                        return o2.score - o1.score;
-                    }
-                })
                 .collect(Collectors.toList());
 
-        if (!libraryScoreBundleList.isEmpty()) {
-            return libraryScoreBundleList.get(0);
+        Library.LibraryScoreBundle bestLibraryScore = RANKER.getBestLibraryScore(libraryScoreBundleList);
+
+        if (bestLibraryScore != null) {
+            return bestLibraryScore;
         } else {
             LOG.debug("no more libraries to choose!!!");
             return null;
