@@ -48,15 +48,14 @@ public class ProblemSolver {
 
     private Library.LibraryScoreBundle getBestLibraryScore(List<Library> libraryList, int day, int totDayCount) {
         List<Library.LibraryScoreBundle> libraryScoreBundleList = libraryList.stream()
-                .filter(library -> {library.getSignupDay() == null})
+                .filter(library -> library.getSignupDay() == null)
                 .map(library -> library.computeScore(day, totDayCount))
+                .sorted(Comparator.comparingInt(o -> o.score))
                 .collect(Collectors.toList());
 
-        libraryScoreBundleList.sort(Comparator.comparingInt(o -> o.score));
-
-        try {
+        if (!libraryScoreBundleList.isEmpty()) {
             return libraryScoreBundleList.get(0);
-        } catch (Exception e) {
+        } else {
             LOG.debug("no more libraries to choose!!!");
             return null;
         }

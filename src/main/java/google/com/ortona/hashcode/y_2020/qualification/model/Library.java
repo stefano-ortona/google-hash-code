@@ -14,7 +14,7 @@ public class Library {
 
     private List<Book> bookList;
 
-    private int signupDay;
+    private Integer signupDay = null;
 
 
     public int getId() {
@@ -49,7 +49,7 @@ public class Library {
         this.bookList = bookList;
     }
 
-    public int getSignupDay() {
+    public Integer getSignupDay() {
         return signupDay;
     }
 
