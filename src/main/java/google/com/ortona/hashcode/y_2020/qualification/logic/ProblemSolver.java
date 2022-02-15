@@ -23,6 +23,10 @@ public class ProblemSolver {
 
     private SolutionContainer solutionContainer = new SolutionContainer();
 
+    public static void main(String[] args) {
+        LOG.info("Hello World!");
+    }
+
     public SolutionContainer solve(ProblemContainer problem) {
 
         int day = 0;
@@ -40,12 +44,22 @@ public class ProblemSolver {
         return solutionContainer;
     }
 
+
+    /*
+     * Internal logic
+     */
+
     private Library.LibraryScoreBundle getBestLibraryScore(List<Library> libraryList, int day, int totDayCount) {
         List<Library.LibraryScoreBundle> libraryScoreBundleList = libraryList.stream().map(library -> library.computeScore(day, totDayCount)).collect(Collectors.toList());
 
         libraryScoreBundleList.sort(Comparator.comparingInt(o -> o.score));
 
-        return libraryScoreBundleList.get(0);
+        try {
+            return libraryScoreBundleList.get(0);
+        } catch (Exception e) {
+            LOG.debug("no more libraries to choose!!!");
+            return null;
+        }
     }
 
     private void trackBooks(Library.LibraryScoreBundle libraryScore, int day) {
@@ -55,12 +69,6 @@ public class ProblemSolver {
             book.setLibraryId(libraryScore.library.getId());
         }
     }
-
-
-    public static void main(String[] args) {
-        LOG.info("Hello World!");
-    }
-
 
 
     /*
