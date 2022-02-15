@@ -49,19 +49,22 @@ public class ProblemSolverTest {
 		b6.setId(5);
 		b6.setScore(4);
 		final Library l1 = new Library();
-		l1.setBookList(Arrays.asList(b1,b2,b3,b4,b5));
+		l1.setId(0);
+		l1.setBookList(Arrays.asList(b4,b5,b3,b2,b1));
 		l1.setBooks4days(2);
 		l1.setSignup(2);
 		final Library l2 = new Library();
-		l2.setBookList(Arrays.asList(b4,b3,b6,b1));
+		l2.setId(1);
+		l2.setBookList(Arrays.asList(b4,b6,b3,b1));
 		l2.setBooks4days(1);
 		l2.setSignup(3);
-		
+
 		ProblemContainer pC = new ProblemContainer();
 		pC.LIBRARY_LIST = Arrays.asList(l1,l2);
+		pC.TOTAL_DAY_COUNT = 7;
 		// create here a mock input for test
 
-		
+
 		ProblemSolver pS = new ProblemSolver();
 		SolutionContainer sC = pS.solve(pC);
 		Assert.assertNotNull(sC);
@@ -71,11 +74,12 @@ public class ProblemSolverTest {
 
 	@Test
 	public void testRealInput() throws IOException {
-		final String inputFile = "a_an_example";
-		//		final String inputFile = "b_little_bit_of_everything";
-		//		final String inputFile = "c_many_ingredients";
-		//		final String inputFile = "d_difficult_in";
-		//		final String inputFile = "e_elaborate_in";
+		//				final String inputFile = "a_example.txt";
+//				final String inputFile = "b_read_on.txt";
+//		final String inputFile = "c_incunabula.txt";
+//				final String inputFile = "d_tough_choices.txt";
+//				final String inputFile = "e_so_many_books.txt";
+				final String inputFile = "f_libraries_of_the_world.txt";
 
 		final ProblemContainer p = READER.readProblem(inputFile);
 

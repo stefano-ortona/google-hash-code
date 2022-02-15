@@ -16,7 +16,8 @@ public class ProblemSolver {
 
     private SolutionContainer solutionContainer = new SolutionContainer();
 
-    private IBestLibraryRanker RANKER = new SimpleBestLibraryRanker();
+//    private IBestLibraryRanker RANKER = new SimpleBestLibraryRanker();
+    private IBestLibraryRanker RANKER = new LibraryRankerBasedOnTime();
 
 
     public static void main(String[] args) {

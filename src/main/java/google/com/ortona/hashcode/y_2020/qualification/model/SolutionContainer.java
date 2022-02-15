@@ -19,7 +19,7 @@ public class SolutionContainer {
         StringBuilder output = new StringBuilder("" + LIBRARY_SOLUTION_LIST.size() + "\n");
         for (final Library library : LIBRARY_SOLUTION_LIST) {
             List<Book> goodBooks = library.getBookList().stream()
-                    .filter(book -> book.getLibraryId() == library.getId())
+                    .filter(book -> book.getLibraryId() != null && book.getLibraryId() == library.getId())
                     .collect(Collectors.toList());
             output.append(library.getId()).append(" ").append(goodBooks.size()).append("\n");
             output.append(goodBooks.stream().map(book -> book.getId() + "").collect(Collectors.joining(" "))).append("\n");
@@ -32,9 +32,9 @@ public class SolutionContainer {
         int score = 0;
         for (final Library library : LIBRARY_SOLUTION_LIST) {
         	score += library.getBookList().stream()
-    				.filter(book -> book.getLibraryId() == library.getId())
+    				.filter(book -> book.getLibraryId() != null && book.getLibraryId() == library.getId())
     				.map(book -> book.getScore())
-    				.reduce(0, (a, b) -> a + b);
+    				.reduce(0, Integer::sum);
 		}
         return score;
     }
