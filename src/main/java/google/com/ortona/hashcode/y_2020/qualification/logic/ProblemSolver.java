@@ -1,6 +1,5 @@
 package google.com.ortona.hashcode.y_2020.qualification.logic;
 
-import com.sun.tools.javac.util.Pair;
 import google.com.ortona.hashcode.y_2020.qualification.model.Book;
 import google.com.ortona.hashcode.y_2020.qualification.model.Library;
 import org.slf4j.Logger;
@@ -15,11 +14,6 @@ import java.util.stream.Collectors;
 
 public class ProblemSolver {
     private static Logger LOG = LoggerFactory.getLogger(ProblemSolver.class);
-
-    // SCORRERE LIBRERIE
-    // PER OGNI LIBRERIA CALCOLARE LO SCORE (bXS/d)? RICORDA LIMITE GIORNALIERO
-    //
-
 
     private SolutionContainer solutionContainer = new SolutionContainer();
 
@@ -38,6 +32,9 @@ public class ProblemSolver {
             }
 
             trackBooks(libraryScore, day);
+
+            solutionContainer.LIBRARY_SOLUTION_LIST.add(libraryScore.library);
+
             day += libraryScore.library.getSignupDay();
         }
 
@@ -50,7 +47,10 @@ public class ProblemSolver {
      */
 
     private Library.LibraryScoreBundle getBestLibraryScore(List<Library> libraryList, int day, int totDayCount) {
-        List<Library.LibraryScoreBundle> libraryScoreBundleList = libraryList.stream().map(library -> library.computeScore(day, totDayCount)).collect(Collectors.toList());
+        List<Library.LibraryScoreBundle> libraryScoreBundleList = libraryList.stream()
+                .filter(library -> {library.getSignupDay() == null})
+                .map(library -> library.computeScore(day, totDayCount))
+                .collect(Collectors.toList());
 
         libraryScoreBundleList.sort(Comparator.comparingInt(o -> o.score));
 
