@@ -9,6 +9,10 @@ import google.com.ortona.hashcode.y_2020.qualification.model.SolutionContainer;
 public class ProblemSolver {
     private static Logger LOG = LoggerFactory.getLogger(ProblemSolver.class);
 
+    // SCORRERE LIBRERIE
+    // PER OGNI LIBRERIA CALCOLARE LO SCORE (bXS/d)? RICORDA LIMITE GIORNALIERO
+    //
+
 
     private SolutionContainer solutionContainer = new SolutionContainer();
 
