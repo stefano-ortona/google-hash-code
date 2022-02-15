@@ -52,7 +52,12 @@ public class ProblemSolver {
                 .filter(library -> library.getSignupDay() == null)
                 .map(library -> library.computeScore(day, totDayCount))
                 .filter(Objects::nonNull)
-                .sorted(Comparator.comparingInt(o -> o.score))
+                .sorted(new Comparator<Library.LibraryScoreBundle>() {
+                    @Override
+                    public int compare(Library.LibraryScoreBundle o1, Library.LibraryScoreBundle o2) {
+                        return o2.score - o1.score;
+                    }
+                })
                 .collect(Collectors.toList());
 
         if (!libraryScoreBundleList.isEmpty()) {
