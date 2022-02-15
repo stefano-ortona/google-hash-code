@@ -80,4 +80,19 @@ public class Library {
         return Objects.hash(id);
     }
 
+
+    /**
+     *  Utility
+     */
+
+    public LibraryScoreBundle computeScore(int currentDay, int totalDayCount) {
+        return null;
+    }
+
+
+    public static class LibraryScoreBundle {
+        public int score;
+        public int totalTime;
+    }
+
 }
