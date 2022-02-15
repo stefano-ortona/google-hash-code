@@ -10,6 +10,7 @@ import google.com.ortona.hashcode.y_2020.qualification.model.SolutionContainer;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ProblemSolver {
@@ -50,6 +51,7 @@ public class ProblemSolver {
         List<Library.LibraryScoreBundle> libraryScoreBundleList = libraryList.stream()
                 .filter(library -> library.getSignupDay() == null)
                 .map(library -> library.computeScore(day, totDayCount))
+                .filter(Objects::nonNull)
                 .sorted(Comparator.comparingInt(o -> o.score))
                 .collect(Collectors.toList());
 
