@@ -74,12 +74,12 @@ public class ProblemSolverTest {
 
 	@Test
 	public void testRealInput() throws IOException {
-		//				final String inputFile = "a_example.txt";
-//				final String inputFile = "b_read_on.txt";
+//						final String inputFile = "a_example.txt";
+//						final String inputFile = "b_read_on.txt";
 //		final String inputFile = "c_incunabula.txt";
-//				final String inputFile = "d_tough_choices.txt";
-//				final String inputFile = "e_so_many_books.txt";
-				final String inputFile = "f_libraries_of_the_world.txt";
+						final String inputFile = "d_tough_choices.txt";
+//						final String inputFile = "e_so_many_books.txt";
+//		final String inputFile = "f_libraries_of_the_world.txt";
 
 		final ProblemContainer p = READER.readProblem(inputFile);
 
